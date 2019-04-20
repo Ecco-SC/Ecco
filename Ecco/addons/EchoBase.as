@@ -65,10 +65,10 @@ namespace EccoBase{
     bool Success = true;
     switch(args.length()){
       case 1:
-        Success = e_ScriptParser.ExecuteFile(args[0], pPlayer);
+        Success = e_ScriptParser.ExecuteFile("scripts/plugins/Ecco/scripts/" + args[0], pPlayer);
         break;
       case 2:
-        Success = e_ScriptParser.ExecuteFile(args[0], FindPlayerByName(args[1], pPlayer));
+        Success = e_ScriptParser.ExecuteFile("scripts/plugins/Ecco/scripts/" + args[0], FindPlayerByName(args[1], pPlayer));
         break;
       default:
         ErrorInfo("include", args.length());
