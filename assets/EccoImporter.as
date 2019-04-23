@@ -12,7 +12,7 @@ void PluginInit(){
   }else{
     g_Game.AlertMessage(at_console, "[ERROR - EccoImporter] Cannot write in script file!\n");
   }
-  g_Game.AlertMessage(at_console, "[EccoImporter] Mission Accomplished!\n[EccoImporter] Please check .echo files, BannedMaps.txt and Scripts.txt in [scripts/plugins/store/] and move them to [scripts/plugins/Ecco]!\n[EccoImporter] Good luck, and fair seas!\n[");
+  g_Game.AlertMessage(at_console, "[EccoImporter] Mission Accomplished!\n[EccoImporter] Please check .echo files, BannedMaps.txt and Scripts.txt in [scripts/plugins/store/] and move them to [scripts/plugins/Ecco]!\n[EccoImporter] Good luck, and fair seas!\n");
 }
 
 void ImportItems(){

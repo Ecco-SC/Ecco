@@ -10,10 +10,10 @@ void PluginInit(){
 	g_Module.ScriptInfo.SetAuthor("Paranoid_AF");
 	g_Module.ScriptInfo.SetContactInfo("Please Don't.");
 	g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @onJoin);
-  InitEcco();
 }
 
 void MapInit(){
+  InitEcco();
   Precache();
   EccoScoreBuffer::RegisterTimer();
   IsMapAllowed = true;
