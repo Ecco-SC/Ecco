@@ -28,7 +28,7 @@ class EccoPlayerInventory{
           IsFirstLine = false;
           continue;
         }else{
-          if(sLine != "" && sLine.Find(";", 0) < 0){
+          if(sLine != "" && sLine.Find(";", 0) == String::INVALID_INDEX){
             Inventory.insertLast(sLine);
           }
         }

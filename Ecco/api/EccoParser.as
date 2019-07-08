@@ -196,13 +196,13 @@ class EccoScriptParser{
   }
   
   private string ProcessVariables(string Input, CBasePlayer@ pPlayer){ // TODO
-    if(Input.Find("%PLAYER%", 0) >= 0){
+    if(Input.Find("%PLAYER%", 0) != String::INVALID_INDEX){
       Input.Replace("%PLAYER%", pPlayer.pev.netname);
     }
-    if(Input.Find("%RANDOMPLAYER%", 0) >= 0){
+    if(Input.Find("%RANDOMPLAYER%", 0) != String::INVALID_INDEX){
       Input.Replace("%RANDOMPLAYER%", GetRandomPlayerName());
     }
-    if(Input.Find("%BALANCE%", 0) >= 0){
+    if(Input.Find("%BALANCE%", 0) != String::INVALID_INDEX){
       Input.Replace("%BALANCE%", string(e_PlayerInventory.GetBalance(pPlayer)));
     }
     return Input;
