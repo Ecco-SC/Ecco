@@ -168,7 +168,7 @@ namespace EccoBuyMenu{
     int PriceCost = atoi(ItemInfoC[1]);
     int PlayerBalance = e_PlayerInventory.GetBalance(pPlayer);
     if(PlayerBalance >= PriceCost){
-      if(e_ScriptParser.ExecuteFile("scripts/plugins/Ecco/scripts/" + ScriptName, pPlayer)){
+      if(e_ScriptParser.ExecuteFile("scripts/plugins/Ecco/scripts/" + ScriptName + ".echo", pPlayer)){
         e_PlayerInventory.ChangeBalance(pPlayer, -PriceCost);
         return true;
       }

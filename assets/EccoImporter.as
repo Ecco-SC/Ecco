@@ -18,7 +18,7 @@ void PluginInit(){
 void ImportItems(){
   for(int i=0; i<int(bsConf.length()); i++){
     // entity, name, price, category
-    WeaponScripts += bsConf[i][0] + ".echo\n";
+    WeaponScripts += bsConf[i][0] + "\n";
     string Content = "name: " + bsConf[i][1] + "\n";
     Content += "cost: " + bsConf[i][2] + "\n";
     Content += "category: " + bsConf[i][3] + "\n";
