@@ -44,7 +44,7 @@ class EccoScriptParser{
       }
       file.Close();
     }else{
-      g_Game.AlertMessage(at_console, "[ERROR - Ecco::Echo] Cannot read such script file in " + MacroPath + ", check if it exists and SCDS has the permission to access it!\n");
+      // g_Game.AlertMessage(at_console, "[ERROR - Ecco::Echo] Cannot read such script file in " + MacroPath + ", check if it exists and SCDS has the permission to access it!\n");
     }
     return ScriptInfo;
   }
@@ -139,7 +139,7 @@ class EccoScriptParser{
       }
       file.Close();
     }else{
-      g_Game.AlertMessage(at_console, "[ERROR - Ecco::Echo] Cannot read such script file in " + MacroPath + ", check if it exists and SCDS has the permission to access it!\n");
+      //g_Game.AlertMessage(at_console, "[ERROR - Ecco::Echo] Cannot read such script file in " + MacroPath + ", check if it exists and SCDS has the permission to access it!\n");
       Success = false;
     }
     return Success;
@@ -195,7 +195,7 @@ class EccoScriptParser{
     }
   }
   
-  private string ProcessVariables(string Input, CBasePlayer@ pPlayer){ // TODO
+  private string ProcessVariables(string Input, CBasePlayer@ pPlayer){
     if(Input.Find("%PLAYER%", 0) != String::INVALID_INDEX){
       Input.Replace("%PLAYER%", pPlayer.pev.netname);
     }
