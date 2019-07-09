@@ -25,7 +25,7 @@ namespace EccoBuyMenu{
         file.ReadLine(sLine);
         
         if(sLine != ""){
-          dictionary ScriptInfo = e_ScriptParser.RetrieveInfo("scripts/plugins/Ecco/scripts/" + sLine);
+          dictionary ScriptInfo = e_ScriptParser.RetrieveInfo("scripts/plugins/Ecco/scripts/" + sLine + ".echo");
           array<string> MapBlackList;
           if(ScriptInfo.exists("blacklist")){
             string MapBlackListStr = string(ScriptInfo["blacklist"]);
