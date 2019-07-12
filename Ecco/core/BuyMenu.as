@@ -12,6 +12,10 @@ namespace EccoBuyMenu{
   }
   
   void ReadScriptList(){
+    CateMenu.Unregister();
+    @CateMenu = CTextMenu(CateMenuRespond);
+    CateMenu.SetTitle(string(EccoConfig["BuyMenuName"]) + "\n" + string(EccoConfig["BuyMenuDescription"]) + "\n");
+  
     Menus.resize(0);
     ItemMenu.deleteAll();
     MenuTextAndScriptName.deleteAll();
@@ -44,6 +48,8 @@ namespace EccoBuyMenu{
                 array<string> DictTemp;
                 if(CategoryData.exists(string(ScriptInfo["category"]))){
                   DictTemp = cast<array<string>>(CategoryData[string(ScriptInfo["category"])]);
+                }else{
+                  CateMenu.AddItem(string(ScriptInfo["category"]), null);
                 }
                 DictTemp.insertLast(sLine);
                 CategoryData.set(string(ScriptInfo["category"]), DictTemp);
@@ -85,12 +91,8 @@ namespace EccoBuyMenu{
     if(ItemInfoData.isEmpty()){
       g_Game.AlertMessage(at_console, "[ERROR - Ecco] No existing item!\n");
     }else{
-      CateMenu.Unregister();
-      @CateMenu = CTextMenu(CateMenuRespond);
-      CateMenu.SetTitle(string(EccoConfig["BuyMenuName"]) + "\n" + string(EccoConfig["BuyMenuDescription"]) + "\n");
       array<string> DictKeys = CategoryData.getKeys();
       for(int i=0; i<int(DictKeys.length()); i++){
-        CateMenu.AddItem(DictKeys[i], null);
         CTextMenu@ SubMenu = CTextMenu(ItemMenuRespond);
         array<string> SubScripts = cast<array<string>>(CategoryData[DictKeys[i]]);
         for(int j=0; j<int(SubScripts.length()); j++){
