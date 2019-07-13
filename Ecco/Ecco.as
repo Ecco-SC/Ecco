@@ -3,6 +3,7 @@
 #include "core/ScoreToBalance"
 #include "core/LoadInventory"
 #include "core/BuyMenu"
+#include "core/SmartPrecache"
 
 bool IsMapAllowed;
 
@@ -15,6 +16,7 @@ void PluginInit(){
 void MapInit(){
   InitEcco();
   Precache();
+  SmartPrecache::PrecacheByList();
   EccoScoreBuffer::RegisterTimer();
   IsMapAllowed = true;
   
