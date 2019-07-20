@@ -205,6 +205,9 @@ class EccoScriptParser{
     if(Input.Find("%BALANCE%", 0) != String::INVALID_INDEX){
       Input.Replace("%BALANCE%", string(e_PlayerInventory.GetBalance(pPlayer)));
     }
+    if(Input.Find("%SPACE%", 0) != String::INVALID_INDEX){
+      Input.Replace("%SPACE%", " ");
+    }
     return Input;
   }
   
