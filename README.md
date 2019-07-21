@@ -1,6 +1,6 @@
 # What is Ecco
 
-![img](https://github.com/Paranoid-AF/Ecco/raw/master/assets/article1.png)
+![img](https://github.com/Paranoid-AF/EccoWikiAssets/raw/master/article1.png)
 A complete economy & buy menu plugin for Sven Co-op 5.x
 
 #### [For more information on how to use this plugin, click here!](https://github.com/Paranoid-AF/Ecco/wiki)
