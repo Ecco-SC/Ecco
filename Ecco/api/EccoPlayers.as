@@ -230,7 +230,7 @@ class EccoPlayerInventory{
     int pCount=g_PlayerFuncs.GetNumPlayers();
     for(int i=1;i<=pCount;i++)
     {
-      pPlayer=g_PlayerFuncs.FindPlayerByIndex(i);
+      @pPlayer=g_PlayerFuncs.FindPlayerByIndex(i);
       if ( pPlayer !is null && pPlayer.IsConnected() )
       {
         if(GetUniquePlayerId(pPlayer)==UniquePlayerId)
@@ -239,7 +239,7 @@ class EccoPlayerInventory{
         }
         else
         {
-          pPlayer=null;
+          @pPlayer=null;
         }
       }
     }
