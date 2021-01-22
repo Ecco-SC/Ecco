@@ -301,11 +301,11 @@ namespace EccoBase{
     CBasePlayer@ targetPlayer = null;
     switch(args.length()){
       case 1:
-        pPlayer.m_flMaxSpeed = atof(args[0]);
+        pPlayer.SetMaxSpeedOverride(int(atof(args[0])));
         break;
       case 2:
         @targetPlayer = FindPlayerByName(args[1], pPlayer);
-        targetPlayer.m_flMaxSpeed = atof(args[0]);
+        targetPlayer.SetMaxSpeedOverride(int(atof(args[0])));
         break;
       default:
         ErrorInfo("maxspeed", args.length());
