@@ -145,7 +145,7 @@ class EccoPlayerInventory{
         params.x = 0.5;
         params.y = 0.9;
         params.defdigits = 1;
-        params.maxdigits = 6;
+        params.maxdigits = 12;
         g_PlayerFuncs.HudNumDisplay(pPlayer, params);
       }
     }
@@ -193,7 +193,7 @@ class EccoPlayerInventory{
         params.x = 0.5;
         params.y = 0.858;
         params.defdigits = 1;
-        params.maxdigits = 4;
+        params.maxdigits = 8;
         params.color1 = RGBA_RED;
         params.spritename = "misc/deduct.spr";
         RefreshHUD(pPlayer);
@@ -216,7 +216,7 @@ class EccoPlayerInventory{
         params.x = 0.5;
         params.y = 0.855;
         params.defdigits = 1;
-        params.maxdigits = 4;
+        params.maxdigits = 8;
         params.color1 = RGBA_GREEN;
         params.spritename = "misc/add.spr";
         RefreshHUD(pPlayer);
