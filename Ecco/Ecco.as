@@ -5,12 +5,18 @@
 #include "core/BuyMenu"
 #include "core/SmartPrecache"
 
-bool IsMapAllowed;
+const string szRootPath = "scripts/plugins/Ecco/Ecco";
+const string szStorePath = "scripts/plugins/store/";
 
+bool IsMapAllowed;
 void PluginInit(){
 	g_Module.ScriptInfo.SetAuthor("Paranoid_AF");
 	g_Module.ScriptInfo.SetContactInfo("Please Don't.");
-	g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @onJoin);
+
+    EccoProcessVar::Register("%PLAYER%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, pPlayer.pev.netname);});
+    EccoProcessVar::Register("%RANDOMPLAYER%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, e_PlayerInventory.GetRandomPlayerName());});
+    EccoProcessVar::Register("%BALANCE%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, string(e_PlayerInventory.GetBalance(pPlayer)));});
+    EccoProcessVar::Register("%SPACE%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, " ");});
 }
 
 void MapInit(){
@@ -20,7 +26,7 @@ void MapInit(){
   EccoScoreBuffer::RegisterTimer();
   IsMapAllowed = true;
   
-  File@ file = g_FileSystem.OpenFile("scripts/plugins/Ecco/BannedMaps.txt", OpenFile::READ);
+  File@ file = g_FileSystem.OpenFile(szRootPath + "BannedMaps.txt", OpenFile::READ);
   if(file !is null && file.IsOpen()){
     while(!file.EOFReached()){
       string sLine;

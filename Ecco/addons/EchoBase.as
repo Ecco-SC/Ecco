@@ -23,21 +23,21 @@
 */
 namespace EccoBase{
   void Activate(){
-    e_ScriptParser.Register("include", CustomMacro(Macro_include));
-    e_ScriptParser.Register("money", CustomMacro(Macro_money));
-    e_ScriptParser.Register("addinv", CustomMacro(Macro_addinv));
-    e_ScriptParser.Register("delinv", CustomMacro(Macro_delinv));
-    e_ScriptParser.Register("maxhealth", CustomMacro(Macro_maxhealth));
-    e_ScriptParser.Register("maxarmor", CustomMacro(Macro_maxarmor));
-    e_ScriptParser.Register("say", CustomMacro(Macro_say));
-    e_ScriptParser.Register("broadcast", CustomMacro(Macro_broadcast));
-    e_ScriptParser.Register("give", CustomMacro(Macro_give));
-    e_ScriptParser.Register("log", CustomMacro(Macro_log));
-    e_ScriptParser.Register("hurt", CustomMacro(Macro_hurt));
-    e_ScriptParser.Register("heal", CustomMacro(Macro_heal));
-    e_ScriptParser.Register("armor", CustomMacro(Macro_armor));
-    e_ScriptParser.Register("maxspeed", CustomMacro(Macro_maxspeed));
-    e_ScriptParser.Register("gravity", CustomMacro(Macro_gravity));
+    e_ScriptParser.Register(CEccoMarco("include", Macro_include));
+    e_ScriptParser.Register(CEccoMarco("money", Macro_money));
+    e_ScriptParser.Register(CEccoMarco("addinv", Macro_addinv));
+    e_ScriptParser.Register(CEccoMarco("delinv", Macro_delinv));
+    e_ScriptParser.Register(CEccoMarco("maxhealth", Macro_maxhealth));
+    e_ScriptParser.Register(CEccoMarco("maxarmor", Macro_maxarmor));
+    e_ScriptParser.Register(CEccoMarco("say", Macro_say));
+    e_ScriptParser.Register(CEccoMarco("broadcast", Macro_broadcast));
+    e_ScriptParser.Register(CEccoMarco("give", Macro_give));
+    e_ScriptParser.Register(CEccoMarco("log", Macro_log));
+    e_ScriptParser.Register(CEccoMarco("hurt", Macro_hurt));
+    e_ScriptParser.Register(CEccoMarco("heal", Macro_heal));
+    e_ScriptParser.Register(CEccoMarco("armor", Macro_armor));
+    e_ScriptParser.Register(CEccoMarco("maxspeed", Macro_maxspeed));
+    e_ScriptParser.Register(CEccoMarco("gravity", Macro_gravity));
   }
 
   CBasePlayer@ FindPlayerByName(string Name, CBasePlayer@ Default){

@@ -21,7 +21,7 @@ namespace EccoBuyMenu{
     MenuTextAndScriptName.deleteAll();
     ItemInfoData.deleteAll();
     CategoryData.deleteAll();
-    string ConfigPath = "scripts/plugins/Ecco/Scripts.txt";
+    string ConfigPath = szRootPath + "Scripts.txt";
     File@ file = g_FileSystem.OpenFile(ConfigPath, OpenFile::READ);
     if(file !is null && file.IsOpen()){
       while(!file.EOFReached()){
@@ -29,10 +29,10 @@ namespace EccoBuyMenu{
         file.ReadLine(sLine);
         
         if(sLine != ""){
-          dictionary ScriptInfo = e_ScriptParser.RetrieveInfo("scripts/plugins/Ecco/scripts/" + sLine + ".echo");
+          CEccoScriptInfo@ ScriptInfo = e_ScriptParser.RetrieveInfo(szRootPath + "scripts/" + sLine + ".echo");
           array<string> MapBlackList;
           if(ScriptInfo.exists("blacklist")){
-            string MapBlackListStr = string(ScriptInfo["blacklist"]);
+            string MapBlackListStr = ScriptInfo["blacklist"];
             MapBlackList = MapBlackListStr.Split(" ");
           }
           
@@ -41,31 +41,31 @@ namespace EccoBuyMenu{
             if(ScriptInfo.exists("name") && ScriptInfo.exists("cost")){
               array<string> ItemInfoC;
               if(ScriptInfo.exists("category")){
-                ItemInfoC.insertLast(string(ScriptInfo["name"]));
-                ItemInfoC.insertLast(string(ScriptInfo["cost"]));
-                ItemInfoC.insertLast(string(ScriptInfo["category"]));
+                ItemInfoC.insertLast(ScriptInfo["name"]);
+                ItemInfoC.insertLast(ScriptInfo["cost"]);
+                ItemInfoC.insertLast(ScriptInfo["category"]);
                 
                 array<string> DictTemp;
                 if(CategoryData.exists(string(ScriptInfo["category"]))){
                   DictTemp = cast<array<string>>(CategoryData[string(ScriptInfo["category"])]);
                 }else{
-                  CateMenu.AddItem(string(ScriptInfo["category"]), null);
+                  CateMenu.AddItem(ScriptInfo["category"], null);
                 }
                 DictTemp.insertLast(sLine);
-                CategoryData.set(string(ScriptInfo["category"]), DictTemp);
+                CategoryData.set(ScriptInfo["category"], DictTemp);
               }else{
-                ItemInfoC.insertLast(string(ScriptInfo["name"]));
-                ItemInfoC.insertLast(string(ScriptInfo["cost"]));
+                ItemInfoC.insertLast(ScriptInfo["name"]);
+                ItemInfoC.insertLast(ScriptInfo["cost"]);
               }
               ItemInfoData.set(sLine, ItemInfoC);
               
               
               string ItemFormat = string(EccoConfig["ItemDisplayFormat"]);
               while(ItemFormat.Find("%NAME%") != String::INVALID_INDEX){
-                ItemFormat.Replace("%NAME%", string(ScriptInfo["name"]));
+                ItemFormat.Replace("%NAME%", ScriptInfo["name"]);
               }
               while(ItemFormat.Find("%COST%") != String::INVALID_INDEX){
-                ItemFormat.Replace("%COST%", string(ScriptInfo["cost"]));
+                ItemFormat.Replace("%COST%", ScriptInfo["cost"]);
               }
               
               MenuTextAndScriptName.set(ItemFormat, sLine);
@@ -74,8 +74,7 @@ namespace EccoBuyMenu{
             
           }
           
-        }
-        
+        }  
       }
       file.Close();
     }else{
@@ -170,7 +169,7 @@ namespace EccoBuyMenu{
     int PriceCost = atoi(ItemInfoC[1]);
     int PlayerBalance = e_PlayerInventory.GetBalance(pPlayer);
     if(PlayerBalance >= PriceCost){
-      if(e_ScriptParser.ExecuteFile("scripts/plugins/Ecco/scripts/" + ScriptName + ".echo", pPlayer)){
+      if(e_ScriptParser.ExecuteFile(szRootPath + "scripts/" + ScriptName + ".echo", pPlayer)){
         e_PlayerInventory.ChangeBalance(pPlayer, -PriceCost);
         return true;
       }

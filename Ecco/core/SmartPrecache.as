@@ -1,6 +1,6 @@
 namespace SmartPrecache{
   void PrecacheByList(){
-    File@ file = g_FileSystem.OpenFile("scripts/plugins/Ecco/Precache.txt", OpenFile::READ);
+    File@ file = g_FileSystem.OpenFile(szRootPath + "Precache.txt", OpenFile::READ);
     if(file !is null && file.IsOpen()){
       while(!file.EOFReached()){
         string sLine;
