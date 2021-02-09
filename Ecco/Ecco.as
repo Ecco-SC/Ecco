@@ -37,7 +37,6 @@ void MapInit(){
     g_Hooks.RegisterHook(Hooks::Player::ClientSay, @onChat);
     if(IsMapAllowed){
         EccoBuyMenu::ReadScriptList();
-        EccoBuyMenu::InitializeBuyMenu();
         IsMapAllowed = !EccoBuyMenu::IsEmpty();
     }
 }
