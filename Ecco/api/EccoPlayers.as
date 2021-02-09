@@ -137,12 +137,12 @@ class EccoPlayerInventory{
 
     private void WriteInData(CBasePlayer@ pPlayer, int Balance, array<string>@ Inventory, dictionary PlayerInfo){
         string Content = string(Balance);
-        for(int i=0; i<int(Inventory.length()); i++){
+        for(uint i=0; i < Inventory.length(); i++){
             Content += "\n" + Inventory[i];
         }
         
         array<string> dictKeys = PlayerInfo.getKeys();
-        for(int i=0; i<int(dictKeys.length()); i++){
+        for(uint i=0; i < dictKeys.length(); i++){
             Content += "\n" + dictKeys[i] + "; " +string(PlayerInfo[dictKeys[i]]);
         }
         IO::FileWriter(szStorePath + "Ecco-" + GetUniquePlayerId(pPlayer) + ".txt", Content);

@@ -58,7 +58,7 @@ namespace EccoBase{
   }
 
   void ErrorInfo(string MacroName, int ArgsAmount){
-    g_Game.AlertMessage(at_console, "[ERROR - Ecco::Echo::EchoBase] " + string(ArgsAmount) + " argument(s) are not allowed for " + MacroName + "\n");
+    Logger::Log("[ERROR - Ecco::Echo::EchoBase] " + string(ArgsAmount) + " argument(s) are not allowed for " + MacroName);
   }
 
   bool Macro_include(CBasePlayer@ pPlayer, array<string>@ args){

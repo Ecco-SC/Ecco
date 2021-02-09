@@ -1,4 +1,7 @@
-class CEccoScriptInfo{
+class CEccoScriptItem{
+    private string szName;
+    private string szPath;
+    private array<array<string>> aryExcuteBlock = {};
     private dictionary dicInfo = {};
     void Set(string szKey, string szVal){
         dicInfo.set(szKey, szVal);
@@ -12,6 +15,78 @@ class CEccoScriptInfo{
     bool exists(string szKey){
         return dicInfo.exists(szKey);
     }
+
+    bool opEquals(string _szPath){
+        return szPath == _szPath;
+    }
+
+    bool IsEmpty(){
+        return aryExcuteBlock.length() <= 0;
+    }
+
+    string Name{
+        get {return szName;}
+    }
+
+    CEccoScriptItem(string _Path){
+        this.szPath = szRootPath + "scripts/" + _Path + ".echo";
+        this.szName = _Path;
+        array<string> aryRandom = {};
+        bool bIsReadingRandom = false;
+        File @pFile = g_FileSystem.OpenFile(this.szPath, OpenFile::READ);
+        if (pFile !is null && pFile.IsOpen()){
+            string szLine;
+            while (!pFile.EOFReached()){
+                pFile.ReadLine(szLine);
+                szLine.Trim();
+                if(!szLine.IsEmpty()){
+                    if(szLine.Find(":") != String::INVALID_INDEX){
+                        uint iFirstSymbol = szLine.FindFirstOf(":", 0);
+                        if(iFirstSymbol > 0 && iFirstSymbol < szLine.Length()){
+                            string szInfoName = szLine.SubString(0, iFirstSymbol);
+                            szInfoName.Trim();
+                            string szInfoContent = szLine.SubString(iFirstSymbol + 1);
+                            szInfoContent.Trim();
+                            this.Set(szInfoName, szInfoContent);
+                        }
+                        continue;
+                    }
+                    if(szLine.StartsWith("{")){
+                        bIsReadingRandom = true;
+                        string szDetection = szLine.Replace("{", "");
+                        szDetection.Trim();
+                        if(!szDetection.IsEmpty())
+                            aryRandom.insertLast(szDetection);
+                        continue;
+                    }
+                    if(szLine.EndsWith("}")){
+                        bIsReadingRandom = false;
+                        string szDetection = szLine.Replace("}", "");
+                        szDetection.Trim();
+                        if(!szDetection.IsEmpty())
+                            aryRandom.insertLast(szDetection);
+                        aryExcuteBlock.insertLast(Utility::Select(aryRandom, function(string szLine){return !szLine.IsEmpty();}));
+                        aryRandom = {};
+                        continue;
+                    }
+                    if(bIsReadingRandom)
+                        aryRandom.insertLast(szLine);
+                    else
+                        aryExcuteBlock.insertLast(array<string> = {szLine});
+                }
+            }
+            pFile.Close();
+        }
+    }
+
+    void Excute(CBasePlayer@ pPlayer){
+        for(uint i = 0; i < aryExcuteBlock.length(); i++){
+            if(aryExcuteBlock[i].length() > 1)
+                e_ScriptParser.RandomExecute(aryExcuteBlock[i], @pPlayer);
+            else if(aryExcuteBlock[i].length() == 1)
+                e_ScriptParser.ExecuteCommand(aryExcuteBlock[i][0], @pPlayer);
+        }
+    }
 }
 
 class CEccoScriptParser{
@@ -19,7 +94,6 @@ class CEccoScriptParser{
     void Register(IEccoMarco@ Marco){
         aryMarco.insertLast(@Marco);
     }
-
     IEccoMarco@ GetMarco(string szName){
         for(uint i = 0; i < aryMarco.length(); i++){
             if(aryMarco[i] == szName)
@@ -28,29 +102,21 @@ class CEccoScriptParser{
         return null;
     }
 
-    CEccoScriptInfo@ RetrieveInfo(string MacroPath){
-        CEccoScriptInfo pInfo;
-        File @pFile = g_FileSystem.OpenFile(MacroPath, OpenFile::READ);
-        if (pFile !is null && pFile.IsOpen()){
-            string szLine;
-            while (!pFile.EOFReached()){
-                pFile.ReadLine(szLine);
-                szLine.Trim();
-                if(!szLine.IsEmpty()){
-                    uint iFirstSymbol = szLine.FindFirstOf(":", 0);
-                    if(iFirstSymbol > 0 && iFirstSymbol < szLine.Length()){
-                        string szInfoName = szLine.SubString(0, iFirstSymbol);
-                        szInfoName.Trim();
-                        string szInfoContent = szLine.SubString(iFirstSymbol);
-                        szInfoContent.Trim();
-                        pInfo.Set(szInfoName, szInfoContent);
-                    }
-                }
-                continue;
-            }
-            pFile.Close();
+    array<CEccoScriptItem@> aryItem = {};
+    CEccoScriptItem@ GetItem(string szPath){
+        for(uint i = 0; i < aryItem.length(); i++){
+            if(aryItem[i] == szPath)
+                return aryItem[i];
         }
-        return @pInfo;
+        return null;
+    }
+    void BuildItemList(){
+        array<string>@ aryScripts = IO::FileLineReader(szRootPath + "Scripts.txt");
+        for(uint i = 0; i < aryScripts.length();i++){
+            CEccoScriptItem@ pItem = CEccoScriptItem(aryScripts[i]);
+            if(!pItem.IsEmpty())
+                aryItem.insertLast(@pItem);
+        }
     }
 
     bool ExecuteCommand(string szCommandLine, CBasePlayer@ pPlayer){
@@ -71,7 +137,7 @@ class CEccoScriptParser{
                         if(!bSuccess)
                             break;
                     }else{
-                        g_Game.AlertMessage(at_console, "[ERROR - Ecco::Echo] No such macro called " + szName + "\n");
+                        Logger::Log("[ERROR - Ecco::Echo] No such macro called " + szName);
                         bSuccess = false;
                     }
                 }
@@ -80,7 +146,7 @@ class CEccoScriptParser{
         return bSuccess;
     }
 
-    private void RandomExecute(array<string>@ aryRandom, CBasePlayer@ pPlayer){
+    void RandomExecute(array<string>@ aryRandom, CBasePlayer@ pPlayer){
         dictionary dicRandomElements = {};
         for(uint i = 0; i< aryRandom.length(); i++){
             array<string>@ aryThisArgs = Utility::Select(aryRandom[i].Split(" "), function(string szLine){return !szLine.IsEmpty();});
@@ -116,54 +182,12 @@ class CEccoScriptParser{
     }
 
     bool ExecuteFile(string MacroPath, CBasePlayer@ pPlayer){
-        bool bSuccess = true;
-        array<string> aryRandom = {};
-        bool bIsReadingRandom = false;
-        File @pFile = g_FileSystem.OpenFile(MacroPath, OpenFile::READ);
-        if (pFile !is null && pFile.IsOpen()){
-            string szLine;
-            while (!pFile.EOFReached()){
-                pFile.ReadLine(szLine);
-                szLine.Trim();
-                if(!szLine.IsEmpty()){
-                    if(szLine.Compare(":") != 0)
-                        continue;
-                    if(szLine.StartsWith("{")){
-                        bIsReadingRandom = true;
-                        string szDetection = szLine.Replace("{", "");
-                        szDetection.Trim();
-                        if(!szDetection.IsEmpty())
-                            aryRandom.insertLast(szDetection);
-                        continue;;
-                    }
-                    if(szLine.EndsWith("}")){
-                        bIsReadingRandom = false;
-                        string szDetection = szLine.Replace("}", "");
-                        szDetection.Trim();
-                        if(!szDetection.IsEmpty())
-                            aryRandom.insertLast(szDetection);
-                        RandomExecute(@Utility::Select(aryRandom, function(string szLine){ return !szLine.IsEmpty(); }), @pPlayer);
-                        aryRandom = {};
-                        continue;
-                    }
-                    if(bIsReadingRandom)
-                        aryRandom.insertLast(szLine);
-                    else{
-                        string szDetection = szLine;
-                        szDetection.Trim();
-                        if(!szDetection.IsEmpty()){
-                            if(!ExecuteCommand(szLine, pPlayer)){
-                                bSuccess = false;
-                                break;
-                            }
-                        }
-                    }
-                }
-                continue;
-            }
-            pFile.Close();
-        }
-        return bSuccess;
+        CEccoScriptItem@ pItem = GetItem(MacroPath);
+        if(pItem !is null && !pItem.IsEmpty())
+            pItem.Excute(@pPlayer);
+        else
+            return false;
+        return true;
     }
 }
 CEccoScriptParser e_ScriptParser;
