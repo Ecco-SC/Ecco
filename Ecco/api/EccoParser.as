@@ -79,13 +79,15 @@ class CEccoScriptItem{
         }
     }
 
-    void Excute(CBasePlayer@ pPlayer){
+    bool Excute(CBasePlayer@ pPlayer){
+    	bool bFlag = true;
         for(uint i = 0; i < aryExcuteBlock.length(); i++){
             if(aryExcuteBlock[i].length() > 1)
                 e_ScriptParser.RandomExecute(aryExcuteBlock[i], @pPlayer);
             else if(aryExcuteBlock[i].length() == 1)
-                e_ScriptParser.ExecuteCommand(aryExcuteBlock[i][0], @pPlayer);
+                bFlag = bFlag && e_ScriptParser.ExecuteCommand(aryExcuteBlock[i][0], @pPlayer);
         }
+        return bFlag;
     }
 }
 
@@ -184,10 +186,9 @@ class CEccoScriptParser{
     bool ExecuteFile(string MacroPath, CBasePlayer@ pPlayer){
         CEccoScriptItem@ pItem = GetItem(MacroPath);
         if(pItem !is null && !pItem.IsEmpty())
-            pItem.Excute(@pPlayer);
+            return pItem.Excute(@pPlayer);
         else
             return false;
-        return true;
     }
 }
 CEccoScriptParser e_ScriptParser;

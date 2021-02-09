@@ -30,7 +30,7 @@ void MapInit(){
     EccoScoreBuffer::RegisterTimer();
 
     IsMapAllowed = true;
-    array<string>@ aryMaps = IO::FileLineReader(szRootPath + "BannedMaps.txt", function(string szLine){ if(szLine == g_Engine.mapname){return "\nbreak";}return "\n";});
+    array<string>@ aryMaps = IO::FileLineReader(szRootPath + "BannedMaps.txt", function(string szLine){ if(szLine != g_Engine.mapname){return "\n";}return g_Engine.mapname;});
     if(aryMaps.length() > 0 && aryMaps[aryMaps.length() - 1] == g_Engine.mapname)
         IsMapAllowed = false;
 
@@ -43,15 +43,16 @@ void MapInit(){
 
 HookReturnCode onChat(SayParameters@ pParams){
     CBasePlayer@ pPlayer = pParams.GetPlayer();
-    if(!IsMapAllowed){
-        Logger::Chat(pPlayer, string(EccoConfig["BuyMenuName"]) + " " + string(EccoConfig["LocaleNotAllowed"]));
-        return HOOK_CONTINUE;
-    }
+    
     string arg = pParams.GetArguments()[0];
     if(pPlayer !is null && (arg.StartsWith("!") || arg.StartsWith("/"))){
         if(arg.SubString(1).ToLowercase() != "buy")
             return HOOK_CONTINUE;
-        pParams.ShouldHide = true;
+         pParams.ShouldHide = true;
+        if(!IsMapAllowed){
+            Logger::Chat(pPlayer, string(EccoConfig["BuyMenuName"]) + " " + string(EccoConfig["LocaleNotAllowed"]));
+            return HOOK_CONTINUE;
+        }
         EccoBuyMenu::OpenBuyMenu(pPlayer);
         return HOOK_HANDLED;
     }
