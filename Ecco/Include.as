@@ -1,5 +1,9 @@
 #include "api/EccoParser"
 #include "api/EccoPlayers"
+#include "api/IO"
+#include "api/Logger"
+#include "api/EccoProcessVar"
+#include "api/CEccoMarco"
 
 /*
                     ADDON INCLUDE AREA
@@ -22,7 +26,7 @@ void InitEcco(){
 namespace EccoUtils{
   dictionary RefreshEccoConfig(){
     dictionary TempConfig;
-    string ConfigPath = "scripts/plugins/Ecco/Config.txt";
+    string ConfigPath = szRootPath + "Config.txt";
     File@ file = g_FileSystem.OpenFile(ConfigPath, OpenFile::READ);
     if(file !is null && file.IsOpen()){
       while(!file.EOFReached()){

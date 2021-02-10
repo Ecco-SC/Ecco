@@ -1,227 +1,194 @@
-funcdef bool CustomMacroFunc(CBasePlayer@, array<string>@);
-class CustomMacro{
-  CustomMacroFunc@ MacroFunc;
-  CustomMacro(CustomMacroFunc@ NewCustomMacro){
-    @MacroFunc = NewCustomMacro;
-  }
-};
+class CEccoScriptItem{
+    private string szName;
+    private string szPath;
+    private array<array<string>> aryExcuteBlock = {};
+    private dictionary dicInfo = {};
+    void Set(string szKey, string szVal){
+        dicInfo.set(szKey, szVal);
+    }
+    string Get(string szKey){
+        return string(dicInfo[szKey]);
+    }
+    string opIndex(string szKey){
+        return Get(szKey);
+    }
+    bool exists(string szKey){
+        return dicInfo.exists(szKey);
+    }
 
-class EccoScriptParser{
-  private dictionary ScriptMacros;
+    bool opEquals(string _szPath){
+        return szPath == _szPath;
+    }
 
-  void Register(string CommandName, CustomMacro NewCustomMacro){
-    ScriptMacros.set(CommandName, @NewCustomMacro);
-  }
+    bool IsEmpty(){
+        return aryExcuteBlock.length() <= 0;
+    }
 
-  dictionary RetrieveInfo(string MacroPath){
-    dictionary ScriptInfo;
-    File@ file = g_FileSystem.OpenFile(MacroPath, OpenFile::READ);
-    string RandomScript = "";
-    bool IsReadingRandom = false;
-    if(file !is null && file.IsOpen()){
-      while(!file.EOFReached()){
-        string sLine;
-        file.ReadLine(sLine);
-        if(int(sLine.Length()) > 0){
-          int FirstSymbol = int(sLine.FindFirstOf(":", 0));
-          if(FirstSymbol <= 0 || FirstSymbol == int(sLine.Length())){
-            continue;
-          }else{
-            string InfoName = sLine.SubString(0, FirstSymbol);
-            InfoName.Replace(" ", "");
-            string InfoContent = sLine.SubString(FirstSymbol);
-            for(int i=1; i<int(InfoContent.Length()); i++){
-              if(InfoContent[i] == " "){
-                continue;
-              }else{
-                InfoContent = InfoContent.SubString(i);
-                break;
-              }
+    string Name{
+        get {return szName;}
+    }
+
+    CEccoScriptItem(string _Path){
+        this.szPath = szRootPath + "scripts/" + _Path + ".echo";
+        this.szName = _Path;
+        array<string> aryRandom = {};
+        bool bIsReadingRandom = false;
+        File @pFile = g_FileSystem.OpenFile(this.szPath, OpenFile::READ);
+        if (pFile !is null && pFile.IsOpen()){
+            string szLine;
+            while (!pFile.EOFReached()){
+                pFile.ReadLine(szLine);
+                szLine.Trim();
+                if(!szLine.IsEmpty()){
+                    if(szLine.Find(":") != String::INVALID_INDEX){
+                        uint iFirstSymbol = szLine.FindFirstOf(":", 0);
+                        if(iFirstSymbol > 0 && iFirstSymbol < szLine.Length()){
+                            string szInfoName = szLine.SubString(0, iFirstSymbol);
+                            szInfoName.Trim();
+                            string szInfoContent = szLine.SubString(iFirstSymbol + 1);
+                            szInfoContent.Trim();
+                            this.Set(szInfoName, szInfoContent);
+                        }
+                        continue;
+                    }
+                    if(szLine.StartsWith("{")){
+                        bIsReadingRandom = true;
+                        string szDetection = szLine.Replace("{", "");
+                        szDetection.Trim();
+                        if(!szDetection.IsEmpty())
+                            aryRandom.insertLast(szDetection);
+                        continue;
+                    }
+                    if(szLine.EndsWith("}")){
+                        bIsReadingRandom = false;
+                        string szDetection = szLine.Replace("}", "");
+                        szDetection.Trim();
+                        if(!szDetection.IsEmpty())
+                            aryRandom.insertLast(szDetection);
+                        aryExcuteBlock.insertLast(Utility::Select(aryRandom, function(string szLine){return !szLine.IsEmpty();}));
+                        aryRandom = {};
+                        continue;
+                    }
+                    if(bIsReadingRandom)
+                        aryRandom.insertLast(szLine);
+                    else
+                        aryExcuteBlock.insertLast(array<string> = {szLine});
+                }
             }
-            ScriptInfo.set(InfoName, InfoContent);
-          }
+            pFile.Close();
         }
-      }
-      file.Close();
-    }else{
-      // g_Game.AlertMessage(at_console, "[ERROR - Ecco::Echo] Cannot read such script file in " + MacroPath + ", check if it exists and SCDS has the permission to access it!\n");
     }
-    return ScriptInfo;
-  }
 
-  bool ExecuteComm(string CommandLine, CBasePlayer@ pPlayer){
-    array<string> CommandList = CommandLine.Split("&&");
-    bool Success = true;
-    
-    for(int j=0; j<int(CommandList.length()); j++){
-      array<string> args = CommandList[j].Split(" ");
-      while(args[args.length()-1] == ""){
-        args.removeAt(args.length()-1);
-      }
-      while(args[0] == ""){
-        args.removeAt(0);
-      }
-      if(args.length() >= 1){
-        string FuncName = args[0];
-        args.removeAt(0);
-        if(FuncName != "" && FuncName != "\n"){
-          if(ScriptMacros.exists(FuncName)){
-            CustomMacro@ Macro = cast<CustomMacro@>(ScriptMacros[FuncName]);
-            for(int i=0; i<int(args.length()); i++){
-              args[i] = ProcessVariables(args[i], pPlayer);
-            }
-            Success = Success && Macro.MacroFunc(pPlayer, args);
-            if(!Success){
-              break;
-            }
-          }else{
-            g_Game.AlertMessage(at_console, "[ERROR - Ecco::Echo] No such macro called " + FuncName + "\n");
-            Success = false;
-          }
+    bool Excute(CBasePlayer@ pPlayer){
+    	bool bFlag = true;
+        for(uint i = 0; i < aryExcuteBlock.length(); i++){
+            if(aryExcuteBlock[i].length() > 1)
+                e_ScriptParser.RandomExecute(aryExcuteBlock[i], @pPlayer);
+            else if(aryExcuteBlock[i].length() == 1)
+                bFlag = bFlag && e_ScriptParser.ExecuteCommand(aryExcuteBlock[i][0], @pPlayer);
         }
-      }
+        return bFlag;
     }
-    
-    return Success;
-  }
-
-  bool ExecuteFile(string MacroPath, CBasePlayer@ pPlayer){
-    bool Success = true;
-    File@ file = g_FileSystem.OpenFile(MacroPath, OpenFile::READ);
-    string RandomScript = "";
-    bool IsReadingRandom = false;
-    if(file !is null && file.IsOpen()){
-      while(!file.EOFReached()){
-        string sLine;
-        file.ReadLine(sLine);
-        if(int(sLine.Length()) > 0){
-          if(int(sLine.FindFirstOf(":", 0)) >= 0){
-            continue;
-          }
-          
-          if(int(sLine.FindFirstOf("{", 0)) >= 0){
-            sLine.Replace("{", "");
-            string Detection = sLine;
-            Detection.Trim(" ");
-            if(Detection != ""){
-              RandomScript = sLine + "\n";
-            }
-            IsReadingRandom = true;
-            continue;
-          }
-          
-          if(int(sLine.FindFirstOf("}", 0)) >= 0){
-            sLine.Replace("}", "");
-            string Detection = sLine;
-            Detection.Trim(" ");
-            if(Detection != ""){
-              RandomScript += sLine;
-            }
-            RandomExecute(RandomScript, pPlayer);
-            RandomScript = "";
-            IsReadingRandom = false;
-            continue;
-          }
-          
-          if(IsReadingRandom){
-            RandomScript += sLine + "\n";
-          }else{
-            string Detection = sLine;
-            Detection.Trim(" ");
-            if(Detection != ""){
-              if(!ExecuteComm(sLine, pPlayer)){
-                Success = false;
-                break;
-              }
-            }
-          }
-        }
-      }
-      file.Close();
-    }else{
-      //g_Game.AlertMessage(at_console, "[ERROR - Ecco::Echo] Cannot read such script file in " + MacroPath + ", check if it exists and SCDS has the permission to access it!\n");
-      Success = false;
-    }
-    return Success;
-  }
-
-  private void RandomExecute(string RawLines, CBasePlayer@ pPlayer){
-    dictionary RandomElements;
-    RandomElements.deleteAll();
-    array<string> ThisLine = RawLines.Split("\n");
-    for(int i=0; i<int(ThisLine.length()); i++){
-      if(ThisLine[i].Length() <= 0){
-        ThisLine.removeAt(i);
-        continue;
-      }
-      array<string> ThisArgs = ThisLine[i].Split(" ");
-      while(ThisArgs[ThisArgs.length()-1] == ""){
-        ThisArgs.removeAt(ThisArgs.length()-1);
-      }
-      while(ThisArgs[0] == ""){
-        ThisArgs.removeAt(0);
-      }
-      int Possibility = atoi(ThisArgs[0]);
-      if(Possibility > 0){
-        ThisArgs.removeAt(0);
-        ThisLine[i] = "";
-        for(int j=0; j<int(ThisArgs.length()); j++){
-          ThisLine[i] += ThisArgs[j];
-          if(j != int(ThisArgs.length())-1){
-            ThisLine[i] += " ";
-          }
-        }
-        RandomElements.set(ThisLine[i], Possibility);
-      }else{
-        ThisLine.removeAt(i);
-      }
-    }
-    
-    array<string> dictKeys = RandomElements.getKeys();
-    int randomSum = 0;
-    for(int i=0; i<int(dictKeys.length()); i++){
-      randomSum += int(RandomElements[dictKeys[i]]);
-    }
-    int randomNum = int(Math.RandomLong(0, randomSum));
-    int thisRandom = 0;
-    for(int i=0; i<int(dictKeys.length()); i++){
-      thisRandom += int(RandomElements[dictKeys[i]]);
-      if(thisRandom >= randomNum){
-        if(dictKeys[i] != ""){
-          ExecuteComm(dictKeys[i], pPlayer);
-        }
-        break;
-      }
-    }
-  }
-  
-  private string ProcessVariables(string Input, CBasePlayer@ pPlayer){
-    if(Input.Find("%PLAYER%", 0) != String::INVALID_INDEX){
-      Input.Replace("%PLAYER%", pPlayer.pev.netname);
-    }
-    if(Input.Find("%RANDOMPLAYER%", 0) != String::INVALID_INDEX){
-      Input.Replace("%RANDOMPLAYER%", GetRandomPlayerName());
-    }
-    if(Input.Find("%BALANCE%", 0) != String::INVALID_INDEX){
-      Input.Replace("%BALANCE%", string(e_PlayerInventory.GetBalance(pPlayer)));
-    }
-    if(Input.Find("%SPACE%", 0) != String::INVALID_INDEX){
-      Input.Replace("%SPACE%", " ");
-    }
-    return Input;
-  }
-  
-  private string GetRandomPlayerName(){
-    string Name = "";
-    if(g_PlayerFuncs.GetNumPlayers() > 0){
-      CBasePlayer@ pPlayer = null;
-      while(pPlayer is null){
-        int Index = int(Math.RandomLong(1, g_Engine.maxClients));
-        @pPlayer = g_PlayerFuncs.FindPlayerByIndex(Index);
-      }
-      Name = pPlayer.pev.netname;
-    }
-    return Name;
-  }
 }
-EccoScriptParser e_ScriptParser;
+
+class CEccoScriptParser{
+    array<IEccoMarco@> aryMarco = {};
+    void Register(IEccoMarco@ Marco){
+        aryMarco.insertLast(@Marco);
+    }
+    IEccoMarco@ GetMarco(string szName){
+        for(uint i = 0; i < aryMarco.length(); i++){
+            if(aryMarco[i] == szName)
+                return aryMarco[i];
+        }
+        return null;
+    }
+
+    array<CEccoScriptItem@> aryItem = {};
+    CEccoScriptItem@ GetItem(string szPath){
+        for(uint i = 0; i < aryItem.length(); i++){
+            if(aryItem[i] == szPath)
+                return aryItem[i];
+        }
+        return null;
+    }
+    void BuildItemList(){
+        array<string>@ aryScripts = IO::FileLineReader(szRootPath + "Scripts.txt");
+        for(uint i = 0; i < aryScripts.length();i++){
+            CEccoScriptItem@ pItem = CEccoScriptItem(aryScripts[i]);
+            if(!pItem.IsEmpty())
+                aryItem.insertLast(@pItem);
+        }
+    }
+
+    bool ExecuteCommand(string szCommandLine, CBasePlayer@ pPlayer){
+        array<string> aryCommandList = szCommandLine.Split("&&");
+        bool bSuccess = true;
+        for(uint j=0; j < aryCommandList.length(); j++){
+            array<string>@ args = Utility::Select(aryCommandList[j].Split(" "), function(string szLine){ return !szLine.IsEmpty(); });
+            if(args.length() > 0){
+                string szName = args[0];
+                if(!szName.IsEmpty() && szName != "\n"){
+                    args.removeAt(0);
+                    IEccoMarco@ pMarco = GetMarco(szName);
+                    if(pMarco !is null){
+                        for(uint i = 0; i < args.length(); i++){
+                            args[i] = EccoProcessVar::ProcessVariables(args[i], pPlayer);
+                        }
+                        bSuccess = bSuccess && pMarco.Execute(@pPlayer, args);
+                        if(!bSuccess)
+                            break;
+                    }else{
+                        Logger::Log("[ERROR - Ecco::Echo] No such macro called " + szName);
+                        bSuccess = false;
+                    }
+                }
+            }
+        }
+        return bSuccess;
+    }
+
+    void RandomExecute(array<string>@ aryRandom, CBasePlayer@ pPlayer){
+        dictionary dicRandomElements = {};
+        for(uint i = 0; i< aryRandom.length(); i++){
+            array<string>@ aryThisArgs = Utility::Select(aryRandom[i].Split(" "), function(string szLine){return !szLine.IsEmpty();});
+            int iPossibility = atoi(aryThisArgs[0]);
+            if(iPossibility > 0){
+                aryThisArgs.removeAt(0);
+                aryRandom[i] = "";
+                for(uint j = 0; j < aryThisArgs.length(); j++){
+                    aryRandom[i] += aryThisArgs[j];
+                    if( j != aryThisArgs.length() - 1 )
+                        aryRandom[i] += " ";
+                }
+                dicRandomElements.set(aryRandom[i], iPossibility);
+            }else
+                aryRandom.removeAt(i);
+        }
+        
+        array<string>@ dictKeys = dicRandomElements.getKeys();
+        int randomSum = 0;
+        for(uint i = 0; i < dictKeys.length(); i++){
+            randomSum += int(dicRandomElements[dictKeys[i]]);
+        }
+        int randomNum = int(Math.RandomLong(0, randomSum));
+        int thisRandom = 0;
+        for(uint i=0; i < dictKeys.length(); i++){
+            thisRandom += int(dicRandomElements[dictKeys[i]]);
+            if(thisRandom >= randomNum){
+                if(dictKeys[i] != "")
+                    ExecuteCommand(dictKeys[i], pPlayer);
+                break;
+            }
+        }
+    }
+
+    bool ExecuteFile(string MacroPath, CBasePlayer@ pPlayer){
+        CEccoScriptItem@ pItem = GetItem(MacroPath);
+        if(pItem !is null && !pItem.IsEmpty())
+            return pItem.Excute(@pPlayer);
+        else
+            return false;
+    }
+}
+CEccoScriptParser e_ScriptParser;
