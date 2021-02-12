@@ -27,6 +27,7 @@ void MapInit(){
     g_Game.PrecacheGeneric("sprites/misc/dollar.spr");
     SmartPrecache::PrecacheByList();
 
+    EccoScoreBuffer::ResetPlayerBuffer();
     EccoScoreBuffer::RegisterTimer();
 
     IsMapAllowed = true;
@@ -61,9 +62,9 @@ HookReturnCode onChat(SayParameters@ pParams){
 
 HookReturnCode onJoin(CBasePlayer@ pPlayer){
     if(IsMapAllowed){
-        EccoInventoryLoader::LoadPlayerInventory(pPlayer);
-        EccoScoreBuffer::ResetPlayerBuffer(pPlayer);
-        e_PlayerInventory.RefreshHUD(pPlayer);
+        EccoScoreBuffer::ResetPlayerBuffer(@pPlayer);
+        EccoInventoryLoader::LoadPlayerInventory(@pPlayer);
+        e_PlayerInventory.RefreshHUD(@pPlayer);
     }
     return HOOK_HANDLED;
 }

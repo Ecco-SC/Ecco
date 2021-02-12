@@ -174,21 +174,12 @@ class EccoPlayerInventory{
     }
 
     CBasePlayer@ FindPlayerById(string UniquePlayerId){
-        CBasePlayer@ pPlayer;
-        int pCount=g_PlayerFuncs.GetNumPlayers();
-        for(int i=1;i<=pCount;i++)
-        {
+        CBasePlayer@ pPlayer = null;
+        for(int i = 1; i <= g_PlayerFuncs.GetNumPlayers(); i++){
             @pPlayer=g_PlayerFuncs.FindPlayerByIndex(i);
-            if ( pPlayer !is null && pPlayer.IsConnected() )
-            {
-                if(GetUniquePlayerId(pPlayer)==UniquePlayerId)
-                {
+            if ( pPlayer !is null && pPlayer.IsConnected()){
+                if(GetUniquePlayerId(pPlayer) == UniquePlayerId)
                     break;
-                }
-                else
-                {
-                    @pPlayer=null;
-                }
             }
         }
         return pPlayer;

@@ -1,2 +1,4 @@
-Ecco/scripts/*
+.gitignore
+Ecco/scripts/*.txt
+Ecco/scripts/*.echo
 Ecco/*.txt

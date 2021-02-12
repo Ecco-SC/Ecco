@@ -6,6 +6,10 @@ namespace EccoScoreBuffer{
         PlayerScoreBuffer.set(e_PlayerInventory.GetUniquePlayerId(pPlayer), 0);
     }
 
+    void ResetPlayerBuffer(){
+        PlayerScoreBuffer.deleteAll();
+    }
+
     void RegisterTimer(){
         if(@RefreshScore !is null)
             g_Scheduler.RemoveTimer(@RefreshScore);
