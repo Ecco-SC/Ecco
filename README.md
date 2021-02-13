@@ -29,7 +29,7 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
 
 >  ** NOTE **: This is not an open-source software, since I hold the full rights to this project. With that being said, I'm always glad with people using this plugin as long as it's not for commercial use. (Like, donation to your server is fine, but you're not supposed to add their in-game balance / items that may break the experience of gameplay for this.)
 
-## New Features
+## Forked New Features
 
 1. Can be used `.` as a separator to add multi-level submenu in the echo script `name` keyvalue.
    
