@@ -17,7 +17,7 @@ namespace EccoScoreBuffer{
     }
 
     void RefreshBuffer(){
-        for(uint i=0; i<g_Engine.maxClients; i++){
+        for(int i = 0; i < g_Engine.maxClients; i++){
             CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex(i+1);
             if(pPlayer !is null){
                 string PlayerUniqueId = e_PlayerInventory.GetUniquePlayerId(pPlayer);

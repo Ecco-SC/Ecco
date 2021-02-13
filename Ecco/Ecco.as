@@ -4,9 +4,10 @@
 #include "core/LoadInventory"
 #include "core/BuyMenu"
 #include "core/SmartPrecache"
+#include "core/CBaseMenuItem"
 
-const string szRootPath = "scripts/plugins/Ecco/Ecco/";
-const string szStorePath = "scripts/plugins/store/";
+const string szRootPath = "scripts/plugins/Eccogit/Ecco/";
+const string szStorePath = "scripts/plugins/store/Ecco";
 
 bool IsMapAllowed;
 void PluginInit(){
@@ -44,8 +45,8 @@ void MapInit(){
 
 HookReturnCode onChat(SayParameters@ pParams){
     CBasePlayer@ pPlayer = pParams.GetPlayer();
-    
-    string arg = pParams.GetArguments()[0];
+    const CCommand@ pCommand = pParams.GetArguments();
+    string arg = pCommand[0];
     if(pPlayer !is null && (arg.StartsWith("!") || arg.StartsWith("/"))){
         if(arg.SubString(1).ToLowercase() != "buy")
             return HOOK_CONTINUE;
@@ -53,6 +54,10 @@ HookReturnCode onChat(SayParameters@ pParams){
         if(!IsMapAllowed){
             Logger::Chat(pPlayer, string(EccoConfig["BuyMenuName"]) + " " + string(EccoConfig["LocaleNotAllowed"]));
             return HOOK_CONTINUE;
+        }
+        array<uint> aryArg = {};
+        for(int i = 1; i < pCommand.ArgC();i++){
+            aryArg.insertLast(Math.max(0, atoi(pCommand[i])));
         }
         EccoBuyMenu::OpenBuyMenu(pPlayer);
         return HOOK_HANDLED;
