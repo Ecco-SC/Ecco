@@ -7,10 +7,12 @@ namespace Logger
         else
             Console(pPlayer, szContent);
     }
+    
     void Log(string szContent)
     {
         g_Log.PrintF( "[" + g_Module.GetModuleName() + "] " + szContent + "\n");
     }
+    
     void WriteLine(string szContent)
     {
         g_Game.AlertMessage(at_console, szContent + "\n");

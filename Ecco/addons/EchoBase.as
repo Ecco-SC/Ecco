@@ -106,9 +106,8 @@ namespace EccoBase{
         ErrorInfo("addinv", args.length());
         Success = false;
     }
-    if(!Success){
-      g_PlayerFuncs.ClientPrint(pPlayer, HUD_PRINTTALK, string(EccoConfig["LocaleAlreadyHave"])+"\n"); // TODO
-    }
+    if(!Success)
+      Logger::Chat(pPlayer,EccoConfig::GetLocateMessage("LocaleAlreadyHave", @pPlayer));
     return Success;
   }
 

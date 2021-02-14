@@ -91,13 +91,15 @@ class EccoPlayerInventory{
     
     void RefreshHUD(CBasePlayer@ pPlayer){
         if(pPlayer !is null){
-            switch(atoi(string(EccoConfig["ShowMoneyHUD"]))){
+            switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "ShowMoneyHUD"].getInt()){
                 case 1:
                 case 2:{
                     HUDNumDisplayParams params;
                     int iBalance = GetBalance(pPlayer);
-                    params.spritename = "misc/dollar.spr";
-                    params.color1 = iBalance >= 0 ? RGBA_SVENCOOP : RGBA_RED;
+                    params.spritename = EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconPath"].getString();
+                    params.color1 = 
+                        iBalance >= 0 ? EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconPositiveColor"].getRGBA() : 
+                                        EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconNegativeColor"].getRGBA();
                     params.value = iBalance;
                     params.channel = 3;
                     params.flags = HUD_ELEM_SCR_CENTER_X | HUD_ELEM_DEFAULT_ALPHA | HUD_NUM_NEGATIVE_NUMBERS ;
@@ -150,7 +152,7 @@ class EccoPlayerInventory{
 
     void ShowHUD(CBasePlayer@ pPlayer, int amount){
         if(pPlayer !is null){
-            switch(atoi(string(EccoConfig["ShowMoneyHUD"]))){
+            switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "ShowMoneyHUD"].getInt()){
                 case 1:
                 case 3:{
                     HUDNumDisplayParams params;
@@ -164,7 +166,9 @@ class EccoPlayerInventory{
                     params.y = 0.858;
                     params.defdigits = 1;
                     params.maxdigits = 8;
-                    params.color1 = amount < 0 ? RGBA_RED : RGBA_GREEN;
+                    params.color1 = 
+                        amount < 0 ? EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconDecreaseColor"].getRGBA() : 
+                                    EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconIncreaseColor"].getRGBA();
                     g_PlayerFuncs.HudNumDisplay(pPlayer, params);
                     RefreshHUD(pPlayer);
                 }

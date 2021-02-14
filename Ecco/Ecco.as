@@ -8,6 +8,7 @@
 
 const string szRootPath = "scripts/plugins/Eccogit/Ecco/";
 const string szStorePath = "scripts/plugins/store/Ecco";
+const string szConfigPath = "scripts/plugins/Eccogit/Ecco/config/";
 
 bool IsMapAllowed;
 void PluginInit(){
@@ -18,6 +19,10 @@ void PluginInit(){
     EccoProcessVar::Register("%RANDOMPLAYER%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, e_PlayerInventory.GetRandomPlayerName());});
     EccoProcessVar::Register("%BALANCE%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, string(e_PlayerInventory.GetBalance(pPlayer)));});
     EccoProcessVar::Register("%SPACE%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, " ");});
+    EccoProcessVar::Register("%COST%", function(string szInput, string szName, CBaseMenuItem@ pMenuItem){ return szInput.Replace(szName, pMenuItem.Cost);});
+    EccoProcessVar::Register("%MENUNAME%", function(string szInput, string szName, CBaseMenuItem@ pMenuItem){ return szInput.Replace(szName, pMenuItem.Name);});
+
+    EccoConfig::RefreshEccoConfig();
 
     e_ScriptParser.BuildItemList();
 }
@@ -25,18 +30,20 @@ void PluginInit(){
 void MapInit(){
     InitEcco();
 
-    g_Game.PrecacheGeneric("sprites/misc/dollar.spr");
+    g_Game.PrecacheModel("sprites/" + EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconPath"].getString());
+    g_Game.PrecacheGeneric("sprites/" + EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconPath"].getString());
     SmartPrecache::PrecacheByList();
 
     EccoScoreBuffer::ResetPlayerBuffer();
     EccoScoreBuffer::RegisterTimer();
 
     IsMapAllowed = true;
-    array<string>@ aryMaps = IO::FileLineReader(szRootPath + "BannedMaps.txt", function(string szLine){ if(szLine != g_Engine.mapname){return "\n";}return g_Engine.mapname;});
+    array<string>@ aryMaps = IO::FileLineReader(szRootPath + EccoConfig::GetConfig()["Ecco.BaseConfig", "BanMapPath"].getString(), function(string szLine){ if(szLine != g_Engine.mapname){return "\n";}return g_Engine.mapname;});
     if(aryMaps.length() > 0 && aryMaps[aryMaps.length() - 1] == g_Engine.mapname)
         IsMapAllowed = false;
 
     g_Hooks.RegisterHook(Hooks::Player::ClientSay, @onChat);
+    g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @onJoin);
     if(IsMapAllowed){
         EccoBuyMenu::ReadScriptList();
         IsMapAllowed = !EccoBuyMenu::IsEmpty();
@@ -48,11 +55,11 @@ HookReturnCode onChat(SayParameters@ pParams){
     const CCommand@ pCommand = pParams.GetArguments();
     string arg = pCommand[0];
     if(pPlayer !is null && (arg.StartsWith("!") || arg.StartsWith("/"))){
-        if(arg.SubString(1).ToLowercase() != "buy")
+        if(arg.SubString(1).ToLowercase() != EccoConfig::GetConfig()["Ecco.BuyMenu", "OpenShopTrigger"].getString())
             return HOOK_CONTINUE;
          pParams.ShouldHide = true;
         if(!IsMapAllowed){
-            Logger::Chat(pPlayer, string(EccoConfig["BuyMenuName"]) + " " + string(EccoConfig["LocaleNotAllowed"]));
+            Logger::Chat(pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + " " + EccoConfig::GetLocateMessage("LocaleNotAllowed", @pPlayer));
             return HOOK_CONTINUE;
         }
         array<uint> aryArg = {};

@@ -113,7 +113,7 @@ class CEccoScriptParser{
         return null;
     }
     void BuildItemList(){
-        array<string>@ aryScripts = IO::FileLineReader(szRootPath + "Scripts.txt");
+        array<string>@ aryScripts = IO::FileLineReader(szRootPath + EccoConfig::GetConfig()["Ecco.BaseConfig", "ScriptsPath"].getString());
         for(uint i = 0; i < aryScripts.length();i++){
             CEccoScriptItem@ pItem = CEccoScriptItem(aryScripts[i]);
             if(!pItem.IsEmpty())
@@ -133,7 +133,7 @@ class CEccoScriptParser{
                     IEccoMarco@ pMarco = GetMarco(szName);
                     if(pMarco !is null){
                         for(uint i = 0; i < args.length(); i++){
-                            args[i] = EccoProcessVar::ProcessVariables(args[i], pPlayer);
+                            args[i] = EccoProcessVar::ProcessVariables(args[i], @pPlayer);
                         }
                         bSuccess = bSuccess && pMarco.Execute(@pPlayer, args);
                         if(!bSuccess)

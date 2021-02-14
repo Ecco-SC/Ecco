@@ -13,7 +13,7 @@ namespace EccoScoreBuffer{
     void RegisterTimer(){
         if(@RefreshScore !is null)
             g_Scheduler.RemoveTimer(@RefreshScore);
-        @RefreshScore = g_Scheduler.SetInterval("RefreshBuffer", 0.3, g_Scheduler.REPEAT_INFINITE_TIMES);
+        @RefreshScore = g_Scheduler.SetInterval("RefreshBuffer", EccoConfig::GetConfig()["Ecco.BaseConfig", "RefreshTimer"].getFloat(), g_Scheduler.REPEAT_INFINITE_TIMES);
     }
 
     void RefreshBuffer(){
@@ -23,7 +23,7 @@ namespace EccoScoreBuffer{
                 string PlayerUniqueId = e_PlayerInventory.GetUniquePlayerId(pPlayer);
                 int ScoreChange = int(pPlayer.pev.frags) - int(PlayerScoreBuffer[PlayerUniqueId]);
                 if(ScoreChange != 0){
-                    float ConfigMultiplier = atof(string(EccoConfig["ScoreToMoneyMultiplier"]));
+                    float ConfigMultiplier = EccoConfig::GetConfig()["Ecco.BaseConfig", "ScoreToMoneyMultiplier"].getFloat();
                     e_PlayerInventory.ChangeBalance(pPlayer, int(ScoreChange * ConfigMultiplier));
                 }
                 PlayerScoreBuffer[PlayerUniqueId] = int(pPlayer.pev.frags);

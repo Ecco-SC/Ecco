@@ -22,7 +22,7 @@ namespace EccoBuyMenu{
         if(@pRoot !is null)
             pRoot.TextMenuUnregiste();
         @pRoot = CBaseMenuItem();
-        pRoot.Name = "root";
+        pRoot.Name = EccoConfig::GetConfig()["Ecco.BuyMenu", "RootNodeName"].getString();
         @pRoot.pTextMenu = CTextMenu(function(CTextMenu@ mMenu, CBasePlayer@ pPlayer, int iPage, const CTextMenuItem@ mItem){
             if(mItem !is null && pPlayer !is null){
                 CBaseMenuItem@ pItem = GetBaseMenuItem(@mMenu, mItem.m_szName);
@@ -30,7 +30,8 @@ namespace EccoBuyMenu{
                     pItem.Excute(@pPlayer);
             }
         });
-        pRoot.pTextMenu.SetTitle(string(EccoConfig["BuyMenuName"]) + "\n" + string(EccoConfig["BuyMenuDescription"]) + "\n");
+        
+        pRoot.pTextMenu.SetTitle(EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + "\n" + EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuDescription"].getString() + "\n");
 
         for(uint i = 0; i < e_ScriptParser.aryItem.length(); i++){
             CEccoScriptItem@ pScriptInfo = e_ScriptParser.aryItem[i];
@@ -45,7 +46,6 @@ namespace EccoBuyMenu{
                     pRoot.AddChild((pScriptInfo.exists("category") ? pScriptInfo["category"] + "." : "") + pScriptInfo["name"], pScriptInfo["cost"], pScriptInfo.Name);
             }
         }
-
         pRoot.TextMenuRegister();
     }
 }

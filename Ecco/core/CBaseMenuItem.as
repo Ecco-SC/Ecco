@@ -24,8 +24,8 @@ class CBaseMenuItem{
                 }
             }else
                 Logger::Chat(pPlayer, 
-                    string(EccoConfig["BuyMenuName"]) + 
-                    string(EccoConfig["CannotAffordPrice"]).Replace("%MONEY%", PlayerBalance));
+                    EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + 
+                    EccoConfig::GetLocateMessage("CannotAffordPrice", @pPlayer));
             return false;
         }
         else{
@@ -42,9 +42,9 @@ class CBaseMenuItem{
             pItem.Name = szName;
             pItem.Cost = atoi(_Cost);
             pItem.ScriptName = _ScriptName;
-            pItem.DisplayName = string(EccoConfig["ItemDisplayFormat"]).Replace("%NAME%", szName).Replace("%COST%", _Cost);
             @pItem.pParent = @this;
             aryChildren.insertLast(pItem);
+            pItem.DisplayName = EccoConfig::GetLocateMessage("ItemDisplayFormat", @pItem);
         }
         else{
             uint index = szName.FindFirstOf(".");
@@ -62,7 +62,7 @@ class CBaseMenuItem{
                 pItem.DisplayName = pItem.Name = _Name;
                 @pItem.pTextMenu = CTextMenu(function(CTextMenu@ mMenu, CBasePlayer@ pPlayer, int iPage, const CTextMenuItem@ mItem){
                     if(mItem !is null && pPlayer !is null){
-                        if(mItem.m_szName == string(EccoConfig["BackPreviousMenu"]))
+                        if(mItem.m_szName == EccoConfig::GetLocateMessage("BackPreviousMenu"))
                             EccoBuyMenu::GetBaseMenuItem(@mMenu).pParent.Excute(@pPlayer);
                         else{
                             CBaseMenuItem@ pItem = EccoBuyMenu::GetBaseMenuItem(mMenu, mItem.m_szName);
@@ -71,7 +71,7 @@ class CBaseMenuItem{
                         }
                     }
                 });
-                pItem.pTextMenu.SetTitle(string(EccoConfig["BuyMenuName"])+"\nViewing: " + _Name + "\n");
+                pItem.pTextMenu.SetTitle(EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + "\nViewing: " + _Name + "\n");
                 @pItem.pParent = @this;
                 aryChildren.insertLast(pItem);
             }
@@ -121,8 +121,8 @@ class CBaseMenuItem{
             uint iPage = 0;
             uint iIndex = 0;
             for(uint i = 0; i < aryChildren.length();i++){
-                if(aryChildren.length() > 9 && i % 6 == 0 && i != 0){
-                    this.pTextMenu.AddItem(string(EccoConfig["BackPreviousMenu"]), null);
+                if(aryChildren.length() > 9 && i % 6 == 0 && i != 0 && this.Name != EccoConfig::GetConfig()["Ecco.BuyMenu", "RootNodeName"].getString()){
+                    this.pTextMenu.AddItem(EccoConfig::GetLocateMessage("BackPreviousMenu"), null);
                     iPage++;
                     iIndex = 0;
                 }
@@ -131,7 +131,8 @@ class CBaseMenuItem{
                 aryChildren[i].Index = iIndex;
                 iIndex++;
             }
-            this.pTextMenu.AddItem(string(EccoConfig["BackPreviousMenu"]), null);
+            if(this.Name != EccoConfig::GetConfig()["Ecco.BuyMenu", "RootNodeName"].getString())
+                this.pTextMenu.AddItem(EccoConfig::GetLocateMessage("BackPreviousMenu"), null);
             this.pTextMenu.Register();
             for(uint i = 0; i < aryChildren.length();i++){
                 aryChildren[i].TextMenuRegister();
