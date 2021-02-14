@@ -52,3 +52,5 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
             give ammo_9mmbox
     
     The plugin will combine two keyvalue to `1337.aaa.bbb.ccc.9mm` for parsing.
+
+2. INI file for config
