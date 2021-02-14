@@ -31,7 +31,9 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
 
 ## Forked New Features
 
-1. Can be used `.` as a separator to add multi-level submenu in the echo script `name` keyvalue.
+1. Plugin performance optimization
+   
+2. Can be used `.` as a separator to add multi-level submenu in the echo script `name` keyvalue.
    
    Example:
 
@@ -53,8 +55,8 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
     
     The plugin will combine two keyvalue to `1337.aaa.bbb.ccc.9mm` for parsing.
 
-2. INI file for config
-3. Localization Message Keyword replacement
+3. INI file for config
+4. Localization Message Keyword replacement
  
    Example:
 
