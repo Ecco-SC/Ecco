@@ -54,3 +54,25 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
     The plugin will combine two keyvalue to `1337.aaa.bbb.ccc.9mm` for parsing.
 
 2. INI file for config
+3. Localization Message Keyword replacement
+ 
+   Example:
+
+    ```ini
+    [Ecco.LocaleSetting]
+    ;MenuItem Formmat
+    ItemDisplayFormat="%MENUNAME% - %COST%"
+    ```
+    this sentence will replace to `WeaponName - Price`, example as `9mm Box - 3`
+
+    |Keyword|Result|
+    |---|---|
+    |%PLAYER%|Player netname|
+    |%RANDOMPLAYER%|Random player name|
+    |%BALANCE%|Player remain balance|
+    |%SPACE%|Space (` `), deprecated keyword|
+    |%COST%|Item cost balance|
+    |%MENUNAME%|Item name|
+
+    will add more keyword soon...
+    
