@@ -13,7 +13,7 @@ const string szConfigPath = "scripts/plugins/Eccogit/Ecco/config/";
 bool IsMapAllowed;
 void PluginInit(){
 	g_Module.ScriptInfo.SetAuthor("Paranoid_AF");
-	g_Module.ScriptInfo.SetContactInfo("Please Don't.\n    Version:" + IO::FileTotalReader(szRootPath + "Version"));
+	g_Module.ScriptInfo.SetContactInfo("Please Don't.\nVersion:" + IO::FileTotalReader(szRootPath + "Version"));
 
     EccoConfig::RefreshEccoConfig();
 
