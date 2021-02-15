@@ -46,10 +46,8 @@ void MapInit(){
 
     g_Hooks.RegisterHook(Hooks::Player::ClientSay, @onChat);
     g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @onJoin);
-    if(IsMapAllowed){
+    if(IsMapAllowed)
         EccoBuyMenu::ReadScriptList();
-        IsMapAllowed = !EccoBuyMenu::IsEmpty();
-    }
 }
 
 HookReturnCode onChat(SayParameters@ pParams){
@@ -62,6 +60,10 @@ HookReturnCode onChat(SayParameters@ pParams){
          pParams.ShouldHide = true;
         if(!IsMapAllowed){
             Logger::Chat(pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + " " + EccoConfig::GetLocateMessage("LocaleNotAllowed", @pPlayer));
+            return HOOK_CONTINUE;
+        }
+        if(EccoBuyMenu::IsEmpty()){
+            Logger::Chat(pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + " " + EccoConfig::GetLocateMessage("EmptyBuyList", @pPlayer));
             return HOOK_CONTINUE;
         }
         if(pCommand.ArgC() <= 1)
