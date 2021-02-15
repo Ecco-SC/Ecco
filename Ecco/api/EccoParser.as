@@ -1,7 +1,7 @@
 class CEccoScriptItem{
     private string szName;
     private string szPath;
-    private array<array<string>> aryExcuteBlock = {};
+    private array<array<string>@> aryExcuteBlock = {};
     private dictionary dicInfo = {};
     void Set(string szKey, string szVal){
         dicInfo.set(szKey, szVal);

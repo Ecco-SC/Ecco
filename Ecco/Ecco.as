@@ -25,6 +25,8 @@ void PluginInit(){
     EccoProcessVar::Register("%MENUNAME%", function(string szInput, string szName, CBaseMenuItem@ pMenuItem){ return szInput.Replace(szName, pMenuItem.Name);});
 
     e_ScriptParser.BuildItemList();
+
+    Logger::Say(EccoConfig::GetLocateMessage("PluginReloaded"));
 }
 
 void MapInit(){

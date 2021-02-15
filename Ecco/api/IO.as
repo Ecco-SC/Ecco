@@ -1,7 +1,7 @@
 namespace IO
 {
     funcdef string IOMarcoFunc(string);
-    array<string> FileLineReader(string szPath, IOMarcoFunc@ pMarco = null)
+    array<string>@ FileLineReader(string szPath, IOMarcoFunc@ pMarco = null)
     {
         array<string> szTemp = {};
         File @pFile = g_FileSystem.OpenFile(szPath, OpenFile::READ);
@@ -21,7 +21,7 @@ namespace IO
             }
             pFile.Close();
         }
-        return szTemp;
+        return @szTemp;
     }
 
     string FileCharReader(string szPath, IOMarcoFunc@ pMarco = null)
