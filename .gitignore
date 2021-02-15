@@ -1,4 +1,5 @@
 .gitignore
+Ecco/config/*.txt
 Ecco/scripts/*.txt
 Ecco/scripts/*.echo
 Ecco/*.txt
