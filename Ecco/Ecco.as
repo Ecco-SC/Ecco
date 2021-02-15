@@ -13,7 +13,7 @@ const string szConfigPath = "scripts/plugins/Eccogit/Ecco/config/";
 bool IsMapAllowed;
 void PluginInit(){
 	g_Module.ScriptInfo.SetAuthor("Paranoid_AF");
-	g_Module.ScriptInfo.SetContactInfo("Please Don't.");
+	g_Module.ScriptInfo.SetContactInfo("Please Don't.\n    Version:" + IO::FileTotalReader(szRootPath + "Version"));
 
     EccoConfig::RefreshEccoConfig();
 
@@ -62,11 +62,32 @@ HookReturnCode onChat(SayParameters@ pParams){
             Logger::Chat(pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + " " + EccoConfig::GetLocateMessage("LocaleNotAllowed", @pPlayer));
             return HOOK_CONTINUE;
         }
-        array<uint> aryArg = {};
-        for(int i = 1; i < pCommand.ArgC();i++){
-            aryArg.insertLast(Math.max(0, atoi(pCommand[i])));
+        if(pCommand.ArgC() <= 1)
+            EccoBuyMenu::OpenBuyMenu(pPlayer);
+        else{
+            CBaseMenuItem@ pItem = EccoBuyMenu::pRoot;
+            string szPointer = "";
+            if(atoi(pCommand[1]) > 0){
+                for(int i = 1; i < pCommand.ArgC();i++){
+                @pItem = pItem[Math.clamp(0, pItem.length() - 1 ,atoi(pCommand[i]) - 1)];
+                    szPointer = pCommand[i];
+                    if(pItem.IsTerminal)
+                        break;
+                }
+            }
+            else{
+                for(int i = 1; i < pCommand.ArgC();i++){
+                    @pItem = pItem[pCommand[i]];
+                    szPointer = pCommand[i];
+                    if(@pItem is null|| pItem.IsTerminal)
+                        break;
+                }
+            }
+            if(@pItem !is null)
+                pItem.Excute(@pPlayer);
+            else
+                Logger::Chat(pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + " " + EccoConfig::GetLocateMessage("NullPointerMenu") + szPointer);
         }
-        EccoBuyMenu::OpenBuyMenu(pPlayer);
         return HOOK_HANDLED;
     }
     return HOOK_CONTINUE;

@@ -13,6 +13,22 @@ class CBaseMenuItem{
     CBaseMenuItem@ pParent;
     private array<CBaseMenuItem@> aryChildren = {};
 
+    CBaseMenuItem@ opIndex(uint i){
+        return aryChildren[i];
+    }
+
+    CBaseMenuItem@ opIndex(string szName){
+        for(uint i = 0; i < aryChildren.length(); i++){
+            if(aryChildren[i].DisplayName == szName)
+                return aryChildren[i];
+        }
+        return null;
+    }
+
+    uint length(){
+        return aryChildren.length();
+    }
+
     bool Excute(CBasePlayer@ pPlayer, uint iPage = 0){
         if(IsTerminal){
             int PlayerBalance = e_PlayerInventory.GetBalance(pPlayer);

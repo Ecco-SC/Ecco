@@ -77,4 +77,21 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
     |%MENUNAME%|Item name|
 
     will add more keyword soon...
+
+5. Buy Arguments
+
+    You can buy a item via arguments
+
+    Example:
+    
+    You have a item display name is: 9mm Ammbox-2
+
+        Menu looks like:
+            Root
+            |-Ammo
+            |    |-9mm Ammbox-2
+            |-Other
+
+    You could buy 9mm Ammbox via command `!buy 1 1` or `!buy "Ammo" "9mm Ammbox-2"`
+
     
