@@ -107,7 +107,8 @@ HookReturnCode onChat(SayParameters@ pParams){
             if(@pItem !is null)
                 pItem.Excute(@pPlayer);
             else
-                Logger::Chat(pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + " " + EccoConfig::GetLocateMessage("NullPointerMenu") + szPointer);
+                Logger::Chat(pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + 
+                    " " + EccoConfig::GetLocateMessage("NullPointerMenu") + szPointer);
         }
         return HOOK_HANDLED;
     }
