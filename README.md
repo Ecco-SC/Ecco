@@ -98,19 +98,50 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
 
     I don't know when Angelscripts can use the same namespace in different files, so now Addon can be loaded by reflection method
 
-    To do that, you just need put your Addon namespace under the namespace `EccoAddon`, the write `PluginInit`, `MapInit`, `MapActived` and `MapStarted` functions as entry points just like normal plugins
+    To do that, you just need put your Addon namespace under the namespace `EccoAddon`, the write `PluginInit`, `MapInit`, `MapActivate` and `MapStart` functions as entry points just like normal plugins
 
     And you need add two Funcions to provide your name and contact info, otherwise your info won't shown in `as_listplugins`. you don't like that, right?
 
-    ```csharp
-    string GetAuthor(){
-        return "Paranoid_AF";
-    }
+    For a example:
 
-    string GetContactInfo(){
-        return "Please don't";
+    ```csharp
+    namespace EccoAddon{
+        //You have to create a new namespace for your addon scripts
+        //The name of the namespace will be used as the name of the extension
+        namespace EccoExample{
+            //Provide your info for as_listplugins
+            string GetAuthor(){
+                return "Your name";
+            }
+            //If you don't like to tell others your contact information, you can choose not to implement this function, so your contact information will be left blank
+            string GetContactInfo(){
+                return "Your info";
+            }
+
+            //You have not to provide all of these functions.
+            //In fact, You can implement none of these functions, but that means your extension will not work anymore;
+            void PluginInit(){
+                //Todo something
+            }
+
+            void MapInit(){
+                //Todo something
+            }
+
+            void MapActived(){
+                //Todo something
+            }
+
+            void MapStart(){
+                //Todo something
+            }
+            //Todo something
+        }
     }
     ```
+
+    Then just add `#include` anywhere to link your extensions and plugins
+    I highly recommanded you put your `#include` into Include.as
 
     For more info, please check `Addon/EccoBase.as`
 
