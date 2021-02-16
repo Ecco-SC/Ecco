@@ -7,6 +7,7 @@
 #include "api/CINI"
 #include "api/EccoConfig"
 #include "api/EccoInclude"
+#include "api/EccoUtility"
 
 /*
     ADDON INCLUDE AREA

@@ -29,6 +29,8 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
 
 >  ** NOTE **: This is not an open-source software, since I hold the full rights to this project. With that being said, I'm always glad with people using this plugin as long as it's not for commercial use. (Like, donation to your server is fine, but you're not supposed to add their in-game balance / items that may break the experience of gameplay for this.)
 
+-----
+
 ## Forked New Features
 
 1. Plugin performance optimization
@@ -113,13 +115,16 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
             string GetAuthor(){
                 return "Your name";
             }
-            //If you don't like to tell others your contact information, you can choose not to implement this function, so your contact information will be left blank
+            //If you don't like to tell others your contact information, 
+            //you can choose not to implement this function,
+            // so your contact information will be left blank
             string GetContactInfo(){
                 return "Your info";
             }
 
             //You have not to provide all of these functions.
-            //In fact, You can implement none of these functions, but that means your extension will not work anymore;
+            //In fact, You can implement none of these functions, 
+            //but that means your extension will not work anymore;
             void PluginInit(){
                 //Todo something
             }
@@ -141,7 +146,7 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
     ```
 
     Then just add `#include` anywhere to link your extensions and plugins
-    I highly recommanded you put your `#include` into Include.as
+    I highly recommanded you put your `#include` into `Include.as`
 
     For more info, please check `Addon/EccoBase.as`
 

@@ -11,6 +11,8 @@ const string szStorePath = "scripts/plugins/store/Ecco";
 const string szConfigPath = "scripts/plugins/Eccogit/Ecco/config/";
 
 bool IsMapAllowed;
+string szLastNextMap = "";
+
 void PluginInit(){
 	g_Module.ScriptInfo.SetAuthor("Paranoid_AF");
 	
@@ -115,6 +117,13 @@ HookReturnCode onChat(SayParameters@ pParams){
 HookReturnCode onJoin(CBasePlayer@ pPlayer){
     if(IsMapAllowed){
         EccoScoreBuffer::ResetPlayerBuffer(@pPlayer);
+        switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "StorePlayerScore"].getInt()){
+            case 2: break;
+            case 1: if(szLastNextMap == g_Engine.mapname){break;}
+            case 0:
+            default: e_PlayerInventory.SetBalance(@pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "PlayerStartScore"].getInt());
+        }
+        szLastNextMap = EccoUtility::GetNextMap();
         EccoInventoryLoader::LoadPlayerInventory(@pPlayer);
         e_PlayerInventory.RefreshHUD(@pPlayer);
     }

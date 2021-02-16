@@ -42,9 +42,9 @@ namespace EccoInclude{
     string AddAddonInfo(string szIn){
         for(uint i = 0; i < aryAddon.length(); i++){
             if(!aryAddon[i].Author.IsEmpty()){
-                szIn += "    Submodule:" + aryAddon[i].Name + "\n";
-                szIn += "      Author:" + aryAddon[i].Author + "\n";
-                szIn += "      ContactInfo:" + aryAddon[i].ContactInfo + "\n";
+                szIn += " |--Submodule: " + aryAddon[i].Name + "\n";
+                szIn += " |  |--Author: " + aryAddon[i].Author + "\n";
+                szIn += " |  |--ContactInfo: " + aryAddon[i].ContactInfo + "\n";
             }
         }
         return szIn;
