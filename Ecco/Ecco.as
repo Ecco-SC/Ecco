@@ -13,7 +13,7 @@ const string szConfigPath = "scripts/plugins/Eccogit/Ecco/config/";
 bool IsMapAllowed;
 void PluginInit(){
 	g_Module.ScriptInfo.SetAuthor("Paranoid_AF");
-	g_Module.ScriptInfo.SetContactInfo("Please Don't.\nVersion:" + IO::FileTotalReader(szRootPath + "Version"));
+	
 
     EccoConfig::RefreshEccoConfig();
 
@@ -26,11 +26,16 @@ void PluginInit(){
 
     e_ScriptParser.BuildItemList();
 
+    EccoInclude::AddonListBuilder();
+    string szContactInfo = "https://github.com/DrAbcrealone/Ecco\nVersion:" + IO::FileTotalReader(szRootPath + "Version");
+    g_Module.ScriptInfo.SetContactInfo(EccoInclude::AddAddonInfo(szContactInfo));
+
+    EccoInclude::PluginInit();
+
     Logger::Say(EccoConfig::GetLocateMessage("PluginReloaded"));
 }
 
 void MapInit(){
-    InitEcco();
 
     g_Game.PrecacheModel("sprites/" + EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconPath"].getString());
     g_Game.PrecacheGeneric("sprites/" + EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconPath"].getString());
@@ -48,6 +53,16 @@ void MapInit(){
     g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @onJoin);
     if(IsMapAllowed)
         EccoBuyMenu::ReadScriptList();
+    
+    EccoInclude::MapInit();
+}
+
+void MapActivate(){
+    EccoInclude::MapActivate();
+}
+
+void MapStart(){
+    EccoInclude::MapStart();
 }
 
 HookReturnCode onChat(SayParameters@ pParams){

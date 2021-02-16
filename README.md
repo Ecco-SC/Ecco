@@ -94,4 +94,24 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
 
     You could buy 9mm Ammbox via command `!buy 1 1` or `!buy "Ammo" "9mm Ammbox-2"`
 
+6. Addon init via Reflection Method
+
+    I don't know when Angelscripts can use the same namespace in different files, so now Addon can be loaded by reflection method
+
+    To do that, you just need put your Addon namespace under the namespace `EccoAddon`, the write `PluginInit`, `MapInit`, `MapActived` and `MapStarted` functions as entry points just like normal plugins
+
+    And you need add two Funcions to provide your name and contact info, otherwise your info won't shown in `as_listplugins`. you don't like that, right?
+
+    ```csharp
+    string GetAuthor(){
+        return "Paranoid_AF";
+    }
+
+    string GetContactInfo(){
+        return "Please don't";
+    }
+    ```
+
+    For more info, please check `Addon/EccoBase.as`
+
     

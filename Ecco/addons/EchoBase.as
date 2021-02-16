@@ -21,8 +21,9 @@
   gravity [float value] (playername) - Set a player's gravity.
   
 */
+namespace EccoAddon{
 namespace EccoBase{
-  void Activate(){
+  void PluginInit(){
     e_ScriptParser.Register(CEccoMarco("include", Macro_include));
     e_ScriptParser.Register(CEccoMarco("money", Macro_money));
     e_ScriptParser.Register(CEccoMarco("addinv", Macro_addinv));
@@ -38,6 +39,14 @@ namespace EccoBase{
     e_ScriptParser.Register(CEccoMarco("armor", Macro_armor));
     e_ScriptParser.Register(CEccoMarco("maxspeed", Macro_maxspeed));
     e_ScriptParser.Register(CEccoMarco("gravity", Macro_gravity));
+  }
+
+  string GetAuthor(){
+      return "Paranoid_AF";
+  }
+
+  string GetContactInfo(){
+      return "Please don't";
   }
 
   CBasePlayer@ FindPlayerByName(string Name, CBasePlayer@ Default){
@@ -329,4 +338,5 @@ namespace EccoBase{
     }
     return true;
   }
+}
 }

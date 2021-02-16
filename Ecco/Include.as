@@ -6,16 +6,10 @@
 #include "api/CEccoMarco"
 #include "api/CINI"
 #include "api/EccoConfig"
+#include "api/EccoInclude"
 
 /*
     ADDON INCLUDE AREA
     Put your addons below to add them!
 */
 #include "addons/EchoBase"
-void InitEcco(){
-    /*
-        ADDON REGISTER AREA
-        Put your addons below to activate them!
-    */
-    EccoBase::Activate();
-}
