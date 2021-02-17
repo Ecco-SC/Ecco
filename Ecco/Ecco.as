@@ -7,7 +7,7 @@
 #include "core/CBaseMenuItem"
 
 const string szRootPath = "scripts/plugins/Eccogit/Ecco/";
-const string szStorePath = "scripts/plugins/store/Ecco";
+const string szStorePath = "scripts/plugins/store/Ecco/";
 const string szConfigPath = "scripts/plugins/Eccogit/Ecco/config/";
 
 bool IsMapAllowed;
@@ -121,7 +121,7 @@ HookReturnCode onJoin(CBasePlayer@ pPlayer){
         switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "StorePlayerScore"].getInt()){
             case 2: break;
             case 1: if(szLastNextMap == g_Engine.mapname){break;}
-            case 0:
+            case 0: if(EccoScoreBuffer::Exists(@pPlayer)){break;}
             default: e_PlayerInventory.SetBalance(@pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "PlayerStartScore"].getInt());
         }
         szLastNextMap = EccoUtility::GetNextMap();

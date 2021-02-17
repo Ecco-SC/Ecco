@@ -10,6 +10,10 @@ namespace EccoScoreBuffer{
         PlayerScoreBuffer.deleteAll();
     }
 
+    bool Exists(CBasePlayer@ pPlayer){
+        return PlayerScoreBuffer.exists(e_PlayerInventory.GetUniquePlayerId(pPlayer));
+    }
+
     void RegisterTimer(){
         if(@RefreshScore !is null)
             g_Scheduler.RemoveTimer(@RefreshScore);
