@@ -11,7 +11,8 @@ const string szStorePath = "scripts/plugins/store/Ecco/";
 const string szConfigPath = "scripts/plugins/Eccogit/Ecco/config/";
 
 bool IsMapAllowed;
-string szLastNextMap = "";
+string szLastNextMap = g_Engine.mapname;
+bool bShouldCleanScore = true;
 
 void PluginInit(){
 	g_Module.ScriptInfo.SetAuthor("Paranoid_AF");
@@ -55,6 +56,20 @@ void MapInit(){
     g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @onJoin);
     if(IsMapAllowed)
         EccoBuyMenu::ReadScriptList();
+    
+    switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "SereisMapCheckMethod"].getInt()){
+        case 0: {
+            bShouldCleanScore = szLastNextMap != g_Engine.mapname;
+            szLastNextMap = EccoUtility::GetNextMap();
+            break;
+        }
+        case 1:{
+            bShouldCleanScore = EccoUtility::GetLCS(szLastNextMap, g_Engine.mapname) < EccoConfig::GetConfig()["Ecco.BaseConfig", "SereisMapLCSCheckRatio"].getFloat();
+            szLastNextMap = g_Engine.mapname;
+            break;
+        }
+        default: if(!bShouldCleanScore){bShouldCleanScore = true;}break;
+    }
     
     EccoInclude::MapInit();
 }
@@ -117,14 +132,13 @@ HookReturnCode onChat(SayParameters@ pParams){
 
 HookReturnCode onJoin(CBasePlayer@ pPlayer){
     if(IsMapAllowed){
-        EccoScoreBuffer::ResetPlayerBuffer(@pPlayer);
         switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "StorePlayerScore"].getInt()){
             case 2: break;
-            case 1: if(szLastNextMap == g_Engine.mapname){break;}
+            case 1: if(bShouldCleanScore == false){break;}
             case 0: if(EccoScoreBuffer::Exists(@pPlayer)){break;}
-            default: e_PlayerInventory.SetBalance(@pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "PlayerStartScore"].getInt());
+            default: e_PlayerInventory.SetBalance(@pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "PlayerStartScore"].getInt());break;
         }
-        szLastNextMap = EccoUtility::GetNextMap();
+        EccoScoreBuffer::ResetPlayerBuffer(@pPlayer);
         EccoInventoryLoader::LoadPlayerInventory(@pPlayer);
         e_PlayerInventory.RefreshHUD(@pPlayer);
     }
