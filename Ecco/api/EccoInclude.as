@@ -56,7 +56,8 @@ namespace EccoInclude{
 
         for(uint i = 0; i < pModule.GetGlobalFunctionCount(); i++){
             Reflection::Function@ pFunction = pModule.GetGlobalFunctionByIndex(i);
-            if(@pFunction !is null && pFunction.GetNamespace().StartsWith("EccoAddon::")){
+            //只搜寻一级子命名空间
+            if(@pFunction !is null && pFunction.GetNamespace().StartsWith("EccoAddon::") && (pFunction.GetNamespace().Find("::") == pFunction.GetNamespace().RFind("::"))){
                 string szSpace = pFunction.GetNamespace().SubString(11);
                 CEccoAddonMethod@ pAddon = GetAddon(szSpace);
                 if(@pAddon is null){
