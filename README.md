@@ -150,4 +150,28 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
 
     For more info, please check `Addon/EccoBase.as`
 
+7. flexible balance storage strategy
+
+    Forked plugin provides build in storage options in `Config.ini`
+    ```ini
+    ;Store balance or not
+    ;0 don't store
+    ;1 only store in series maps
+    ;2 permanent storage
+    StorePlayerScore=1
+    ;If the balance isn't stored, how much is the starting balance
+    PlayerStartScore=0
+    ;Determination method of Series Map
+    ;0 by CVAR
+    ;   check mp_nextmap and mp_survival_nextmap
+    ;   if map dosen't set these, this method won't work
+    ;1 by LCS
+    ;   check two maps name by LCS
+    ;   If the similarity is greater than the ratio, 
+    ;   it is considered as series maps
+    SereisMapCheckMethod=1
+    ;LCS check ratio
+    SereisMapLCSCheckRatio=0.65
+    ```
+
     
