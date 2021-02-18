@@ -77,6 +77,9 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
     |%SPACE%|Space (` `), deprecated keyword|
     |%COST%|Item cost balance|
     |%MENUNAME%|Item name|
+    |%PLAYERHP%|Player Health|
+    |%PLAYERAP%|Player Armor|
+    |%PLAYERTEAM%|Player Team|
 
     will add more keyword soon...
 
