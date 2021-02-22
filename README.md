@@ -69,6 +69,8 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
     ```
     this sentence will replace to `WeaponName - Price`, example as `9mm Box - 3`
 
+    Similarly, like the original Ecco, you can also use these keywords in echo, but please note that only statements involving players can be driven by player type keywords, and different kinds of keywords cannot coexist in the same sentence
+
     |Keyword|Result|
     |---|---|
     |%PLAYER%|Player netname|

@@ -113,8 +113,7 @@ class CEccoScriptParser{
         return null;
     }
     void BuildItemList(){
-        //在专用服务器使用ini配置此处会导致空指针错误，client server与dedicated server解释结果不一致
-        array<string>@ aryScripts = IO::FileLineReader(szRootPath + "config/Scripts.txt");
+        array<string>@ aryScripts = IO::FileLineReader(szRootPath + EccoConfig::GetConfig()["Ecco.BaseConfig", "ScriptsPath"].getString());
         for(uint i = 0; i < aryScripts.length();i++){
             CEccoScriptItem@ pItem = CEccoScriptItem(aryScripts[i]);
             if(!pItem.IsEmpty())

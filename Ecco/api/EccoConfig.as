@@ -1,9 +1,14 @@
 namespace EccoConfig{
     INIPraser::CINI@ pConfig = null;
-    void RefreshEccoConfig(){
-        @pConfig = INIPraser::CINI(szConfigPath + "Config.ini");
-        if(pConfig is null)
-            Logger::Log("[ERROR - Ecco] Cannot read the config file, check if it exists and SCDS has the permission to access it!");
+    bool RefreshEccoConfig(){
+        File @pFile = g_FileSystem.OpenFile(szConfigPath + "Config.ini", OpenFile::READ);
+        if(@pFile is null){
+            Logger::Log("[CRITICAL]Cannot read the config file, check if it exists and SCDS has the permission to access it!\n\tReading path: " + szConfigPath + "Config.ini\n\tEcco aborted loading.");
+            return false;
+        }
+        else
+            @pConfig = INIPraser::CINI(szConfigPath + "Config.ini");
+        return true;
     }
     INIPraser::CINI@ GetConfig(){
         return pConfig;

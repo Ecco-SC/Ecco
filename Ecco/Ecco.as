@@ -6,19 +6,25 @@
 #include "core/SmartPrecache"
 #include "core/CBaseMenuItem"
 
-const string szRootPath = "scripts/plugins/Eccogit/Ecco/";
-const string szStorePath = "scripts/plugins/store/Ecco/";
+string szRootPath = "scripts/plugins/Eccogit/Ecco/";
+string szStorePath = "scripts/plugins/store/Ecco/";
 const string szConfigPath = "scripts/plugins/Eccogit/Ecco/config/";
 
+bool bAborted = false;
 bool IsMapAllowed;
 string szLastNextMap = g_Engine.mapname;
 bool bShouldCleanScore = true;
 
 void PluginInit(){
 	g_Module.ScriptInfo.SetAuthor("Paranoid_AF");
-	
 
-    EccoConfig::RefreshEccoConfig();
+    if(!EccoConfig::RefreshEccoConfig()){
+        bAborted = true;
+        return;
+    }
+
+    szRootPath = EccoConfig::GetConfig()["Ecco.BaseConfig", "PluginsRootPath"].getString();
+    szStorePath = EccoConfig::GetConfig()["Ecco.BaseConfig", "PluginsStorePath"].getString();
 
     EccoProcessVar::Register("%PLAYER%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, pPlayer.pev.netname);});
     EccoProcessVar::Register("%RANDOMPLAYER%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, e_PlayerInventory.GetRandomPlayerName());});
@@ -42,7 +48,8 @@ void PluginInit(){
 }
 
 void MapInit(){
-
+    if(bAborted)
+        return;
     g_Game.PrecacheModel("sprites/" + EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconPath"].getString());
     g_Game.PrecacheGeneric("sprites/" + EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconPath"].getString());
     SmartPrecache::PrecacheByList();
@@ -78,10 +85,14 @@ void MapInit(){
 }
 
 void MapActivate(){
+    if(bAborted)
+        return;
     EccoInclude::MapActivate();
 }
 
 void MapStart(){
+    if(bAborted)
+        return;
     EccoInclude::MapStart();
 }
 
