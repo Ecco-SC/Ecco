@@ -54,9 +54,6 @@ void MapInit(){
     g_Game.PrecacheGeneric("sprites/" + EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconPath"].getString());
     SmartPrecache::PrecacheByList();
 
-    EccoScoreBuffer::ResetPlayerBuffer();
-    EccoScoreBuffer::RegisterTimer();
-
     IsMapAllowed = true;
     array<string>@ aryMaps = IO::FileLineReader(szRootPath + EccoConfig::GetConfig()["Ecco.BaseConfig", "BanMapPath"].getString(), function(string szLine){ if(szLine != g_Engine.mapname){return "\n";}return g_Engine.mapname;});
     if(aryMaps.length() > 0 && aryMaps[aryMaps.length() - 1] == g_Engine.mapname)
@@ -81,6 +78,11 @@ void MapInit(){
         default: if(!bShouldCleanScore){bShouldCleanScore = true;}break;
     }
     
+    EccoScoreBuffer::ResetPlayerBuffer();
+    EccoScoreBuffer::RemoveTimer();
+    if(IsMapAllowed)
+        EccoScoreBuffer::RegisterTimer();
+        
     EccoInclude::MapInit();
 }
 

@@ -14,9 +14,12 @@ namespace EccoScoreBuffer{
         return PlayerScoreBuffer.exists(e_PlayerInventory.GetUniquePlayerId(pPlayer));
     }
 
-    void RegisterTimer(){
+    void RemoveTimer(){
         if(@RefreshScore !is null)
             g_Scheduler.RemoveTimer(@RefreshScore);
+    }
+
+    void RegisterTimer(){
         @RefreshScore = g_Scheduler.SetInterval("RefreshBuffer", EccoConfig::GetConfig()["Ecco.BaseConfig", "RefreshTimer"].getFloat(), g_Scheduler.REPEAT_INFINITE_TIMES);
     }
 
