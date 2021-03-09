@@ -97,7 +97,7 @@ class CINI{
                         case INI_STRING:
                         default: {
                             szVal.Trim("\""); 
-                            SetKeyValue(szNowSection, szKey, CINIItem(szKey, szVal));
+                            SetKeyValue(szNowSection, szKey, CINIItem(szKey, szVal.Replace("\\n", "\n")));
                             break;
                         }
                     }
