@@ -65,14 +65,29 @@ void MapInit(){
         EccoBuyMenu::ReadScriptList();
     
     switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "SereisMapCheckMethod"].getInt()){
+        //经典模式
         case 0: {
             bShouldCleanScore = szLastNextMap != g_Engine.mapname;
             szLastNextMap = EccoUtility::GetNextMap();
             break;
         }
+        //LCS
         case 1:{
             bShouldCleanScore = EccoUtility::GetLCS(szLastNextMap, g_Engine.mapname) < EccoConfig::GetConfig()["Ecco.BaseConfig", "SereisMapLCSCheckRatio"].getFloat();
             szLastNextMap = g_Engine.mapname;
+            break;
+        }
+        //混合模式
+        case 2:{
+            string szTemp = EccoUtility::GetNextMap();
+            if(szTemp.IsEmpty()){
+                bShouldCleanScore = EccoUtility::GetLCS(szLastNextMap, g_Engine.mapname) < EccoConfig::GetConfig()["Ecco.BaseConfig", "SereisMapLCSCheckRatio"].getFloat();
+                szLastNextMap = g_Engine.mapname;
+            }
+            else{
+                bShouldCleanScore = szLastNextMap != g_Engine.mapname;
+                szLastNextMap = szTemp;
+            }
             break;
         }
         default: if(!bShouldCleanScore){bShouldCleanScore = true;}break;
