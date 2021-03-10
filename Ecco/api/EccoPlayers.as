@@ -103,8 +103,8 @@ class EccoPlayerInventory{
                     params.value = iBalance;
                     params.channel = 3;
                     params.flags = HUD_ELEM_SCR_CENTER_X | HUD_ELEM_DEFAULT_ALPHA | HUD_NUM_NEGATIVE_NUMBERS ;
-                    params.x = 0.5;
-                    params.y = 0.9;
+                    params.x = EccoConfig::GetConfig()["Ecco.BaseConfig", "HUDMainPostion"].getVector2D().x;
+                    params.y = EccoConfig::GetConfig()["Ecco.BaseConfig", "HUDMainPostion"].getVector2D().y;
                     params.defdigits = 1;
                     params.maxdigits = 12;
                     g_PlayerFuncs.HudNumDisplay(pPlayer, params);
@@ -162,8 +162,8 @@ class EccoPlayerInventory{
                     params.fadeinTime = 0.15;
                     params.holdTime = 1;
                     params.fadeoutTime = 0.15;
-                    params.x = 0.5;
-                    params.y = 0.858;
+                    params.x = EccoConfig::GetConfig()["Ecco.BaseConfig", "HUDValueChangePostion"].getVector2D().x;
+                    params.y = EccoConfig::GetConfig()["Ecco.BaseConfig", "HUDValueChangePostion"].getVector2D().y;
                     params.defdigits = 1;
                     params.maxdigits = 8;
                     params.color1 = 
