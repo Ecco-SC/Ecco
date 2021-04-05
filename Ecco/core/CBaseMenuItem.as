@@ -40,7 +40,7 @@ class CBaseMenuItem{
                 }
             }else
                 Logger::Chat(pPlayer, 
-                    EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + 
+                    EccoConfig::GetLocateMessage("ChatLogTitle", @pPlayer) + 
                     EccoConfig::GetLocateMessage("CannotAffordPrice", @pPlayer));
             return false;
         }

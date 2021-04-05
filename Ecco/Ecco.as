@@ -122,11 +122,11 @@ HookReturnCode onChat(SayParameters@ pParams){
             return HOOK_CONTINUE;
          pParams.ShouldHide = true;
         if(!IsMapAllowed){
-            Logger::Chat(pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + " " + EccoConfig::GetLocateMessage("LocaleNotAllowed", @pPlayer));
+            Logger::Chat(pPlayer, EccoConfig::GetLocateMessage("ChatLogTitle", @pPlayer) + " " + EccoConfig::GetLocateMessage("LocaleNotAllowed", @pPlayer));
             return HOOK_CONTINUE;
         }
         if(EccoBuyMenu::IsEmpty()){
-            Logger::Chat(pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + " " + EccoConfig::GetLocateMessage("EmptyBuyList", @pPlayer));
+            Logger::Chat(pPlayer, EccoConfig::GetLocateMessage("ChatLogTitle", @pPlayer) + " " + EccoConfig::GetLocateMessage("EmptyBuyList", @pPlayer));
             return HOOK_CONTINUE;
         }
         if(pCommand.ArgC() <= 1)
@@ -153,7 +153,7 @@ HookReturnCode onChat(SayParameters@ pParams){
             if(@pItem !is null)
                 pItem.Excute(@pPlayer);
             else
-                Logger::Chat(pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + 
+                Logger::Chat(pPlayer, EccoConfig::GetLocateMessage("ChatLogTitle", @pPlayer) + 
                     " " + EccoConfig::GetLocateMessage("NullPointerMenu") + szPointer);
         }
         return HOOK_HANDLED;
