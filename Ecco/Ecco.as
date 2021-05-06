@@ -1,6 +1,6 @@
 #include "Include"
 
-#include "core/ScoreToBalance"
+#include "core/EccoPlayerStorage"
 #include "core/LoadInventory"
 #include "core/BuyMenu"
 #include "core/SmartPrecache"
@@ -93,10 +93,10 @@ void MapInit(){
         default: if(!bShouldCleanScore){bShouldCleanScore = true;}break;
     }
     
-    EccoScoreBuffer::ResetPlayerBuffer();
-    EccoScoreBuffer::RemoveTimer();
+    EccoPlayerStorage::ResetPlayerBuffer();
+    EccoPlayerStorage::RemoveTimer();
     if(IsMapAllowed)
-        EccoScoreBuffer::RegisterTimer();
+        EccoPlayerStorage::RegisterTimer();
         
     EccoInclude::MapInit();
 }
@@ -166,10 +166,21 @@ HookReturnCode onJoin(CBasePlayer@ pPlayer){
         switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "StorePlayerScore"].getInt()){
             case 2: break;
             case 1: if(bShouldCleanScore == false){break;}
-            case 0: if(EccoScoreBuffer::Exists(@pPlayer)){break;}
+            case 0: {
+                if(EccoPlayerStorage::Exists(@pPlayer)){
+                    EccoPlayerStorage::CPlayerStorageDataItem@ pItem = EccoPlayerStorage::pData.Get(@pPlayer);
+                    DateTime pNow;
+                    if(pItem.szLastPlayMap == g_Engine.mapname && (pNow - pItem.pLastUpdateTime).GetSeconds() < EccoConfig::GetConfig()["Ecco.BaseConfig", "ClearMaintenanceTimeMax"].getInt())
+                        break;
+                    else{
+                        pItem.szLastPlayMap = g_Engine.mapname;
+                        pItem.pLastUpdateTime = pNow;
+                    }
+                }
+            }
             default: e_PlayerInventory.SetBalance(@pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "PlayerStartScore"].getInt());break;
         }
-        EccoScoreBuffer::ResetPlayerBuffer(@pPlayer);
+        EccoPlayerStorage::AddPlayerBuffer(@pPlayer);
         EccoInventoryLoader::LoadPlayerInventory(@pPlayer);
         e_PlayerInventory.RefreshHUD(@pPlayer);
     }
