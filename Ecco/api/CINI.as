@@ -186,13 +186,7 @@ class CINISection{
 class CINIItem{
     string szKey;
 
-    int iInt;
-    float flFloat;
-    bool bBool;
-    string szString;
-    Vector vecVector;
-    Vector2D vecVector2D;
-    RGBA vecRGBA;
+    private any@ pStored = any();
     CINIItem(string _Key){ 
         szKey = _Key;
     }
@@ -229,52 +223,71 @@ class CINIItem{
     
     void set(string _Key, int _Type){
         szKey = _Key;
-        iInt = _Type;
+        pStored.store(_Type);
     }
     void set(string _Key, float _Type){
         szKey = _Key;
-        flFloat = _Type;
+        pStored.store(_Type);
     }
     void set(string _Key, bool _Type){
         szKey = _Key;
-        bBool = _Type;
+        pStored.store(_Type);
     }
     void set(string _Key, string _Type){
         szKey = _Key;
-        szString = _Type;
+        pStored.store(_Type);
     }
     void set(string _Key, Vector _Type){
         szKey = _Key;
-        vecVector = _Type;
+        pStored.store(_Type);
     }
     void set(string _Key, Vector2D _Type){
         szKey = _Key;
-        vecVector2D = _Type;
+        pStored.store(_Type);
     }
     void set(string _Key, RGBA _Type){
         szKey = _Key;
-        vecRGBA = _Type;
+        pStored.store(_Type);
     }
+
     int getInt(){
-        return iInt;
+        int a;
+        pStored.retrieve(a);
+        return a;
     }
     float getFloat(){
-        return flFloat;
+        float a;
+        pStored.retrieve(a);
+        return a;
     }
     bool getBool(){
-        return bBool;
+        bool a;
+        pStored.retrieve(a);
+        return a;
     }
     string getString(){
-        return szString;
+        string a;
+        pStored.retrieve(a);
+        return a;
     }
     Vector getVector(){
-        return vecVector;
+        Vector a;
+        pStored.retrieve(a);
+        return a;
     }
     Vector2D getVector2D(){
-        return vecVector2D;
+        Vector2D a;
+        pStored.retrieve(a);
+        return a;
     }
     RGBA getRGBA(){
-        return vecRGBA;
+        RGBA a;
+        pStored.retrieve(a);
+        return a;
+    }
+
+    any@ get(){
+        return @pStored;
     }
 }
 }

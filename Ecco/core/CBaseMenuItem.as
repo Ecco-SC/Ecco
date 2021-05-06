@@ -96,14 +96,14 @@ class CBaseMenuItem{
     }
 
     CBaseMenuItem@ GetItem(CTextMenu@ _pTextMenu, string _DisplayName){
-        if(@this.pParent.pTextMenu is @_pTextMenu && 
-            (
+        if(@this.pParent !is null && @this.pParent.pTextMenu is @_pTextMenu && (
                 (_DisplayName == this.DisplayName && 
                     !EccoConfig::GetConfig()["Ecco.BuyMenu", "UseBlurMatchForArgs"].getBool()) || 
                 (this.DisplayName.Find(_DisplayName) != String::INVALID_INDEX && 
-                    EccoConfig::GetConfig()["Ecco.BuyMenu", "UseBlurMatchForArgs"].getBool()))
+                    EccoConfig::GetConfig()["Ecco.BuyMenu", "UseBlurMatchForArgs"].getBool())
+            )
         )
-                return @this;
+            return @this;
         else{
             CBaseMenuItem@ pItem = null;
             for(uint i = 0; i < aryChildren.length(); i++){
