@@ -10,7 +10,9 @@ namespace Logger
     
     void Log(string szContent)
     {
-        g_Log.PrintF( "[" + g_Module.GetModuleName() + "] " + szContent + "\n");
+        string szTime;
+        DateTime().Format(szTime, "%Y-%m-%d:%H-%M-%s");
+        g_Log.PrintF( "[" + g_Module.GetModuleName() + "] [" + szTime + "] " + szContent + "\n");
     }
     
     void WriteLine(string szContent)

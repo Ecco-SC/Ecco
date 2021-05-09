@@ -39,11 +39,31 @@ void PluginInit(){
     e_ScriptParser.BuildItemList();
 
     EccoInclude::AddonListBuilder();
-    string szContactInfo = "https://github.com/DrAbcrealone/Ecco\nVersion:" + IO::FileTotalReader(szRootPath + "Version");
+    string szBanner = """
+
+     /$$$$$$$$  /$$$$$$   /$$$$$$   /$$$$$$ 
+    | $$_____/ /$$__  $$ /$$__  $$ /$$__  $$
+    | $$      | $$  \__/| $$  \__/| $$  \ $$
+    | $$$$$   | $$      | $$      | $$  | $$
+    | $$__/   | $$      | $$      | $$  | $$
+    | $$      | $$    $$| $$    $$| $$  | $$
+    | $$$$$$$$|  $$$$$$/|  $$$$$$/|  $$$$$$/
+    |________/ \______/  \______/  \______/ 
+
+    """;
+    string szVersion = IO::FileTotalReader(szRootPath + "Version");
+    string szContactInfo = szBanner + "\nhttps://github.com/DrAbcrealone/Ecco\nVersion:" + szVersion;
     g_Module.ScriptInfo.SetContactInfo(EccoInclude::AddAddonInfo(szContactInfo));
 
     EccoInclude::PluginInit();
-
+    string szLine = "==============================";
+    string szTime;
+    DateTime().Format(szTime, "%Y-%m-%d : %H-%M");
+    Logger::WriteLine(szLine);
+    Logger::WriteLine(szBanner);
+    Logger::WriteLine("    Ver: " + szVersion);
+    Logger::WriteLine("    Time: " + szTime);
+    Logger::WriteLine(szLine);
     Logger::Say(EccoConfig::GetLocateMessage("PluginReloaded"));
 }
 
