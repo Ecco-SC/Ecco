@@ -180,7 +180,7 @@ HookReturnCode onJoin(CBasePlayer@ pPlayer){
             }
             default: e_PlayerInventory.SetBalance(@pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "PlayerStartScore"].getInt());break;
         }
-        EccoPlayerStorage::AddPlayerBuffer(@pPlayer);
+        EccoPlayerStorage::ResetPlayerBuffer(@pPlayer);
         EccoInventoryLoader::LoadPlayerInventory(@pPlayer);
         e_PlayerInventory.RefreshHUD(@pPlayer);
     }

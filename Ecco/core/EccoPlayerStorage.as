@@ -38,6 +38,7 @@ namespace EccoPlayerStorage{
             CPlayerStorageDataItem pItem;
                 pItem.szSteamID = e_PlayerInventory.GetUniquePlayerId(@pPlayer);
                 pItem.flScore = 0;
+                pItem.flObtained = 0;
                 pItem.szLastPlayMap = g_Engine.mapname;
                 pItem.pLastUpdateTime = DateTime();
             aryPlayerList.insertLast(pItem);
@@ -47,7 +48,8 @@ namespace EccoPlayerStorage{
         string szSteamID;
         EHandle pPlayer;
         float flScore;
-        
+        float flObtained;
+
         string szLastPlayMap;
         DateTime pLastUpdateTime;
     }
@@ -55,11 +57,10 @@ namespace EccoPlayerStorage{
     CPlayerStorageData pData;
 
     void ResetPlayerBuffer(CBasePlayer@ pPlayer){
-        pData.SetScore(pPlayer, 0.0f);
-    }
-
-    void AddPlayerBuffer(CBasePlayer@ pPlayer){
-        pData.Add(@pPlayer);
+        if(pData.Exists(@pPlayer))
+            pData.SetScore(pPlayer, 0.0f);
+        else
+            pData.Add(pPlayer);
     }
 
     void ResetPlayerBuffer(){
@@ -87,8 +88,16 @@ namespace EccoPlayerStorage{
             if(pPlayer !is null){
                 string szPlayerUniqueId = e_PlayerInventory.GetUniquePlayerId(pPlayer);
                 int iScoreChanged = int((pPlayer.pev.frags - pData[szPlayerUniqueId].flScore) * flConfigMultiplier);
-                if(iScoreChanged != 0 && iMaxLimitation > 0 && pData[szPlayerUniqueId].flScore <= iMaxLimitation)
-                    e_PlayerInventory.ChangeBalance(pPlayer, iScoreChanged);
+                if(iScoreChanged != 0 && iMaxLimitation > 0 && pData[szPlayerUniqueId].flObtained < iMaxLimitation){
+                    if(pData[szPlayerUniqueId].flObtained + iScoreChanged <= iMaxLimitation){
+                        e_PlayerInventory.ChangeBalance(pPlayer, iScoreChanged);
+                        pData[szPlayerUniqueId].flObtained += iScoreChanged;
+                    }
+                    else{
+                        e_PlayerInventory.ChangeBalance(pPlayer, int(iMaxLimitation - pData[szPlayerUniqueId].flObtained));
+                        pData[szPlayerUniqueId].flObtained = iMaxLimitation;
+                    }
+                }
                 pData.SetScore(pPlayer, pPlayer.pev.frags);
             }
         }
