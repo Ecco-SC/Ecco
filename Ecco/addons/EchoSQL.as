@@ -13,6 +13,7 @@ namespace EccoSQL{
         g_Hooks.RegisterHook(Hooks::Player::ClientConnected, @ClientConnected);
         g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @ClientPutInServer);
         g_Hooks.RegisterHook(Hooks::Player::ClientDisconnect, @ClientDisconnect);
+        EccoHook::RegisterHook(EccoHook::Economy::PostChangeBalance, @SQLPostHook)
     }
 
     string GetAuthor(){
@@ -21,6 +22,11 @@ namespace EccoSQL{
 
     string GetContactInfo(){
         return "No person of the name";
+    }
+
+    HookReturnCode SQLPostHook(CBasePlayer@ pPlayer, int iAmount){
+        GetPlayerData(CBasePlayer@ pPlayer).Ecco = iAmount;
+        return HOOK_CONTINUE;
     }
     
     void SQLQuery(string szID){

@@ -5,6 +5,7 @@
 #include "core/BuyMenu"
 #include "core/SmartPrecache"
 #include "core/CBaseMenuItem"
+#include "core/EccoHook"
 
 string szRootPath = "scripts/plugins/Eccogit/Ecco/";
 string szStorePath = "scripts/plugins/store/Ecco/";

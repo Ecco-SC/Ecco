@@ -52,7 +52,12 @@ class EccoPlayerInventory{
     }
 
     void SetBalance(CBasePlayer@ pPlayer, int Amount){
-        WriteInData(pPlayer, Amount);
+        bool bFlag = true;
+        EccoHook::PreChangeBalance(pPlayer, Amount, bFlag);
+        if(bFlag){
+            WriteInData(pPlayer, Amount);
+            EccoHook::PostChangeBalance(pPlayer, Amount);
+        }
     }
     int ChangeBalance(CBasePlayer@ pPlayer, int Amount){
         int iBalance = GetBalance(pPlayer) + Amount;
