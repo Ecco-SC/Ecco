@@ -178,5 +178,59 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
     ;LCS check ratio
     SereisMapLCSCheckRatio=0.65
     ```
+8. Hookable behavior
 
+    Added Hook Function for interior behavior
+
+    for example
+
+    ```csharp
+        void PluginInit(){
+            EccoHook::RegisterHook(EccoHook::Economy::PreChangeBalance, @PreChangeBalance)
+        }
+
+        HookReturnCode PreChangeBalance(CBasePlayer@ pPlayer, int Amount, bool&out bOut){
+            //f you want to block the next function(ChangeBalance)
+            //set bOut to False
+            //or set it to true
+            /*...do something....*/
+        }
+    ```
+
+    At present, only `SetBalance`  hooks has been added
+
+    will add more hook in future.
+
+    for more info, please cheack `EccoHook.as` and `EchoSQL.as`
+
+9.  Exchangable info entity for other plugins
+
+    As we all know, angelscripts plugins and plugins are in a completely isolated environment, and plug-ins cannot directly affect each other.
+
+    so `EccoBankEntity.as` add a interface entity for other plugins to set player's balacne in game.
+
+    for example
+    
+    ```csharp
+    void GrabBankEntity(CBasePlayer@ pPlayer){
+        CBaseEntity@ pEntity = g_EntityFuncs.FindEntityByClassname(@pEntity, "info_ecco_bank");
+
+        //set player balance
+        //indexmode
+        pEntity.pev.spawnflag = 0;
+        pEntity.pev.netname = pPlayer.entindex();
+        pEntity.Use(null, null, USE_SET, 114514);
+        //get player balance
+        //namemode
+        pEntity.pev.spawnflag = 1;
+        pEntity.pev.targetname = pPlayer.pev.netname;
+        pEntity.Use(null, null, USE_ON);
+        int iBalance = pEntity.pev.frags;
+        g_PlayerFuncs.SayText(@pPlayer, "The balance on your account is $" + iBalance + "\n");
+    }
+    ```
+
+    Easy, now you try.
+
+    If you don't want this features, delete include in `Include.as`
     
