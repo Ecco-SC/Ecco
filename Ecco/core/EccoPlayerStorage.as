@@ -49,9 +49,10 @@ namespace EccoPlayerStorage{
         EHandle pPlayer;
         float flScore;
         float flObtained;
-
         string szLastPlayMap;
         DateTime pLastUpdateTime;
+
+        dictionary dicCustomValue = {};
     }
     CScheduledFunction@ RefreshScore;
     CPlayerStorageData pData;
@@ -61,6 +62,12 @@ namespace EccoPlayerStorage{
             pData.SetScore(pPlayer, 0.0f);
         else
             pData.Add(pPlayer);
+    }
+
+    dictionary@ GetCustomStorage(CBasePlayer@ pPlayer){
+        if(Exists(@pPlayer))
+            return pData[@pPlayer].dicCustomValue;
+        return null;
     }
 
     void ResetPlayerBuffer(){

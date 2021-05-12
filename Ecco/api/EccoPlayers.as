@@ -125,6 +125,17 @@ class EccoPlayerInventory{
         return szPlayerId;
     }
 
+    string GetUniquePlayerId(edict_t@ pPlayer){
+        string szPlayerId = g_EngineFuncs.GetPlayerAuthId(pPlayer);
+        if(szPlayerId == "STEAM_ID_LAN")
+            szPlayerId = pPlayer.vars.netname;
+        else{
+            szPlayerId.Replace("STEAM_", "");
+            szPlayerId.Replace(":", "");
+        }
+        return szPlayerId;
+    }
+
     private void WriteInData(CBasePlayer@ pPlayer, int Balance){
         WriteInData(pPlayer, Balance, GetInventory(pPlayer), RetrieveInfo(pPlayer));
     }
