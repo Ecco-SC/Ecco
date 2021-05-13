@@ -13,7 +13,7 @@ namespace EccoSQL{
         g_Hooks.RegisterHook(Hooks::Player::ClientConnected, @ClientConnected);
         g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @ClientPutInServer);
         g_Hooks.RegisterHook(Hooks::Player::ClientDisconnect, @ClientDisconnect);
-        EccoHook::RegisterHook(EccoHook::Economy::PostChangeBalance, @SQLPostHook)
+        EccoHook::RegisterHook(EccoHook::Economy::PostChangeBalance, @SQLPostHook);
     }
 
     string GetAuthor(){
@@ -25,7 +25,11 @@ namespace EccoSQL{
     }
 
     HookReturnCode SQLPostHook(CBasePlayer@ pPlayer, int iAmount){
-        GetPlayerData(CBasePlayer@ pPlayer).Ecco = iAmount;
+        CPlayerData@ pData = GetPlayerData(@pPlayer);
+        if(@pData is null)
+            Logger::Chat(pPlayer, "[ECCO SQL]你没有同步到SQL消息！请尝试重新进入游戏！");
+        else
+            pData.Ecco = iAmount;
         return HOOK_CONTINUE;
     }
     
@@ -88,8 +92,8 @@ namespace EccoSQL{
 
     void BewareNotSync(EHandle pPlayer){
         if(pPlayer.IsValid()){
-            Logger::Chat(cast<CBasePlayer@>(pPlayer.GetEntity()), "[ECCO SQL]你没有连上SQL服务器！请尝试重新进入游戏！");
-            g_Scheduler.SetTimeout( "EccoAddon::EccoSQL::BewareNotSync", 1, pPlayer);
+            Logger::Chat(cast<CBasePlayer@>(pPlayer.GetEntity()), "[ECCO SQL]你没有同步到SQL消息！请尝试重新进入游戏！");
+            g_Scheduler.SetTimeout( "BewareNotSync", 1, pPlayer);
         }
     }
 
@@ -102,7 +106,7 @@ namespace EccoSQL{
             if(data is null)
                 dicPlayerData.delete(PlayerId);
             if(data.UID != "0")
-                g_Scheduler.SetTimeout("EccoAddon::EccoSQL::BewareNotSync", 1, EHandle(pPlayer));
+                g_Scheduler.SetTimeout("BewareNotSync", 1, EHandle(pPlayer));
         }
         return HOOK_CONTINUE;
     }
