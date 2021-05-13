@@ -5,6 +5,9 @@ A complete economy & buy menu plugin for Sven Co-op 5.x
 
 #### [For more information on how to use this plugin, click here!](https://github.com/Paranoid-AF/Ecco/wiki)
 
+
+## [For more information on forked new features](#forked-new-features)
+
 ## Basically an Economy Plugin
 
 Ecco saves players' scores permanently, adding them to players' balance, and allows other plugins to interact with the data. Like, a buy menu plugin could deduct the currency, and a game mode plugin could also add currency to players' balance, as a reward. In the long run, it encourages players to keep on playing.
