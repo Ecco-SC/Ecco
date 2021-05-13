@@ -90,27 +90,29 @@ namespace EccoPlayerStorage{
     void RefreshBuffer(){
         float flConfigMultiplier = EccoConfig::GetConfig()["Ecco.BaseConfig", "ScoreToMoneyMultiplier"].getFloat();
         int iMaxLimitation = EccoConfig::GetConfig()["Ecco.BaseConfig", "ObtainMoneyPerMapMax"].getInt();
-        for(int i = 0; i < g_Engine.maxClients; i++){
-            CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex(i+1);
+        for(int i = 0; i <= g_Engine.maxClients; i++){
+            CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex(i);
             if(pPlayer !is null){
                 string szPlayerUniqueId = e_PlayerInventory.GetUniquePlayerId(@pPlayer);
                 if(!Exists(@pPlayer))
                     pData.Add(@pPlayer);
-                int iScoreChanged = int((pPlayer.pev.frags - pData[szPlayerUniqueId].flScore) * flConfigMultiplier);
+                
+                CPlayerStorageDataItem@ pPlayerData = pData[szPlayerUniqueId];
+                int iScoreChanged = int((int(pPlayer.pev.frags) - int(pPlayerData.flScore)) * flConfigMultiplier);
                 if(iScoreChanged != 0 ){
                     if(iMaxLimitation > 0){
-                        if(pData[szPlayerUniqueId].flObtained < iMaxLimitation){
+                        if(pPlayerData.flObtained + iScoreChanged < iMaxLimitation){
                             e_PlayerInventory.ChangeBalance(pPlayer, iScoreChanged);
-                            pData[szPlayerUniqueId].flObtained += iScoreChanged;
+                            pPlayerData.flObtained += iScoreChanged;
                         }
-                        else{
-                            e_PlayerInventory.ChangeBalance(pPlayer, int(iMaxLimitation - pData[szPlayerUniqueId].flObtained));
-                            pData[szPlayerUniqueId].flObtained = iMaxLimitation;
+                        else if(pPlayerData.flObtained < iMaxLimitation){
+                            e_PlayerInventory.ChangeBalance(pPlayer, int(iMaxLimitation - pPlayerData.flObtained));
+                            pPlayerData.flObtained = iMaxLimitation;
                         }
                     }
                     else{
                         e_PlayerInventory.ChangeBalance(pPlayer, iScoreChanged);
-                        pData[szPlayerUniqueId].flObtained += iScoreChanged;
+                        pPlayerData.flObtained += iScoreChanged;
                     }
                 }
                 pData.SetScore(pPlayer, pPlayer.pev.frags);
