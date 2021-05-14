@@ -24,15 +24,6 @@ namespace EccoSQL{
         return "No person of the name";
     }
 
-    HookReturnCode SQLPostHook(CBasePlayer@ pPlayer, int iAmount){
-        CPlayerData@ pData = GetPlayerData(@pPlayer);
-        if(@pData is null)
-            Logger::Chat(pPlayer, "[ECCO SQL]你没有同步到SQL消息！请尝试重新进入游戏！");
-        else
-            pData.Ecco = iAmount;
-        return HOOK_CONTINUE;
-    }
-    
     void SQLQuery(string szID){
         File@ file = g_FileSystem.OpenFile( szStorePath + "SQLInput.txt" , OpenFile::WRITE);
         if(file !is null && file.IsOpen()){
@@ -108,18 +99,34 @@ namespace EccoSQL{
         }
     }
 
+    HookReturnCode SQLPostHook(CBasePlayer@ pPlayer, int iAmount){
+        CPlayerData@ pData = GetPlayerData(@pPlayer);
+        if(@pData is null)
+            Logger::Chat(pPlayer, "[ECCO SQL]你没有同步到SQL消息！请尝试重新进入游戏！");
+        else
+            pData.Ecco = iAmount;
+        return HOOK_CONTINUE;
+    }
+
     HookReturnCode ClientPutInServer(CBasePlayer@ pPlayer){
         string PlayerId = g_EngineFuncs.GetPlayerAuthId(pPlayer.edict());
-        if(!dicPlayerData.exists(PlayerId))
+        CPlayerData@ data = null;
+        if(!dicPlayerData.exists(PlayerId)){
             SQLDic(PlayerId);
+            @data = GetPlayerData(pPlayer);
+        }
         else{
-            CPlayerData@ data = GetPlayerData(pPlayer);
+            @data = GetPlayerData(pPlayer);
             if(data is null)
                 dicPlayerData.delete(PlayerId);
             if(data.UID == "0")
                 g_Scheduler.SetTimeout("BewareNotSync", 1, EHandle(pPlayer), 0);
-            else
-                e_PlayerInventory.SetBalance(@pPlayer, data.Ecco);
+        }
+        if(data !is null){
+            e_PlayerInventory.SetBalance(@pPlayer, data.Ecco);
+            EccoPlayerStorage::ResetPlayerBuffer(@pPlayer);
+            EccoInventoryLoader::LoadPlayerInventory(@pPlayer);
+            e_PlayerInventory.RefreshHUD(@pPlayer);
         }
         return HOOK_CONTINUE;
     }
