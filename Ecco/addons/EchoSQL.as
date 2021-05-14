@@ -97,8 +97,10 @@ namespace EccoSQL{
             Logger::Chat(@pPlayer, "[ECCO SQL]未获得SQL消息，尝试重新同步SQL消息中..(" + time + "/" + iMaxTry + ")");
 
             CPlayerData@ data = GetPlayerData(@pPlayer);
-            if(data !is null && data.UID != "0")
+            if(data !is null && data.UID != "0"){
+                e_PlayerInventory.SetBalance(@pPlayer, data.Ecco);
                 Logger::Chat(@pPlayer, "[ECCO SQL]已同步SQL消息！");
+            }
             else if(time >= iMaxTry)
                 Logger::Chat(@pPlayer, "[ECCO SQL]同步到SQL消息失败！请尝试重新进入服务器！");
             else
@@ -116,6 +118,8 @@ namespace EccoSQL{
                 dicPlayerData.delete(PlayerId);
             if(data.UID == "0")
                 g_Scheduler.SetTimeout("BewareNotSync", 1, EHandle(pPlayer), 0);
+            else
+                e_PlayerInventory.SetBalance(@pPlayer, data.Ecco);
         }
         return HOOK_CONTINUE;
     }
