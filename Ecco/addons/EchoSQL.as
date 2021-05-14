@@ -91,14 +91,15 @@ namespace EccoSQL{
     }
 
     void BewareNotSync(EHandle ePlayer, int time){
+        int iMaxTry = 30;
         if(ePlayer.IsValid()){
             CBasePlayer@ pPlayer = cast<CBasePlayer@>(ePlayer.GetEntity());
-            Logger::Chat(@pPlayer, "[ECCO SQL]未获得SQL消息，尝试重新同步SQL消息中..");
+            Logger::Chat(@pPlayer, "[ECCO SQL]未获得SQL消息，尝试重新同步SQL消息中..(" + time + "/" + iMaxTry + ")");
 
             CPlayerData@ data = GetPlayerData(@pPlayer);
             if(data !is null && data.UID != "0")
                 Logger::Chat(@pPlayer, "[ECCO SQL]已同步SQL消息！");
-            else if(time > 30)
+            else if(time >= iMaxTry)
                 Logger::Chat(@pPlayer, "[ECCO SQL]同步到SQL消息失败！请尝试重新进入服务器！");
             else
                 g_Scheduler.SetTimeout( "BewareNotSync", 1, ePlayer, time + 1);
