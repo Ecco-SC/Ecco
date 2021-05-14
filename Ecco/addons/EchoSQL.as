@@ -83,36 +83,44 @@ namespace EccoSQL{
     }
 
     CPlayerData@ GetPlayerData(CBasePlayer@ pPlayer){
-        return cast<CPlayerData@>(dicPlayerData[e_PlayerInventory.GetUniquePlayerId(@pPlayer)]);
+        return cast<CPlayerData@>(dicPlayerData[g_EngineFuncs.GetPlayerAuthId(pPlayer.edict())]);
     }
 
     bool Exists(CBasePlayer@ pPlayer){
-        return dicPlayerData.exists(e_PlayerInventory.GetUniquePlayerId(@pPlayer));
+        return dicPlayerData.exists(g_EngineFuncs.GetPlayerAuthId(pPlayer.edict()));
     }
 
-    void BewareNotSync(EHandle pPlayer){
-        if(pPlayer.IsValid()){
-            Logger::Chat(cast<CBasePlayer@>(pPlayer.GetEntity()), "[ECCO SQL]你没有同步到SQL消息！请尝试重新进入游戏！");
-            g_Scheduler.SetTimeout( "BewareNotSync", 1, pPlayer);
+    void BewareNotSync(EHandle ePlayer, int time){
+        if(ePlayer.IsValid()){
+            CBasePlayer@ pPlayer = cast<CBasePlayer@>(ePlayer.GetEntity());
+            Logger::Chat(@pPlayer, "[ECCO SQL]未获得SQL消息，尝试重新同步SQL消息中..");
+
+            CPlayerData@ data = GetPlayerData(@pPlayer);
+            if(data !is null && data.UID != "0")
+                Logger::Chat(@pPlayer, "[ECCO SQL]已同步SQL消息！");
+            else if(time > 30)
+                Logger::Chat(@pPlayer, "[ECCO SQL]同步到SQL消息失败！请尝试重新进入服务器！");
+            else
+                g_Scheduler.SetTimeout( "BewareNotSync", 1, ePlayer, time + 1);
         }
     }
 
     HookReturnCode ClientPutInServer(CBasePlayer@ pPlayer){
-        string PlayerId = e_PlayerInventory.GetUniquePlayerId(@pPlayer);
+        string PlayerId = g_EngineFuncs.GetPlayerAuthId(pPlayer.edict());
         if(!dicPlayerData.exists(PlayerId))
             SQLDic(PlayerId);
         else{
             CPlayerData@ data = GetPlayerData(pPlayer);
             if(data is null)
                 dicPlayerData.delete(PlayerId);
-            if(data.UID != "0")
-                g_Scheduler.SetTimeout("BewareNotSync", 1, EHandle(pPlayer));
+            if(data.UID == "0")
+                g_Scheduler.SetTimeout("BewareNotSync", 1, EHandle(pPlayer), 0);
         }
         return HOOK_CONTINUE;
     }
 
     HookReturnCode ClientConnected(edict_t@ pEntity, const string& in szPlayerName, const string& in szIPAddress, bool& out bDisallowJoin, string& out szRejectReason){
-        string PlayerId = e_PlayerInventory.GetUniquePlayerId(@pEntity);
+        string PlayerId = g_EngineFuncs.GetPlayerAuthId(pEntity);
         string PlayerName = szPlayerName;
         if(!dicPlayerData.exists(PlayerId))
             SQLQuery(PlayerId + "," + PlayerName.Replace(",",""));
