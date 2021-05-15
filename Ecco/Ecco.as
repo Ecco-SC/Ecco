@@ -7,9 +7,9 @@
 #include "core/CBaseMenuItem"
 #include "core/EccoHook"
 
-string szRootPath = "scripts/plugins/Eccogit/Ecco/";
+string szRootPath = "scripts/plugins/Ecco/";
 string szStorePath = "scripts/plugins/store/Ecco/";
-const string szConfigPath = "scripts/plugins/Eccogit/Ecco/config/";
+const string szConfigPath = "scripts/plugins/Ecco/config/";
 
 bool bAborted = false;
 bool IsMapAllowed;

@@ -149,35 +149,18 @@ class CEccoScriptParser{
     }
 
     void RandomExecute(array<string>@ aryRandom, CBasePlayer@ pPlayer){
-        dictionary dicRandomElements = {};
+        array<int> aryPossible(aryRandom.length());
+        int iPossible = 0;
         for(uint i = 0; i< aryRandom.length(); i++){
-            array<string>@ aryThisArgs = Utility::Select(aryRandom[i].Split(" "), function(string szLine){return !szLine.IsEmpty();});
-            int iPossibility = atoi(aryThisArgs[0]);
-            if(iPossibility > 0){
-                aryThisArgs.removeAt(0);
-                aryRandom[i] = "";
-                for(uint j = 0; j < aryThisArgs.length(); j++){
-                    aryRandom[i] += aryThisArgs[j];
-                    if( j != aryThisArgs.length() - 1 )
-                        aryRandom[i] += " ";
-                }
-                dicRandomElements.set(aryRandom[i], iPossibility);
-            }else
-                aryRandom.removeAt(i);
+            string szLine = aryRandom[i];
+            iPossible += atoi(szLine.SubString(0, szLine.FindFirstOf(" ")));
+            aryPossible[i] = iPossible;
         }
         
-        array<string>@ dictKeys = dicRandomElements.getKeys();
-        int randomSum = 0;
-        for(uint i = 0; i < dictKeys.length(); i++){
-            randomSum += int(dicRandomElements[dictKeys[i]]);
-        }
-        int randomNum = int(Math.RandomLong(0, randomSum));
-        int thisRandom = 0;
-        for(uint i=0; i < dictKeys.length(); i++){
-            thisRandom += int(dicRandomElements[dictKeys[i]]);
-            if(thisRandom >= randomNum){
-                if(dictKeys[i] != "")
-                    ExecuteCommand(dictKeys[i], pPlayer);
+        int iRandom = Math.RandomLong(0, iPossible);
+        for(uint i = 0; i< aryPossible.length(); i++){
+            if(aryPossible[i] >= iRandom){
+                ExecuteCommand(aryRandom[i].SubString(aryRandom[i].FindFirstOf(" ")), pPlayer);
                 break;
             }
         }
