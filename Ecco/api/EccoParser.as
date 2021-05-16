@@ -153,6 +153,7 @@ class CEccoScriptParser{
         int iPossible = 0;
         for(uint i = 0; i< aryRandom.length(); i++){
             string szLine = aryRandom[i];
+            szLine.Trim();
             iPossible += atoi(szLine.SubString(0, szLine.FindFirstOf(" ")));
             aryPossible[i] = iPossible;
         }
@@ -160,7 +161,9 @@ class CEccoScriptParser{
         int iRandom = Math.RandomLong(0, iPossible);
         for(uint i = 0; i< aryPossible.length(); i++){
             if(aryPossible[i] >= iRandom){
-                ExecuteCommand(aryRandom[i].SubString(aryRandom[i].FindFirstOf(" ")), pPlayer);
+                string szLine = aryRandom[i];
+                szLine.Trim();
+                ExecuteCommand(szLine.SubString(szLine.FindFirstOf(" ")), pPlayer);
                 break;
             }
         }
