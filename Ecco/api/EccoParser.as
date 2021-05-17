@@ -122,7 +122,7 @@ class CEccoScriptParser{
     }
 
     bool ExecuteCommand(string szCommandLine, CBasePlayer@ pPlayer){
-        array<string> aryCommandList = szCommandLine.Split("&&");
+        array<string>@ aryCommandList = szCommandLine.Split("&&");
         bool bSuccess = true;
         for(uint j=0; j < aryCommandList.length(); j++){
             array<string>@ args = Utility::Select(aryCommandList[j].Split(" "), function(string szLine){ return !szLine.IsEmpty(); });
@@ -153,7 +153,8 @@ class CEccoScriptParser{
         int iPossible = 0;
         for(uint i = 0; i< aryRandom.length(); i++){
             string szLine = aryRandom[i];
-            szLine.Trim();
+            szLine.Trim(" ");
+            szLine.Trim("\t");
             iPossible += atoi(szLine.SubString(0, szLine.FindFirstOf(" ")));
             aryPossible[i] = iPossible;
         }
@@ -162,7 +163,8 @@ class CEccoScriptParser{
         for(uint i = 0; i< aryPossible.length(); i++){
             if(aryPossible[i] >= iRandom){
                 string szLine = aryRandom[i];
-                szLine.Trim();
+                szLine.Trim(" ");
+                szLine.Trim("\t");
                 ExecuteCommand(szLine.SubString(szLine.FindFirstOf(" ")), pPlayer);
                 break;
             }
