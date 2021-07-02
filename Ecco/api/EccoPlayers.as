@@ -19,14 +19,14 @@ class EccoPlayerInventory{
     }
 
     int GetBalance(CBasePlayer@ pPlayer){
-        array<string>@ aryLine = IO::FileLineReader(szStorePath + "Ecco-" + GetUniquePlayerId(pPlayer) + ".txt");
+        array<string>@ aryLine = IO::FileLineReader(szStorePath + GetUniquePlayerId(pPlayer) + ".txt");
         if(aryLine.length() > 0 && !aryLine[0].IsEmpty())
             return atoi(aryLine[0]);
         return 0;
     }
 
     array<string>@ GetInventory(CBasePlayer@ pPlayer){
-        array<string>@ aryLine = IO::FileLineReader(szStorePath + "Ecco-" + GetUniquePlayerId(pPlayer) + ".txt");
+        array<string>@ aryLine = IO::FileLineReader(szStorePath + GetUniquePlayerId(pPlayer) + ".txt");
         if(aryLine.length() > 0)
             aryLine.removeAt(0);
         return aryLine;
@@ -34,7 +34,7 @@ class EccoPlayerInventory{
 
     dictionary RetrieveInfo(CBasePlayer@ pPlayer){
         dictionary UserInfo = {};
-        array<string>@ aryLine = Utility::Select(IO::FileLineReader(szStorePath + "Ecco-" + GetUniquePlayerId(pPlayer) + ".txt"), function(string szLine){return !szLine.IsEmpty();});
+        array<string>@ aryLine = Utility::Select(IO::FileLineReader(szStorePath + GetUniquePlayerId(pPlayer) + ".txt"), function(string szLine){return !szLine.IsEmpty();});
         for(uint i = 0; i < aryLine.length(); i++){
             string sLine = aryLine[i];
             int FirstSymbol = int(sLine.FindFirstOf(";", 0));
