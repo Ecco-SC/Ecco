@@ -159,7 +159,7 @@ class EccoPlayerInventory{
         for(uint i=0; i < dictKeys.length(); i++){
             Content += "\n" + dictKeys[i] + "; " +string(PlayerInfo[dictKeys[i]]);
         }
-        IO::FileWriter(szStorePath + "Ecco-" + GetUniquePlayerId(pPlayer) + ".txt", Content);
+        IO::FileWriter(szStorePath + GetUniquePlayerId(pPlayer) + ".txt", Content);
     }
 
     void ShowHUD(CBasePlayer@ pPlayer, int amount){
