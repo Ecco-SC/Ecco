@@ -8,6 +8,7 @@
 #include "api/EccoConfig"
 #include "api/EccoInclude"
 #include "api/EccoUtility"
+#include "api/SteamIDHelper"
 
 /*
     ADDON INCLUDE AREA

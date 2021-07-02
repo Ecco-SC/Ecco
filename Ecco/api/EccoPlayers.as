@@ -119,26 +119,22 @@ class EccoPlayerInventory{
         }
     }
     
+    string FormmatSteamID(string szID){
+        switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "SteamIDFormmat"].getInt()){
+            case 1: return szID;
+            case 2: return g_SteamIDHelper.toCommunity(szID);
+            case 3: return szID.SubString(6).Replace(":", "");
+        }
+        return string(g_SteamIDHelper.to64(szID));
+    }
     string GetUniquePlayerId(CBasePlayer@ pPlayer){
         string szPlayerId = g_EngineFuncs.GetPlayerAuthId(pPlayer.edict());
-        if(szPlayerId == "STEAM_ID_LAN")
-            szPlayerId = pPlayer.pev.netname;
-        else{
-            szPlayerId.Replace("STEAM_", "");
-            szPlayerId.Replace(":", "");
-        }
-        return szPlayerId;
+        return szPlayerId == "STEAM_ID_LAN" ? string(pPlayer.pev.netname) : FormmatSteamID(szPlayerId);
     }
 
     string GetUniquePlayerId(edict_t@ pPlayer){
         string szPlayerId = g_EngineFuncs.GetPlayerAuthId(pPlayer);
-        if(szPlayerId == "STEAM_ID_LAN")
-            szPlayerId = pPlayer.vars.netname;
-        else{
-            szPlayerId.Replace("STEAM_", "");
-            szPlayerId.Replace(":", "");
-        }
-        return szPlayerId;
+        return szPlayerId == "STEAM_ID_LAN" ? string(pPlayer.vars.netname) : FormmatSteamID(szPlayerId);
     }
 
     private void WriteInData(CBasePlayer@ pPlayer, int Balance){
