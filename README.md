@@ -3,8 +3,7 @@
 ![img](https://github.com/Paranoid-AF/EccoWikiAssets/raw/master/article1.png)
 A complete economy & buy menu plugin for Sven Co-op 5.x
 
-#### [For more information on how to use this plugin, click here!](https://github.com/Paranoid-AF/Ecco/wiki)
-
+## [Foked plugin document](Guidance.md)
 
 ## [For more information on forked new features](#forked-new-features)
 

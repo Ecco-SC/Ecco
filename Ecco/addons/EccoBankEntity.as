@@ -5,7 +5,7 @@ namespace EccoBankEntity{
     }
 
     void MapActivate(){
-        g_EntityFuncs.CreateEntity("info_ecco_bank");
+        g_EntityFuncs.Create("info_ecco_bank", g_vecZero, g_vecZero, false, null);
     }
 
     string GetAuthor(){
