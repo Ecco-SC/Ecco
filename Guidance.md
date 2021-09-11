@@ -166,6 +166,7 @@ As you can see from the example, `name` and `cost` is necessary for an echo scri
 then plugin will be parse sentence by sentence from beginning to end.
 
 here is the default marcos:
+
 Marco|Usage
 ---|---
 include [Scripts name] (Playername)|execute another script (as the player or another player), you don't need to enter the. Echo extension, just the name. Like `weapon_shotgun_Perm.echo`, you just need to use `include weapon_ shotgun_Perm`.
@@ -185,6 +186,7 @@ maxspeed [Float] (PlayreName)|Set the player's maximum movement speed (can't exc
 gravity [Float]|Set the player's gravity
 
 And you can see that `%PLAYER%` is used as a placeholder for the player's name in the example
+
 Here is the default placeholders:
 
 |Placeholder|Result|Flag|
@@ -352,3 +354,8 @@ It is a plugin used with CSAS-ODS program or other programs to use SQL or todo o
 3. Q: `Echo` script is too simple! I need logical judgment and circulation!
 
     A: Is building it into a kind of `TCL` script format, just gimme some time.
+
+4. Q: Why plugin can not read the first line of configure?
+
+    A: Some editor will add stupid BOM header for UTF8 file automatically.However, Ecco plugin does not recognize which files have BOMs and ignores them.  
+    Please make sure that the file you saved is in the format `WITHOUT BOM`
