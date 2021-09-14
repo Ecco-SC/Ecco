@@ -167,23 +167,23 @@ then plugin will be parse sentence by sentence from beginning to end.
 
 here is the default marcos:
 
-Marco|Usage
----|---
-include [Scripts name] (Playername)|execute another script (as the player or another player), you don't need to enter the. Echo extension, just the name. Like `weapon_shotgun_Perm.echo`, you just need to use `include weapon_ shotgun_Perm`.
-money [Number]|Increase or decrease one's balance
-addinv [Scripts name] (Playername)|Add the script to the player's inventory, which will be executed every time the player enters the game
-delinv [Scripts name] (Playername)|Remove script from player's inventory
-maxhealth [Number] (Playername)|Set the player's maximum HP
-maxarmor [Number] (Playername)|Set the player's maximum AP
-say [Text]|Add text to the player's chat bar
-broadcast [Text]|Add text to all players' chat bars
-give [Entity Classname] (PlayerName)|Give the weapon or item to a player
-log [Text]|Log text to server log
-hurt (Number) (PlayerName)|Kill (leave the first parameter blank) or hurt the player
-heal (Number) (PlayreName)|Healall (leave the first parameter blank) or heal the player
-armor (Number) (PlayreName)|Fullcharge (leave the first parameter blank) or charge the player
-maxspeed [Float] (PlayreName)|Set the player's maximum movement speed (can't exceed the server setting)
-gravity [Float]|Set the player's gravity
+|Marco|Usage|
+|---|---|
+|include [Scripts name] (Playername)|execute another script (as the player or another player), you don't need to enter the. Echo extension, just the name. Like `weapon_shotgun_Perm.echo`, you just need to use |`include weapon_ shotgun_Perm`.|
+|money [Number]|Increase or decrease one's balance
+|addinv [Scripts name] (Playername)|Add the script to the player's inventory, which will be executed every time the player enters the game|
+|delinv [Scripts name] (Playername)|Remove script from player's inventory|
+|maxhealth [Number] (Playername)|Set the player's maximum HP|
+|maxarmor [Number] (Playername)|Set the player's maximum AP|
+|say [Text]|Add text to the player's chat bar|
+|broadcast [Text]|Add text to all players' chat bars|
+|give [Entity Classname] (PlayerName)|Give the weapon or item to a player|
+|log [Text]|Log text to server log|
+|hurt (Number) (PlayerName)|Kill (leave the first parameter blank) or hurt the player|
+|heal (Number) (PlayreName)|Healall (leave the first parameter blank) or heal the player|
+|armor (Number) (PlayreName)|Fullcharge (leave the first parameter blank) or charge the player|
+|maxspeed [Float] (PlayreName)|Set the player's maximum movement speed (can't exceed the server setting)|
+|gravity [Float]|Set the player's gravity|
 
 And you can see that `%PLAYER%` is used as a placeholder for the player's name in the example
 
