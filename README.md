@@ -1,3 +1,5 @@
+**This repository is currently maintained by [DrAbc](https://github.com/DrAbcrealone).**
+
 # What is Ecco
 
 ![img](https://github.com/Paranoid-AF/EccoWikiAssets/raw/master/article1.png)
