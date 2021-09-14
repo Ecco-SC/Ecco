@@ -21,23 +21,32 @@
   gravity [float value] (playername) - Set a player's gravity.
   
 */
+namespace EccoAddon{
 namespace EccoBase{
-  void Activate(){
-    e_ScriptParser.Register("include", CustomMacro(Macro_include));
-    e_ScriptParser.Register("money", CustomMacro(Macro_money));
-    e_ScriptParser.Register("addinv", CustomMacro(Macro_addinv));
-    e_ScriptParser.Register("delinv", CustomMacro(Macro_delinv));
-    e_ScriptParser.Register("maxhealth", CustomMacro(Macro_maxhealth));
-    e_ScriptParser.Register("maxarmor", CustomMacro(Macro_maxarmor));
-    e_ScriptParser.Register("say", CustomMacro(Macro_say));
-    e_ScriptParser.Register("broadcast", CustomMacro(Macro_broadcast));
-    e_ScriptParser.Register("give", CustomMacro(Macro_give));
-    e_ScriptParser.Register("log", CustomMacro(Macro_log));
-    e_ScriptParser.Register("hurt", CustomMacro(Macro_hurt));
-    e_ScriptParser.Register("heal", CustomMacro(Macro_heal));
-    e_ScriptParser.Register("armor", CustomMacro(Macro_armor));
-    e_ScriptParser.Register("maxspeed", CustomMacro(Macro_maxspeed));
-    e_ScriptParser.Register("gravity", CustomMacro(Macro_gravity));
+  void PluginInit(){
+    e_ScriptParser.Register(CEccoMarco("include", Macro_include));
+    e_ScriptParser.Register(CEccoMarco("money", Macro_money));
+    e_ScriptParser.Register(CEccoMarco("addinv", Macro_addinv));
+    e_ScriptParser.Register(CEccoMarco("delinv", Macro_delinv));
+    e_ScriptParser.Register(CEccoMarco("maxhealth", Macro_maxhealth));
+    e_ScriptParser.Register(CEccoMarco("maxarmor", Macro_maxarmor));
+    e_ScriptParser.Register(CEccoMarco("say", Macro_say));
+    e_ScriptParser.Register(CEccoMarco("broadcast", Macro_broadcast));
+    e_ScriptParser.Register(CEccoMarco("give", Macro_give));
+    e_ScriptParser.Register(CEccoMarco("log", Macro_log));
+    e_ScriptParser.Register(CEccoMarco("hurt", Macro_hurt));
+    e_ScriptParser.Register(CEccoMarco("heal", Macro_heal));
+    e_ScriptParser.Register(CEccoMarco("armor", Macro_armor));
+    e_ScriptParser.Register(CEccoMarco("maxspeed", Macro_maxspeed));
+    e_ScriptParser.Register(CEccoMarco("gravity", Macro_gravity));
+  }
+
+  string GetAuthor(){
+      return "Paranoid_AF";
+  }
+
+  string GetContactInfo(){
+      return "Please don't";
   }
 
   CBasePlayer@ FindPlayerByName(string Name, CBasePlayer@ Default){
@@ -58,7 +67,7 @@ namespace EccoBase{
   }
 
   void ErrorInfo(string MacroName, int ArgsAmount){
-    g_Game.AlertMessage(at_console, "[ERROR - Ecco::Echo::EchoBase] " + string(ArgsAmount) + " argument(s) are not allowed for " + MacroName + "\n");
+    Logger::Log("[ERROR - Ecco::Echo::EchoBase] " + string(ArgsAmount) + " argument(s) are not allowed for " + MacroName);
   }
 
   bool Macro_include(CBasePlayer@ pPlayer, array<string>@ args){
@@ -106,9 +115,8 @@ namespace EccoBase{
         ErrorInfo("addinv", args.length());
         Success = false;
     }
-    if(!Success){
-      g_PlayerFuncs.ClientPrint(pPlayer, HUD_PRINTTALK, string(EccoConfig["LocaleAlreadyHave"])+"\n"); // TODO
-    }
+    if(!Success)
+      Logger::Chat(pPlayer,EccoConfig::GetLocateMessage("LocaleAlreadyHave", @pPlayer));
     return Success;
   }
 
@@ -301,11 +309,11 @@ namespace EccoBase{
     CBasePlayer@ targetPlayer = null;
     switch(args.length()){
       case 1:
-        pPlayer.m_flMaxSpeed = atof(args[0]);
+        pPlayer.SetMaxSpeedOverride(int(atof(args[0])));
         break;
       case 2:
         @targetPlayer = FindPlayerByName(args[1], pPlayer);
-        targetPlayer.m_flMaxSpeed = atof(args[0]);
+        targetPlayer.SetMaxSpeedOverride(int(atof(args[0])));
         break;
       default:
         ErrorInfo("maxspeed", args.length());
@@ -330,4 +338,5 @@ namespace EccoBase{
     }
     return true;
   }
+}
 }
