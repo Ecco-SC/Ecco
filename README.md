@@ -1,4 +1,4 @@
-**This repository is currently maintained by [DrAbc](https://github.com/DrAbcrealone).**
+# This repository is abandoned for now. [Use active fork by DrAbc.](https://github.com/DrAbcrealone/Ecco)
 
 # What is Ecco
 
