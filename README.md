@@ -1,9 +1,12 @@
+**This repository is currently maintained by [DrAbc](https://github.com/DrAbcrealone).**
+
 # What is Ecco
 
 ![img](https://github.com/Paranoid-AF/EccoWikiAssets/raw/master/article1.png)
+
 A complete economy & buy menu plugin for Sven Co-op 5.x
 
-## [Foked plugin document](Guidance.md)
+## [Plugin document](Guidance.md)
 
 ## [For more information on forked new features](#forked-new-features)
 
@@ -28,8 +31,6 @@ If you're a server operator, you could make full use of the script system and pl
 If you're an advanced server operator, you could even write an addon yourself, to expand the commands of the script system.
 
 And if you're a plugin developer, you could try to communicate with Ecco's data and invoke the script system within your plugin.
-
->  ** NOTE **: This is not an open-source software, since I hold the full rights to this project. With that being said, I'm always glad with people using this plugin as long as it's not for commercial use. (Like, donation to your server is fine, but you're not supposed to add their in-game balance / items that may break the experience of gameplay for this.)
 
 -----
 
