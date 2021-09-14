@@ -7,9 +7,10 @@
 #include "core/CBaseMenuItem"
 #include "core/EccoHook"
 
+const string szConfigPath = "scripts/plugins/Ecco/config/";
+
 string szRootPath = "scripts/plugins/Ecco/";
 string szStorePath = "scripts/plugins/store/Ecco/";
-const string szConfigPath = "scripts/plugins/Ecco/config/";
 
 bool bAborted = false;
 bool IsMapAllowed;
@@ -45,7 +46,10 @@ void PluginInit(){
     EccoInclude::AddonListBuilder();
     EccoInclude::PluginInit();
 
-    string szBanner = """
+    string szVersion = IO::FileTotalReader(szRootPath + "Version");
+    string szContactInfo = "Ecco\nhttps://github.com/Ecco-SC/Ecco\nVersion:" + szVersion;
+    g_Module.ScriptInfo.SetContactInfo(EccoInclude::AddAddonInfo(szContactInfo));
+        string szBanner = """
 
      /$$$$$$$$  /$$$$$$   /$$$$$$   /$$$$$$ 
     | $$_____/ /$$__  $$ /$$__  $$ /$$__  $$
@@ -57,18 +61,11 @@ void PluginInit(){
     |________/ \______/  \______/  \______/ 
 
     """;
-    string szVersion = IO::FileTotalReader(szRootPath + "Version");
-    string szContactInfo = szBanner + "\nhttps://github.com/DrAbcrealone/Ecco\nVersion:" + szVersion;
-    g_Module.ScriptInfo.SetContactInfo(EccoInclude::AddAddonInfo(szContactInfo));
-
-    string szLine = "==============================";
     string szTime;
     DateTime().Format(szTime, "%Y-%m-%d %H:%M");
-    Logger::WriteLine(szLine);
     Logger::WriteLine(szBanner);
     Logger::WriteLine("    Ver: " + szVersion);
     Logger::WriteLine("    Time: " + szTime);
-    Logger::WriteLine(szLine);
     Logger::Say(EccoConfig::GetLocateMessage("PluginReloaded"));
 }
 

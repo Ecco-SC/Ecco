@@ -22,25 +22,24 @@ namespace EccoBankEntity{
             //0 index
             //1 name
             self.pev.spawnflags = 0;
-
             //input
-            self.pev.netname = "";
+            self.pev.skin = 0;
 
             //output
             self.pev.targetname = "";
             self.pev.frags = 0;
         }
 
-        CBasePlayer@ FindPlayer(string szMessage){
+        CBasePlayer@ FindPlayer(){
             CBasePlayer@ pPlayer = null;
             switch(self.pev.spawnflags){
                 case 1: {
-                    @pPlayer = g_PlayerFuncs.FindPlayerByName(szMessage);
+                    @pPlayer = g_PlayerFuncs.FindPlayerByName(self.pev.targetname);
                     break;
                 }
                 case 0:
                 default:{
-                    @pPlayer = g_PlayerFuncs.FindPlayerByIndex(atoi(szMessage));
+                    @pPlayer = g_PlayerFuncs.FindPlayerByIndex(self.pev.skin);
                     break;
                 }
             }
@@ -48,18 +47,25 @@ namespace EccoBankEntity{
         }
 
         void Use(CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue = 0.0f){
+            CBasePlayer@ pPlayer = cast<CBasePlayer@>(@pActivator);
+            if(@pPlayer is null)
+                @pPlayer = this.FindPlayer();
             switch(useType){
                 //input
                 case USE_SET: {
-                    CBasePlayer@ pPlayer = FindPlayer(self.pev.netname);
                     if(@pPlayer !is null)
-                        e_PlayerInventory.SetBalance(@pPlayer, int(flValue));
+                        e_PlayerInventory.ChangeBalance(@pPlayer, int(flValue) - e_PlayerInventory.GetBalance(@pPlayer));
+                    break;
+                }
+                //add
+                case USE_TOGGLE:{
+                    if(@pPlayer !is null)
+                        e_PlayerInventory.ChangeBalance(@pPlayer, int(flValue));
                     break;
                 }
                 //output
                 case USE_ON:
                 default: {
-                    CBasePlayer@ pPlayer = FindPlayer(self.pev.targetname);
                     if(@pPlayer !is null)
                         self.pev.frags = e_PlayerInventory.GetBalance(@pPlayer);
                     break;

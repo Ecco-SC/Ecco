@@ -300,7 +300,7 @@ wala, addon activited.
 
 ## EccoBankEntity
 
-As we all know, angelscripts plugins and plugins are in a completely isolated environment, and plug-ins cannot directly affect each other.
+As we all know, angelscripts plugins and plugins are in a completely isolated environment, and plugins cannot directly affect each other.
 
 so `EccoBankEntity.as` add a interface entity for other plugins to set player's balacne in game.
 
@@ -310,19 +310,23 @@ void GrabBankEntity(CBasePlayer@ pPlayer){
     CBaseEntity@ pEntity = g_EntityFuncs.FindEntityByClassname(@pEntity, "info_ecco_bank");
     //set player balance
     //indexmode
-    pEntity.pev.spawnflag = 0;
-    pEntity.pev.netname = pPlayer.entindex();
-    pEntity.Use(null, null, USE_SET, 114514);
-    //get player balance
-    //namemode
-    pEntity.pev.spawnflag = 1;
+    pEntity.pev.spawnflags = 1;
     pEntity.pev.targetname = pPlayer.pev.netname;
     pEntity.Use(null, null, USE_ON);
-    int iBalance = pEntity.pev.frags;
+    int iBalance = int(pEntity.pev.frags);
     g_PlayerFuncs.SayText(@pPlayer, "The balance on your account is $" + iBalance + "\n");
+	//set player balance
+    //indexmode
+    pEntity.pev.spawnflags = 0;
+    pEntity.pev.skin = pPlayer.entindex();
+    pEntity.Use(null, null, USE_SET, 114514);
+    //add player balance
+    //direct mode
+    pEntity.Use(@pPlayer, null, USE_TOGGLE, -114514);
 }
 ```
 Easy, now you try.
+
 If you don't want this features, delete include in `Include.as`
 
 ## EccoSQL
@@ -359,3 +363,17 @@ It is a plugin used with CSAS-ODS program or other programs to use SQL or todo o
 
     A: Some editor will add stupid BOM header for UTF8 file automatically.However, Ecco plugin does not recognize which files have BOMs and ignores them.  
     Please make sure that the file you saved is in the format `WITHOUT BOM`
+
+5. Q: 
+   ```
+   [CRITICAL]Cannot read the config file, check if it exists and SCDS has the permission to access it!
+        Reading path: scripts/plugins/Ecco/config/Config.ini
+        Ecco aborted loading.
+    ```
+
+    Why? how can i change config file path?
+
+    A: This is the only place where a fixed variable needs to be used in the whole plugin, If your `Ecco.as` is not installed in `scripts/plugins/Ecco/`,
+    Please open `Ecco.as`, and edit this line:
+
+    `const string szConfigPath = "scripts/plugins/Ecco/config/";`
