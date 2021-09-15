@@ -84,12 +84,12 @@ namespace EccoPlayerStorage{
     }
 
     void RegisterTimer(){
-        @RefreshScore = g_Scheduler.SetInterval("RefreshBuffer", EccoConfig::GetConfig()["Ecco.BaseConfig", "RefreshTimer"].getFloat(), g_Scheduler.REPEAT_INFINITE_TIMES);
+        @RefreshScore = g_Scheduler.SetInterval("RefreshBuffer", EccoConfig::pConfig.BaseConfig.RefreshTimer, g_Scheduler.REPEAT_INFINITE_TIMES);
     }
 
     void RefreshBuffer(){
-        float flConfigMultiplier = EccoConfig::GetConfig()["Ecco.BaseConfig", "ScoreToMoneyMultiplier"].getFloat();
-        int iMaxLimitation = EccoConfig::GetConfig()["Ecco.BaseConfig", "ObtainMoneyPerMapMax"].getInt();
+        float flConfigMultiplier = EccoConfig::pConfig.BaseConfig.ScoreToMoneyMultiplier;
+        int iMaxLimitation = EccoConfig::pConfig.BaseConfig.ObtainMoneyPerMapMax;
         for(int i = 0; i <= g_Engine.maxClients; i++){
             CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex(i);
             if(pPlayer !is null){

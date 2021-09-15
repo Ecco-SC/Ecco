@@ -96,20 +96,20 @@ class EccoPlayerInventory{
     
     void RefreshHUD(CBasePlayer@ pPlayer){
         if(pPlayer !is null){
-            switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "ShowMoneyHUD"].getInt()){
+            switch(EccoConfig::pConfig.BaseConfig.ShowMoneyHUD){
                 case 1:
                 case 2:{
                     HUDNumDisplayParams params;
                     int iBalance = GetBalance(pPlayer);
-                    params.spritename = EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconPath"].getString();
+                    params.spritename = EccoConfig::pConfig.BaseConfig.MoneyIconPath;
                     params.color1 = 
-                        iBalance >= 0 ? EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconPositiveColor"].getRGBA() : 
-                                        EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconNegativeColor"].getRGBA();
+                        iBalance >= 0 ? EccoConfig::pConfig.BaseConfig.MoneyIconPositiveColor : 
+                                        EccoConfig::pConfig.BaseConfig.MoneyIconNegativeColor;
                     params.value = iBalance;
                     params.channel = 3;
                     params.flags = HUD_ELEM_SCR_CENTER_X | HUD_ELEM_DEFAULT_ALPHA | HUD_NUM_NEGATIVE_NUMBERS ;
-                    params.x = EccoConfig::GetConfig()["Ecco.BaseConfig", "HUDMainPostion"].getVector2D().x;
-                    params.y = EccoConfig::GetConfig()["Ecco.BaseConfig", "HUDMainPostion"].getVector2D().y;
+                    params.x = EccoConfig::pConfig.BaseConfig.HUDMainPostion.x;
+                    params.y = EccoConfig::pConfig.BaseConfig.HUDMainPostion.y;
                     params.defdigits = 1;
                     params.maxdigits = 12;
                     g_PlayerFuncs.HudNumDisplay(pPlayer, params);
@@ -120,7 +120,7 @@ class EccoPlayerInventory{
     }
     
     string FormmatSteamID(string szID){
-        switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "SteamIDFormmat"].getInt()){
+        switch(EccoConfig::pConfig.BaseConfig.SteamIDFormmat){
             case 1: return szID;
             case 2: return g_SteamIDHelper.toCommunity(szID);
             case 3: return szID.SubString(6).Replace(":", "");
@@ -164,7 +164,7 @@ class EccoPlayerInventory{
 
     void ShowHUD(CBasePlayer@ pPlayer, int amount){
         if(pPlayer !is null){
-            switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "ShowMoneyHUD"].getInt()){
+            switch(EccoConfig::pConfig.BaseConfig.ShowMoneyHUD){
                 case 1:
                 case 3:{
                     HUDNumDisplayParams params;
@@ -174,13 +174,13 @@ class EccoPlayerInventory{
                     params.fadeinTime = 0.15;
                     params.holdTime = 1;
                     params.fadeoutTime = 0.15;
-                    params.x = EccoConfig::GetConfig()["Ecco.BaseConfig", "HUDValueChangePostion"].getVector2D().x;
-                    params.y = EccoConfig::GetConfig()["Ecco.BaseConfig", "HUDValueChangePostion"].getVector2D().y;
+                    params.x = EccoConfig::pConfig.BaseConfig.HUDValueChangePostion.x;
+                    params.y = EccoConfig::pConfig.BaseConfig.HUDValueChangePostion.y;
                     params.defdigits = 1;
                     params.maxdigits = 8;
                     params.color1 = 
-                        amount < 0 ? EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconDecreaseColor"].getRGBA() : 
-                                    EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconIncreaseColor"].getRGBA();
+                        amount < 0 ? EccoConfig::pConfig.BaseConfig.MoneyIconDecreaseColor : 
+                                    EccoConfig::pConfig.BaseConfig.MoneyIconIncreaseColor;
                     g_PlayerFuncs.HudNumDisplay(pPlayer, params);
                     RefreshHUD(pPlayer);
                 }

@@ -116,7 +116,7 @@ namespace EccoBase{
         Success = false;
     }
     if(!Success)
-      Logger::Chat(pPlayer,EccoConfig::GetLocateMessage("LocaleAlreadyHave", @pPlayer));
+      Logger::Chat(pPlayer,EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.LocaleAlreadyHave, @pPlayer));
     return Success;
   }
 

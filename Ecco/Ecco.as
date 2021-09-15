@@ -7,7 +7,7 @@
 #include "core/CBaseMenuItem"
 #include "core/EccoHook"
 
-const string szConfigPath = "scripts/plugins/Ecco/config/";
+const string szConfigPath = "scripts/plugins/Eccogit/Ecco/config/";
 
 string szRootPath = "scripts/plugins/Ecco/";
 string szStorePath = "scripts/plugins/store/Ecco/";
@@ -25,8 +25,8 @@ void PluginInit(){
         return;
     }
 
-    szRootPath = EccoConfig::GetConfig()["Ecco.BaseConfig", "PluginsRootPath"].getString();
-    szStorePath = EccoConfig::GetConfig()["Ecco.BaseConfig", "PluginsStorePath"].getString();
+    szRootPath = EccoConfig::pConfig.BaseConfig.PluginsRootPath;
+    szStorePath = EccoConfig::pConfig.BaseConfig.PluginsStorePath;
 
     EccoProcessVar::Register("%PLAYER%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, pPlayer.pev.netname);});
     EccoProcessVar::Register("%RANDOMPLAYER%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, e_PlayerInventory.GetRandomPlayerName());});
@@ -66,25 +66,25 @@ void PluginInit(){
     Logger::WriteLine(szBanner);
     Logger::WriteLine("    Ver: " + szVersion);
     Logger::WriteLine("    Time: " + szTime);
-    Logger::Say(EccoConfig::GetLocateMessage("PluginReloaded"));
+    Logger::Say(EccoConfig::pConfig.LocaleSetting.PluginReloaded);
 }
 
 void MapInit(){
     if(bAborted)
         return;
-    g_Game.PrecacheModel("sprites/" + EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconPath"].getString());
-    g_Game.PrecacheGeneric("sprites/" + EccoConfig::GetConfig()["Ecco.BaseConfig", "MoneyIconPath"].getString());
+    g_Game.PrecacheModel("sprites/" + EccoConfig::pConfig.BaseConfig.MoneyIconPath);
+    g_Game.PrecacheGeneric("sprites/" + EccoConfig::pConfig.BaseConfig.MoneyIconPath);
     SmartPrecache::PrecacheByList();
 
     IsMapAllowed = true;
-    array<string>@ aryMaps = IO::FileLineReader(szRootPath + EccoConfig::GetConfig()["Ecco.BaseConfig", "BanMapPath"].getString(), function(string szLine){ if(szLine != g_Engine.mapname){return "\n";}return g_Engine.mapname;});
+    array<string>@ aryMaps = IO::FileLineReader(szRootPath + EccoConfig::pConfig.BaseConfig.BanMapPath, function(string szLine){ if(szLine != g_Engine.mapname){return "\n";}return g_Engine.mapname;});
     if(aryMaps.length() > 0 && aryMaps[aryMaps.length() - 1] == g_Engine.mapname)
         IsMapAllowed = false;
 
     if(IsMapAllowed)
         EccoBuyMenu::ReadScriptList();
     
-    switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "SereisMapCheckMethod"].getInt()){
+    switch(EccoConfig::pConfig.BaseConfig.SereisMapCheckMethod){
         //经典模式
         case 0: {
             bShouldCleanScore = szLastNextMap != g_Engine.mapname;
@@ -93,7 +93,7 @@ void MapInit(){
         }
         //LCS
         case 1:{
-            bShouldCleanScore = EccoUtility::GetLCS(szLastNextMap, g_Engine.mapname) < EccoConfig::GetConfig()["Ecco.BaseConfig", "SereisMapLCSCheckRatio"].getFloat();
+            bShouldCleanScore = EccoUtility::GetLCS(szLastNextMap, g_Engine.mapname) < EccoConfig::pConfig.BaseConfig.SereisMapLCSCheckRatio;
             szLastNextMap = g_Engine.mapname;
             break;
         }
@@ -101,7 +101,7 @@ void MapInit(){
         case 2:{
             string szTemp = EccoUtility::GetNextMap();
             if(szTemp.IsEmpty()){
-                bShouldCleanScore = EccoUtility::GetLCS(szLastNextMap, g_Engine.mapname) < EccoConfig::GetConfig()["Ecco.BaseConfig", "SereisMapLCSCheckRatio"].getFloat();
+                bShouldCleanScore = EccoUtility::GetLCS(szLastNextMap, g_Engine.mapname) < EccoConfig::pConfig.BaseConfig.SereisMapLCSCheckRatio;
                 szLastNextMap = g_Engine.mapname;
             }
             else{
@@ -138,15 +138,17 @@ HookReturnCode onChat(SayParameters@ pParams){
     const CCommand@ pCommand = pParams.GetArguments();
     string arg = pCommand[0];
     if(pPlayer !is null && (arg.StartsWith("!") || arg.StartsWith("/"))){
-        if(arg.SubString(1).ToLowercase() != EccoConfig::GetConfig()["Ecco.BuyMenu", "OpenShopTrigger"].getString())
+        if(arg.SubString(1).ToLowercase() != EccoConfig::pConfig.BuyMenu.OpenShopTrigger)
             return HOOK_CONTINUE;
         pParams.ShouldHide = true;
         if(!IsMapAllowed){
-            Logger::Chat(pPlayer, EccoConfig::GetLocateMessage("ChatLogTitle", @pPlayer) + " " + EccoConfig::GetLocateMessage("LocaleNotAllowed", @pPlayer));
+            Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + 
+            " " + EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.LocaleNotAllowed, @pPlayer));
             return HOOK_CONTINUE;
         }
         if(EccoBuyMenu::IsEmpty()){
-            Logger::Chat(pPlayer, EccoConfig::GetLocateMessage("ChatLogTitle", @pPlayer) + " " + EccoConfig::GetLocateMessage("EmptyBuyList", @pPlayer));
+            Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + " " + 
+            EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.EmptyBuyList, @pPlayer));
             return HOOK_CONTINUE;
         }
         if(pCommand.ArgC() <= 1)
@@ -173,8 +175,8 @@ HookReturnCode onChat(SayParameters@ pParams){
             if(@pItem !is null)
                 pItem.Excute(@pPlayer);
             else
-                Logger::Chat(pPlayer, EccoConfig::GetLocateMessage("ChatLogTitle", @pPlayer) + 
-                    " " + EccoConfig::GetLocateMessage("NullPointerMenu") + szPointer);
+                Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + 
+                    " " + EccoConfig::pConfig.LocaleSetting.NullPointerMenu + szPointer);
         }
         return HOOK_HANDLED;
     }
@@ -183,14 +185,14 @@ HookReturnCode onChat(SayParameters@ pParams){
 
 HookReturnCode onJoin(CBasePlayer@ pPlayer){
     if(IsMapAllowed){
-        switch(EccoConfig::GetConfig()["Ecco.BaseConfig", "StorePlayerScore"].getInt()){
+        switch(EccoConfig::pConfig.BaseConfig.StorePlayerScore){
             case 2: break;
             case 1: if(bShouldCleanScore == false){break;}
             case 0: {
                 if(EccoPlayerStorage::Exists(@pPlayer)){
                     EccoPlayerStorage::CPlayerStorageDataItem@ pItem = EccoPlayerStorage::pData.Get(@pPlayer);
                     DateTime pNow;
-                    if(pItem.szLastPlayMap == g_Engine.mapname && (pNow - pItem.pLastUpdateTime).GetSeconds() < EccoConfig::GetConfig()["Ecco.BaseConfig", "ClearMaintenanceTimeMax"].getInt())
+                    if(pItem.szLastPlayMap == g_Engine.mapname && (pNow - pItem.pLastUpdateTime).GetSeconds() < EccoConfig::pConfig.BaseConfig.ClearMaintenanceTimeMax)
                         break;
                     else{
                         pItem.szLastPlayMap = g_Engine.mapname;
@@ -198,7 +200,7 @@ HookReturnCode onJoin(CBasePlayer@ pPlayer){
                     }
                 }
             }
-            default: e_PlayerInventory.SetBalance(@pPlayer, EccoConfig::GetConfig()["Ecco.BaseConfig", "PlayerStartScore"].getInt());break;
+            default: e_PlayerInventory.SetBalance(@pPlayer, EccoConfig::pConfig.BaseConfig.PlayerStartScore);break;
         }
         EccoPlayerStorage::ResetPlayerBuffer(@pPlayer);
         EccoInventoryLoader::LoadPlayerInventory(@pPlayer);

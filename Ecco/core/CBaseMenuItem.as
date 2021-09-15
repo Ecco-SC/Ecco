@@ -40,8 +40,8 @@ class CBaseMenuItem{
                 }
             }else
                 Logger::Chat(pPlayer, 
-                    EccoConfig::GetLocateMessage("ChatLogTitle", @pPlayer) + 
-                    EccoConfig::GetLocateMessage("CannotAffordPrice", @pPlayer));
+                    EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + 
+                    EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.CannotAffordPrice, @pPlayer));
             return false;
         }
         else{
@@ -60,7 +60,7 @@ class CBaseMenuItem{
             pItem.ScriptName = _ScriptName;
             @pItem.pParent = @this;
             aryChildren.insertLast(pItem);
-            pItem.DisplayName = EccoConfig::GetLocateMessage("ItemDisplayFormat", @pItem);
+            pItem.DisplayName = EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ItemDisplayFormat, @pItem);
         }
         else{
             uint index = szName.FindFirstOf(".");
@@ -78,7 +78,7 @@ class CBaseMenuItem{
                 pItem.DisplayName = pItem.Name = _Name;
                 @pItem.pTextMenu = CTextMenu(function(CTextMenu@ mMenu, CBasePlayer@ pPlayer, int iPage, const CTextMenuItem@ mItem){
                     if(mItem !is null && pPlayer !is null){
-                        if(mItem.m_szName == EccoConfig::GetLocateMessage("BackPreviousMenu"))
+                        if(mItem.m_szName == EccoConfig::pConfig.LocaleSetting.BackPreviousMenu)
                             EccoBuyMenu::GetBaseMenuItem(@mMenu).pParent.Excute(@pPlayer);
                         else{
                             CBaseMenuItem@ pItem = EccoBuyMenu::GetBaseMenuItem(mMenu, mItem.m_szName);
@@ -87,7 +87,7 @@ class CBaseMenuItem{
                         }
                     }
                 });
-                pItem.pTextMenu.SetTitle(EccoConfig::GetConfig()["Ecco.BaseConfig", "BuyMenuName"].getString() + "\nViewing: " + _Name + "\n");
+                pItem.pTextMenu.SetTitle(EccoConfig::pConfig.BaseConfig.BuyMenuName + "\nViewing: " + _Name + "\n");
                 @pItem.pParent = @this;
                 aryChildren.insertLast(pItem);
             }
@@ -98,9 +98,9 @@ class CBaseMenuItem{
     CBaseMenuItem@ GetItem(CTextMenu@ _pTextMenu, string _DisplayName){
         if(@this.pParent !is null && @this.pParent.pTextMenu is @_pTextMenu && (
                 (_DisplayName == this.DisplayName && 
-                    !EccoConfig::GetConfig()["Ecco.BuyMenu", "UseBlurMatchForArgs"].getBool()) || 
+                    !EccoConfig::pConfig.BuyMenu.UseBlurMatchForArgs) || 
                 (this.DisplayName.Find(_DisplayName) != String::INVALID_INDEX && 
-                    EccoConfig::GetConfig()["Ecco.BuyMenu", "UseBlurMatchForArgs"].getBool())
+                    EccoConfig::pConfig.BuyMenu.UseBlurMatchForArgs)
             )
         )
             return @this;
@@ -143,8 +143,8 @@ class CBaseMenuItem{
             uint iPage = 0;
             uint iIndex = 0;
             for(uint i = 0; i < aryChildren.length();i++){
-                if(aryChildren.length() > 9 && i % 6 == 0 && i != 0 && this.Name != EccoConfig::GetConfig()["Ecco.BuyMenu", "RootNodeName"].getString()){
-                    this.pTextMenu.AddItem(EccoConfig::GetLocateMessage("BackPreviousMenu"), null);
+                if(aryChildren.length() > 9 && i % 6 == 0 && i != 0 && this.Name != EccoConfig::pConfig.BuyMenu.RootNodeName){
+                    this.pTextMenu.AddItem(EccoConfig::pConfig.LocaleSetting.BackPreviousMenu, null);
                     iPage++;
                     iIndex = 0;
                 }
@@ -153,8 +153,8 @@ class CBaseMenuItem{
                 aryChildren[i].Index = iIndex;
                 iIndex++;
             }
-            if(this.Name != EccoConfig::GetConfig()["Ecco.BuyMenu", "RootNodeName"].getString())
-                this.pTextMenu.AddItem(EccoConfig::GetLocateMessage("BackPreviousMenu"), null);
+            if(this.Name != EccoConfig::pConfig.BuyMenu.RootNodeName)
+                this.pTextMenu.AddItem(EccoConfig::pConfig.LocaleSetting.BackPreviousMenu, null);
             this.pTextMenu.Register();
             for(uint i = 0; i < aryChildren.length();i++){
                 aryChildren[i].TextMenuRegister();

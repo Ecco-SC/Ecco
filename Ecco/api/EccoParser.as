@@ -113,7 +113,7 @@ class CEccoScriptParser{
         return null;
     }
     void BuildItemList(){
-        array<string>@ aryScripts = IO::FileLineReader(szRootPath + EccoConfig::GetConfig()["Ecco.BaseConfig", "ScriptsPath"].getString());
+        array<string>@ aryScripts = IO::FileLineReader(szRootPath + EccoConfig::pConfig.BaseConfig.ScriptsPath);
         for(uint i = 0; i < aryScripts.length();i++){
             CEccoScriptItem@ pItem = CEccoScriptItem(aryScripts[i]);
             if(!pItem.IsEmpty())

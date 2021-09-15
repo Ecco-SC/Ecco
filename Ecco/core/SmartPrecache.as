@@ -1,6 +1,6 @@
 namespace SmartPrecache{
     void PrecacheByList(){
-        array<string>@ aryList = IO::FileLineReader(szRootPath + EccoConfig::GetConfig()["Ecco.BaseConfig", "SmartPrecachePath"].getString());
+        array<string>@ aryList = IO::FileLineReader(szRootPath + EccoConfig::pConfig.BaseConfig.SmartPrecachePath);
         if(aryList !is null && aryList.length() > 0){
             for(uint i = 0; i < aryList.length();i++){
                 string szLine = aryList[i];

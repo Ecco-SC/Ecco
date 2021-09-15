@@ -1,1 +1,3 @@
 ammo_357
+item_battery
+weapon_bfg9000
