@@ -7,7 +7,7 @@
 #include "core/CBaseMenuItem"
 #include "core/EccoHook"
 
-const string szConfigPath = "scripts/plugins/Eccogit/Ecco/config/";
+const string szConfigPath = "scripts/plugins/Ecco/config/";
 
 string szRootPath = "scripts/plugins/Ecco/";
 string szStorePath = "scripts/plugins/store/Ecco/";
