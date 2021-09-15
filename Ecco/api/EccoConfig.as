@@ -29,6 +29,7 @@ namespace EccoConfig{
         string RootNodeName="root";
         string OpenShopTrigger="buy";
         bool UseBlurMatchForArgs=true;
+        bool AllowDeathPlayerBuy=true;
     }
     class CLocaleSetting{
         string ItemDisplayFormat="%MENUNAME% - %COST%";
@@ -40,6 +41,7 @@ namespace EccoConfig{
         string PluginReloaded=" [ - 插件已重载,将禁用购买功能,换图恢复 - ]";
         string EmptyBuyList=" [ - 购买列表为空 - ]";
         string ChatLogTitle="[Ecco菜单]";
+        string RefuseDiedPlyaerBuy=" [ - 你已经是个死人了 - ]";
     }
     class CEcco{
         CBaseConfig BaseConfig;
@@ -78,6 +80,7 @@ namespace EccoConfig{
         pConfig.BuyMenu.RootNodeName = pINI["Ecco.BuyMenu", "RootNodeName"].getString();
         pConfig.BuyMenu.OpenShopTrigger = pINI["Ecco.BuyMenu", "OpenShopTrigger"].getString();
         pConfig.BuyMenu.UseBlurMatchForArgs = pINI["Ecco.BuyMenu", "UseBlurMatchForArgs"].getBool();
+        pConfig.BuyMenu.AllowDeathPlayerBuy = pINI["Ecco.BuyMenu", "AllowDeathPlayerBuy"].getBool();
 
         pConfig.LocaleSetting.ItemDisplayFormat = pINI["Ecco.LocaleSetting", "ItemDisplayFormat"].getString();
         pConfig.LocaleSetting.LocaleAlreadyHave = pINI["Ecco.LocaleSetting", "LocaleAlreadyHave"].getString();
@@ -88,6 +91,7 @@ namespace EccoConfig{
         pConfig.LocaleSetting.PluginReloaded = pINI["Ecco.LocaleSetting", "PluginReloaded"].getString();
         pConfig.LocaleSetting.EmptyBuyList = pINI["Ecco.LocaleSetting", "EmptyBuyList"].getString();
         pConfig.LocaleSetting.ChatLogTitle = pINI["Ecco.LocaleSetting", "ChatLogTitle"].getString();
+        pConfig.LocaleSetting.RefuseDiedPlyaerBuy = pINI["Ecco.LocaleSetting", "RefuseDiedPlyaerBuy"].getString();
     }
 
     bool RefreshEccoConfig(){

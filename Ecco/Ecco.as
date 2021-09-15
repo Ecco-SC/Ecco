@@ -142,13 +142,18 @@ HookReturnCode onChat(SayParameters@ pParams){
             return HOOK_CONTINUE;
         pParams.ShouldHide = true;
         if(!IsMapAllowed){
-            Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + 
-            " " + EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.LocaleNotAllowed, @pPlayer));
+            Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + " " + 
+            EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.LocaleNotAllowed, @pPlayer));
             return HOOK_CONTINUE;
         }
         if(EccoBuyMenu::IsEmpty()){
             Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + " " + 
             EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.EmptyBuyList, @pPlayer));
+            return HOOK_CONTINUE;
+        }
+        if(!EccoConfig::pConfig.BuyMenu.AllowDeathPlayerBuy && !pPlayer.IsAlive()){
+            Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + " " + 
+            EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.RefuseDiedPlyaerBuy, @pPlayer));
             return HOOK_CONTINUE;
         }
         if(pCommand.ArgC() <= 1)
