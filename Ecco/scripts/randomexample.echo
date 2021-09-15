@@ -1,0 +1,7 @@
+name: Random.RandomGift
+cost: 1
+{
+  50 say Thx pal
+  29 broadcast %PLAYER% got nothing hahahahaha
+  1 broadcast congratulate %PLAYER% got an excalibruh! && give weapon_crowbar
+}

@@ -1,0 +1,3 @@
+name: ItemPack.Battery
+cost: 5
+give item_battery

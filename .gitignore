@@ -2,4 +2,8 @@
 Ecco/config/*.txt
 Ecco/scripts/*.txt
 Ecco/scripts/*.echo
+!Ecco/scripts/weapon_bfg9000.echo
+!Ecco/scripts/ammoexample.echo
+!Ecco/scripts/itemexample.echo
+!Ecco/scripts/randomexample.echo
 Ecco/*.txt
