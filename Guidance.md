@@ -21,7 +21,7 @@ A complete economy & buy menu plugin for Sven Co-op 5.x
 1. Grab plugin in `Ecco` directory
 2. Put `Ecco` directory into `svencoop_addon/scripts/plugins/`
 3. Create directory `svencoop/scripts/plugins/store/Ecco` and ensure has write permission (Very important!)
-4. Unzip `Init.7z` or `Init_CN.7z` into `svencoop_addon/scripts/plugins/Ecco/scripts`
+4. Put `assets/dollar.spr` into `svencoop_addon/sprites/misc/dollar.spr`
 5. Add these `.echo` file name into `svencoop_addon/scripts/plugins/Ecco/config/Scripts.txt` (without `.echo` extension)
 6. Open `/svencoop/default_plugins.txt` with notepad or other software, add
  ```
