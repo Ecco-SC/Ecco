@@ -56,6 +56,8 @@ class EccoPlayerInventory{
         EccoHook::PreChangeBalance(pPlayer, Amount, bFlag);
         if(bFlag){
             WriteInData(pPlayer, Amount);
+            if(pConfig.BaseConfig.SaveInFuser3)
+                pPlayer.pev.fuser3 = float(Amount);
             EccoHook::PostChangeBalance(pPlayer, Amount);
         }
     }
