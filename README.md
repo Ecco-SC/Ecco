@@ -12,6 +12,24 @@ A complete economy & buy menu plugin for Sven Co-op 5.x
 
 ## [For more information on forked new features](#forked-new-features)
 
+## Quick start
+1. Grab plugin in Ecco directory
+2. Put Ecco directory into svencoop_addon/scripts/plugins/
+3. Create directory svencoop/scripts/plugins/store/Ecco and ensure has write permission (***Very important!***)
+4. Put assets/dollar.spr into svencoop_addon/sprites/misc/dollar.spr
+5. Add these .echo file name into svencoop_addon/scripts/plugins/Ecco/config/Scripts.txt (without .echo extension)
+6. Open /svencoop/default_plugins.txt with notepad or other software, add
+
+```
+"plugin"
+   {
+   	"name" "Ecco"
+   	"script" "Ecco/Ecco"
+   }
+ ```
+ 
+7. Start game
+
 ## Basically an Economy Plugin
 
 Ecco saves players' scores permanently, adding them to players' balance, and allows other plugins to interact with the data. Like, a buy menu plugin could deduct the currency, and a game mode plugin could also add currency to players' balance, as a reward. In the long run, it encourages players to keep on playing.
