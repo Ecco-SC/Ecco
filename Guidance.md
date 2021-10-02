@@ -13,6 +13,7 @@ A complete economy & buy menu plugin for Sven Co-op 5.x
 - [Default addon](#default-addon)
   - [EccoBankEntity](#eccobankentity)
   - [EccoSQL](#eccosql)
+  - [EccoEntity](#eccoentity)
 - [Q&A](#qa)
 ----
 
@@ -344,6 +345,16 @@ It is a plugin used with CSAS-ODS program or other programs to use SQL or todo o
   - SteamID
   - Ecco
   - Additional string
+
+## EccoEntity
+
+Buy an entity with Ecco
+
+Ecco commands:
+
+```
+    add_friendly_ent_at_aim [entity name] (hp) (display name) (model) 
+```
 
 # Q&A
 
