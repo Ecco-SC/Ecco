@@ -24,7 +24,6 @@ namespace EccoConfig{
         int ClearMaintenanceTimeMax=43200;
         int ObtainMoneyPerMapMax=-1;
         uint SteamIDFormmat=0;
-        bool SaveInFuser3=false;
     }
     class CBuyMenu{
         string RootNodeName="root";
@@ -77,7 +76,6 @@ namespace EccoConfig{
         pConfig.BaseConfig.ClearMaintenanceTimeMax = pINI["Ecco.BaseConfig", "ClearMaintenanceTimeMax"].getInt();
         pConfig.BaseConfig.ObtainMoneyPerMapMax = pINI["Ecco.BaseConfig", "ObtainMoneyPerMapMax"].getInt();
         pConfig.BaseConfig.SteamIDFormmat = pINI["Ecco.BaseConfig", "SteamIDFormmat"].getInt();
-        pConfig.BaseConfig.SaveInFuser3 = pINI["Ecco.BaseConfig", "SaveInFuser3"].getBool();
 
         pConfig.BuyMenu.RootNodeName = pINI["Ecco.BuyMenu", "RootNodeName"].getString();
         pConfig.BuyMenu.OpenShopTrigger = pINI["Ecco.BuyMenu", "OpenShopTrigger"].getString();
