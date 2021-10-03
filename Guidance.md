@@ -151,19 +151,25 @@ ChatLogTitle="[Ecco]"
 # Write Echo script
 
 ## Basic
-Here is an example script
+Here is an example script:
+
 `Example.echo`
+
 ```
 name: Heavy.Big Fucking gun 9000
 cost: 114514
 give weapon_bfg900
 broadcast OMG,%PLAYER% bought a BFG and was ready to kill!!!
 ```
-the `Example.echo` added an weapon which shown as `Big Fucking gun 9000` under `Heavy` category. when a player Goofy brought this item, plugin will take his 114514 points from ecco bank, and give him a `weapon_bfg9000`, then, broadcast a line in chat message like this:
+
+the `Example.echo` added an weapon which shown as `Big Fucking gun 9000` under `Heavy` category. when a player Goofy brought this item, plugin will take his 114514 points from ecco bank, and give him a 
+
+`weapon_bfg9000`, then, broadcast a line in chat message like this:
 
 `[Ecco]: OMG,Goofy bought a BFG and was ready to kill!!!`
 
 As you can see from the example, `name` and `cost` is necessary for an echo script.
+
 then plugin will be parse sentence by sentence from beginning to end.
 
 here is the default marcos:
@@ -236,6 +242,7 @@ At the same time, multiple commands can be connected through `&&` without line f
 ## Developer
 
 You may find that the basic instruction Library of echo may not meet all requirements. At this time, you can try to develop echo script extensions.
+
 Create your own as file in `/Ecco/addons`, open it and add the following content:
 
 ```csharp
@@ -306,6 +313,7 @@ As we all know, angelscripts plugins and plugins are in a completely isolated en
 so `EccoBankEntity.as` add a interface entity for other plugins to set player's balacne in game.
 
 For example:
+
 ```csharp
 void GrabBankEntity(CBasePlayer@ pPlayer){
     CBaseEntity@ pEntity = g_EntityFuncs.FindEntityByClassname(@pEntity, "info_ecco_bank");
@@ -326,6 +334,7 @@ void GrabBankEntity(CBasePlayer@ pPlayer){
     pEntity.Use(@pPlayer, null, USE_TOGGLE, -114514);
 }
 ```
+
 Easy, now you try.
 
 If you don't want this features, delete include in `Include.as`
@@ -373,6 +382,7 @@ Ecco commands:
 4. Q: Why plugin can not read the first line of configure?
 
     A: Some editor will add stupid BOM header for UTF8 file automatically.However, Ecco plugin does not recognize which files have BOMs and ignores them.  
+
     Please make sure that the file you saved is in the format `WITHOUT BOM`
 
 5. Q: 
@@ -388,3 +398,9 @@ Ecco commands:
     Please open `Ecco.as`, and edit this line:
 
     `const string szConfigPath = "scripts/plugins/Ecco/config/";`
+
+6. Q: My menu is completely messed up! How can I set the order of menu items?
+
+   A: The menu display order is based on the loading order of echo files in `Scripts.txt`, The plugin will load the `echo` file from beginning to end.
+
+   Therefore, if you need to set the display order of the menu, you just need to modify the loading order of the `echo` file in the `Scripts.txt`.
