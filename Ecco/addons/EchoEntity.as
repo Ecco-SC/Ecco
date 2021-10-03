@@ -22,7 +22,7 @@ namespace EchoEntity
     }
 
     string GetContactInfo(){
-        return "Please don't";
+        return "https://github.com/Ecco-SC/Ecco";
     }
 
     class CEchoEntityHandle
