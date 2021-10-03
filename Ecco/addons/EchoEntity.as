@@ -18,7 +18,7 @@ namespace EchoEntity
     }
 
     string GetAuthor(){
-        return "Paranoid_AF";
+        return "Paranoid_AF|Dr.Abc";
     }
 
     string GetContactInfo(){
