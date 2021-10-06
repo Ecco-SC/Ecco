@@ -6,8 +6,9 @@
 #include "core/SmartPrecache"
 #include "core/CBaseMenuItem"
 #include "core/EccoHook"
-
-const string szConfigPath = "scripts/plugins/Ecco/config/";
+//如果你的Config文件不在默认位置，这行必须被修改
+//You have to edit this line if your config file is not in default position
+const string szConfigPath = "scripts/plugins/Eccogit/Ecco/config/";
 
 string szRootPath = "scripts/plugins/Ecco/";
 string szStorePath = "scripts/plugins/store/Ecco/";
