@@ -57,7 +57,7 @@ class EccoPlayerInventory{
         if(bFlag){
             WriteInData(pPlayer, Amount);
             if(pConfig.BaseConfig.SaveInKeyvalue)
-                g_EngineFuncs.GetPhysicsKeyBuffer(pPlayer.edict()).kv.SetValue(pConfig.BaseConfig.SaveInKeyvalueKey, Amount);
+                g_EngineFuncs.GetPhysicsKeyBuffer(pPlayer.edict()).SetValue(pConfig.BaseConfig.SaveInKeyvalueKey, Amount);
             EccoHook::PostChangeBalance(pPlayer, Amount);
         }
     }
