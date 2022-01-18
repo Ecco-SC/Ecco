@@ -48,12 +48,12 @@ class CBaseMenuItem{
     }
 
     void Open(const int iDisplayTime, const uint page, CBasePlayer@ pPlayer){
-        EccoHook::OpenBuyMenu(iDisplayTime, page, @pPlayer);
+        EccoHook::OpenBuyMenu(iDisplayTime, page, @pPlayer, this);
         pTextMenu.Open(iDisplayTime, page, @pPlayer);
     }
 
     bool Excute(CBasePlayer@ pPlayer, uint iPage = 0){
-        EccoHook::ExcuteBuyMenu(@pPlayer, iPage);
+        EccoHook::ExcuteBuyMenu(@pPlayer, iPage, this);
         if(IsTerminal){
             int PlayerBalance = e_PlayerInventory.GetBalance(pPlayer);
             pParent.Excute(@pPlayer, Page);

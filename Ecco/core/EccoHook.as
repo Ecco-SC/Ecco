@@ -80,22 +80,22 @@ namespace EccoHook{
         }
     }
 
-    funcdef HookReturnCode FuncOpenBuyMenuHook(const int, const uint, CBasePlayer@);
-    void OpenBuyMenu(const int iDisplayTime, const uint page, CBasePlayer@ pPlayer){
+    funcdef HookReturnCode FuncOpenBuyMenuHook(const int, const uint, CBasePlayer@, CBaseMenuItem@);
+    void OpenBuyMenu(const int iDisplayTime, const uint page, CBasePlayer@ pPlayer, CBaseMenuItem@ pMenu){
         for(uint i = 0; i < aryHooks.length(); i++){
             if(aryHooks[i].Code == Economy::OpenBuyMenu){
-                HookReturnCode flag = cast<FuncOpenBuyMenuHook@>(aryHooks[i].Hook)(iDisplayTime, page, @pPlayer);
+                HookReturnCode flag = cast<FuncOpenBuyMenuHook@>(aryHooks[i].Hook)(iDisplayTime, page, @pPlayer, @pMenu);
                 if(flag == HOOK_HANDLED)
                     break;
             }
         }
     }
 
-    funcdef HookReturnCode FuncExcuteBuyMenuHook(CBasePlayer@, uint);
-    void ExcuteBuyMenu(CBasePlayer@ pPlayer, uint iPage){
+    funcdef HookReturnCode FuncExcuteBuyMenuHook(CBasePlayer@, uint, CBaseMenuItem@);
+    void ExcuteBuyMenu(CBasePlayer@ pPlayer, uint iPage, CBaseMenuItem@ pMenu){
         for(uint i = 0; i < aryHooks.length(); i++){
             if(aryHooks[i].Code == Economy::ExcuteBuyMenu){
-                HookReturnCode flag = cast<FuncExcuteBuyMenuHook@>(aryHooks[i].Hook)(@pPlayer, iPage);
+                HookReturnCode flag = cast<FuncExcuteBuyMenuHook@>(aryHooks[i].Hook)(@pPlayer, iPage, @pMenu);
                 if(flag == HOOK_HANDLED)
                     break;
             }
