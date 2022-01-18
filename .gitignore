@@ -7,3 +7,4 @@ Ecco/scripts/*.echo
 !Ecco/scripts/itemexample.echo
 !Ecco/scripts/randomexample.echo
 Ecco/*.txt
+Ecco/addons/EccoABCEnchance.as

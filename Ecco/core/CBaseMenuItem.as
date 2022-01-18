@@ -15,17 +15,17 @@ class CBaseMenuItem{
     private array<CBaseMenuItem@> aryChildren = {};
 
     CBaseMenuItem(){
-        GetId();
+        ObtainId();
     }
 
     CBaseMenuItem(string szTitle, TextMenuPlayerSlotCallback@ pCallback){
-        GetId();
+        ObtainId();
 
         @pTextMenu = CTextMenu(@pCallback);
         pTextMenu.SetTitle(szTitle);
     }
 
-    void GetId(){
+    void ObtainId(){
         this.Id = EccoBuyMenu::iGloabaBaseMenuItemlIdIterator;
         EccoBuyMenu::iGloabaBaseMenuItemlIdIterator++;
         EccoBuyMenu::aryMenuItemList.insertLast(this);
@@ -44,7 +44,7 @@ class CBaseMenuItem{
     }
 
     CBaseMenuItem@ opPostInc(){
-        return uint(this.Id+1) >= EccoBuyMenu::aryMenuItemList.length() ? EccoBuyMenu::aryMenuItemList[uint(this.Id)+1] : null;
+        return uint(this.Id+1) >= EccoBuyMenu::aryMenuItemList.length() ? null : EccoBuyMenu::aryMenuItemList[uint(this.Id)+1];
     }
 
     uint length(){
