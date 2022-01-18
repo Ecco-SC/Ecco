@@ -1,17 +1,35 @@
+int iGloabaBaseMenuItemlIdIterator = 0;
 class CBaseMenuItem{
     string Name;
-    CTextMenu@ pTextMenu;
+    private CTextMenu@ pTextMenu;
 
     int Cost;
     string ScriptName;
     string DisplayName;
     uint Page;
     uint Index;
+    int Id;
 
     bool IsTerminal = false;
 
     CBaseMenuItem@ pParent;
     private array<CBaseMenuItem@> aryChildren = {};
+
+    CBaseMenuItem(){
+        GetId();
+    }
+
+    CBaseMenuItem(string szTitle, TextMenuPlayerSlotCallback@ pCallback){
+        GetId();
+
+        @pTextMenu = CTextMenu(@pCallback);
+        pTextMenu.SetTitle(szTitle);
+    }
+
+    void GetId(){
+        this.Id = iGloabaBaseMenuItemlIdIterator;
+        iGloabaBaseMenuItemlIdIterator++;
+    }
 
     CBaseMenuItem@ opIndex(uint i){
         return aryChildren[i];
@@ -29,7 +47,13 @@ class CBaseMenuItem{
         return aryChildren.length();
     }
 
+    void Open(const int iDisplayTime, const uint page, CBasePlayer@ pPlayer){
+        EccoHook::OpenBuyMenu(iDisplayTime, page, @pPlayer);
+        pTextMenu.Open(iDisplayTime, page, @pPlayer);
+    }
+
     bool Excute(CBasePlayer@ pPlayer, uint iPage = 0){
+        EccoHook::ExcuteBuyMenu(@pPlayer, iPage);
         if(IsTerminal){
             int PlayerBalance = e_PlayerInventory.GetBalance(pPlayer);
             pParent.Excute(@pPlayer, Page);
@@ -45,7 +69,7 @@ class CBaseMenuItem{
             return false;
         }
         else{
-            this.pTextMenu.Open(0, iPage, pPlayer);
+            this.Open(0, iPage, pPlayer);
             return true;
         }
     }

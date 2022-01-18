@@ -2,7 +2,9 @@ namespace EccoHook{
     namespace Economy{
         enum Code{
             PreChangeBalance = 0,
-            PostChangeBalance = 1
+            PostChangeBalance = 1,
+            OpenBuyMenu = 2,
+            ExcuteBuyMenu = 3
         }
     }
 
@@ -21,6 +23,8 @@ namespace EccoHook{
         switch(HookCode){
             case Economy::PreChangeBalance: return cast<FuncPreChangeBalanceHook@>(pFunc) !is null;
             case Economy::PostChangeBalance: return cast<FuncPostChangeBalanceHook@>(pFunc) !is null;
+            case Economy::OpenBuyMenu: return cast<FuncOpenBuyMenuHook@>(pFunc) !is null;
+            case Economy::ExcuteBuyMenu: return cast<FuncExcuteBuyMenuHook@>(pFunc) !is null;
             default: return false;
         }
         return false;
@@ -70,6 +74,28 @@ namespace EccoHook{
         for(uint i = 0; i < aryHooks.length(); i++){
             if(aryHooks[i].Code == Economy::PostChangeBalance){
                 HookReturnCode flag = cast<FuncPostChangeBalanceHook@>(aryHooks[i].Hook)(pPlayer, Amount);
+                if(flag == HOOK_HANDLED)
+                    break;
+            }
+        }
+    }
+
+    funcdef HookReturnCode FuncOpenBuyMenuHook(const int, const uint, CBasePlayer@);
+    void OpenBuyMenu(const int iDisplayTime, const uint page, CBasePlayer@ pPlayer){
+        for(uint i = 0; i < aryHooks.length(); i++){
+            if(aryHooks[i].Code == Economy::OpenBuyMenu){
+                HookReturnCode flag = cast<FuncOpenBuyMenuHook@>(aryHooks[i].Hook)(iDisplayTime, page, @pPlayer);
+                if(flag == HOOK_HANDLED)
+                    break;
+            }
+        }
+    }
+
+    funcdef HookReturnCode FuncExcuteBuyMenuHook(CBasePlayer@, uint);
+    void ExcuteBuyMenu(CBasePlayer@ pPlayer, uint iPage){
+        for(uint i = 0; i < aryHooks.length(); i++){
+            if(aryHooks[i].Code == Economy::ExcuteBuyMenu){
+                HookReturnCode flag = cast<FuncExcuteBuyMenuHook@>(aryHooks[i].Hook)(@pPlayer, iPage);
                 if(flag == HOOK_HANDLED)
                     break;
             }

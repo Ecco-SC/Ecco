@@ -21,17 +21,15 @@ namespace EccoBuyMenu{
     void ReadScriptList(){
         if(@pRoot !is null)
             pRoot.TextMenuUnregiste();
-        @pRoot = CBaseMenuItem();
+        @pRoot = CBaseMenuItem(EccoConfig::pConfig.BaseConfig.BuyMenuName + "\n" + EccoConfig::pConfig.BaseConfig.BuyMenuDescription + "\n", 
+            function(CTextMenu@ mMenu, CBasePlayer@ pPlayer, int iPage, const CTextMenuItem@ mItem){
+                if(mItem !is null && pPlayer !is null){
+                    CBaseMenuItem@ pItem = GetBaseMenuItem(@mMenu, mItem.m_szName);
+                    if(pItem !is null)
+                        pItem.Excute(@pPlayer);
+                }
+            });
         pRoot.Name = EccoConfig::pConfig.BuyMenu.RootNodeName;
-        @pRoot.pTextMenu = CTextMenu(function(CTextMenu@ mMenu, CBasePlayer@ pPlayer, int iPage, const CTextMenuItem@ mItem){
-            if(mItem !is null && pPlayer !is null){
-                CBaseMenuItem@ pItem = GetBaseMenuItem(@mMenu, mItem.m_szName);
-                if(pItem !is null)
-                    pItem.Excute(@pPlayer);
-            }
-        });
-        
-        pRoot.pTextMenu.SetTitle(EccoConfig::pConfig.BaseConfig.BuyMenuName + "\n" + EccoConfig::pConfig.BaseConfig.BuyMenuDescription + "\n");
 
         for(uint i = 0; i < e_ScriptParser.aryItem.length(); i++){
             CEccoScriptItem@ pScriptInfo = e_ScriptParser.aryItem[i];
