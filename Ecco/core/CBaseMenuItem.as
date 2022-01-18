@@ -1,4 +1,3 @@
-int iGloabaBaseMenuItemlIdIterator = 0;
 class CBaseMenuItem{
     string Name;
     private CTextMenu@ pTextMenu;
@@ -27,8 +26,9 @@ class CBaseMenuItem{
     }
 
     void GetId(){
-        this.Id = iGloabaBaseMenuItemlIdIterator;
-        iGloabaBaseMenuItemlIdIterator++;
+        this.Id = EccoBuyMenu::iGloabaBaseMenuItemlIdIterator;
+        EccoBuyMenu::iGloabaBaseMenuItemlIdIterator++;
+        EccoBuyMenu::aryMenuItemList.insertLast(this);
     }
 
     CBaseMenuItem@ opIndex(uint i){
@@ -41,6 +41,10 @@ class CBaseMenuItem{
                 return aryChildren[i];
         }
         return null;
+    }
+
+    CBaseMenuItem@ opPostInc(){
+        return uint(this.Id+1) >= EccoBuyMenu::aryMenuItemList.length() ? EccoBuyMenu::aryMenuItemList[uint(this.Id)+1] : null;
     }
 
     uint length(){

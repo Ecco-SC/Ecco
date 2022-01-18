@@ -1,5 +1,7 @@
 namespace EccoBuyMenu{
     CBaseMenuItem@ pRoot;
+    int iGloabaBaseMenuItemlIdIterator = 0;
+    array<CBaseMenuItem@> aryMenuItemList = {};
 
     CBaseMenuItem@ GetBaseMenuItem(CTextMenu@ _pTextMenu){
         return pRoot.GetItem(_pTextMenu);
@@ -19,6 +21,9 @@ namespace EccoBuyMenu{
     }
     
     void ReadScriptList(){
+        iGloabaBaseMenuItemlIdIterator = 0;
+        aryMenuItemList.resize(0);
+
         if(@pRoot !is null)
             pRoot.TextMenuUnregiste();
         @pRoot = CBaseMenuItem(EccoConfig::pConfig.BaseConfig.BuyMenuName + "\n" + EccoConfig::pConfig.BaseConfig.BuyMenuDescription + "\n", 
