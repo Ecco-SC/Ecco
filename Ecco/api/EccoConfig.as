@@ -101,12 +101,23 @@ namespace EccoConfig{
     bool RefreshEccoConfig(){
         File @pFile = g_FileSystem.OpenFile(szConfigPath + "Config.ini", OpenFile::READ);
         if(@pFile is null){
-            Logger::Log("[CRITICAL]Cannot read the config file, check if it exists and SCDS has the permission to access it!\n\tReading path: " + szConfigPath + "Config.ini\n\tEcco aborted loading.");
+            Logger::Log("\n[CRITICAL]Cannot read the config file, check if it exists and SCDS has the permission to access it!\n
+                \tReading path: " + szConfigPath + "Config.ini\n
+                \tEcco aborted loading.");
             return false;
         }
         else{
             @pINI = INIPraser::CINI(szConfigPath + "Config.ini");
-            FillINIToConfig();
+            try{
+                FillINIToConfig();
+            }
+            catch{
+                Logger::Log("\n[CRITICAL]Meet error when filling the config file! check the config file version and syntax!\n
+                    \tReading path: " + szConfigPath + "Config.ini\n
+                    \tPluginVersion: " + IO::FileTotalReader(szRootPath + "Version") + "
+                    \tEcco aborted loading.");
+                return false;
+            }
         }
         return true;
     }
