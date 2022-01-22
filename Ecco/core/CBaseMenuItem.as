@@ -56,11 +56,10 @@ class CBaseMenuItem{
         pTextMenu.Open(iDisplayTime, page, @pPlayer);
     }
 
-    bool Excute(CBasePlayer@ pPlayer, uint iPage = 0){
+    bool Excute(CBasePlayer@ pPlayer, uint iPage = 0, bool bDirect = false){
         EccoHook::ExcuteBuyMenu(@pPlayer, iPage, this);
         if(IsTerminal){
             int PlayerBalance = e_PlayerInventory.GetBalance(pPlayer);
-            pParent.Excute(@pPlayer, Page);
             if(PlayerBalance >= Cost){
                 if(e_ScriptParser.ExecuteFile(szRootPath + "scripts/" + ScriptName + ".echo", pPlayer)){
                     e_PlayerInventory.ChangeBalance(pPlayer, -Cost);
@@ -70,6 +69,8 @@ class CBaseMenuItem{
                 Logger::Chat(pPlayer, 
                     EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + 
                     EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.CannotAffordPrice, @pPlayer));
+            if(!bDirect)
+                pParent.Excute(@pPlayer, Page);
             return false;
         }
         else{

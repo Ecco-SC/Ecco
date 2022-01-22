@@ -179,7 +179,7 @@ HookReturnCode onChat(SayParameters@ pParams){
                 }
             }
             if(@pItem !is null)
-                pItem.Excute(@pPlayer);
+                pItem.Excute(@pPlayer, 0, !EccoConfig::pConfig.BuyMenu.ReOpenMenuAfterParamBuy);
             else
                 Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + 
                     " " + EccoConfig::pConfig.LocaleSetting.NullPointerMenu + szPointer);

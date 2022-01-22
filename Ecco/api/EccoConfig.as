@@ -32,6 +32,7 @@ namespace EccoConfig{
         string OpenShopTrigger="buy";
         bool UseBlurMatchForArgs=true;
         bool AllowDeathPlayerBuy=true;
+        bool ReOpenMenuAfterParamBuy=false;
     }
     class CLocaleSetting{
         string ItemDisplayFormat="%MENUNAME% - %COST%";
@@ -85,6 +86,7 @@ namespace EccoConfig{
         pConfig.BuyMenu.OpenShopTrigger = pINI["Ecco.BuyMenu", "OpenShopTrigger"].getString();
         pConfig.BuyMenu.UseBlurMatchForArgs = pINI["Ecco.BuyMenu", "UseBlurMatchForArgs"].getBool();
         pConfig.BuyMenu.AllowDeathPlayerBuy = pINI["Ecco.BuyMenu", "AllowDeathPlayerBuy"].getBool();
+        pConfig.BuyMenu.ReOpenMenuAfterParamBuy = pINI["Ecco.BuyMenu", "ReOpenMenuAfterParamBuy"].getBool();
 
         pConfig.LocaleSetting.ItemDisplayFormat = pINI["Ecco.LocaleSetting", "ItemDisplayFormat"].getString();
         pConfig.LocaleSetting.LocaleAlreadyHave = pINI["Ecco.LocaleSetting", "LocaleAlreadyHave"].getString();
