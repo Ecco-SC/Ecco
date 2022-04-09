@@ -188,30 +188,31 @@ namespace EccoBase{
     return true;
   }
   
-  bool Macro_give(CBasePlayer@ pPlayer, array<string>@ args){
-    CBasePlayer@ targetPlayer = null;
-    switch(args.length()){
-      case 1:
-        if(pPlayer.HasNamedPlayerItem(args[0]) is null){
-          pPlayer.GiveNamedItem(args[0], 0, 0);
-        }else{
-          g_EntityFuncs.Create(args[0], pPlayer.GetOrigin(), Vector(0, 0, 0), false).KeyValue("m_flCustomRespawnTime", "-1");
+    bool Macro_give(CBasePlayer@ pPlayer, array<string>@ args){
+        CBasePlayer@ tPlayer = null;
+        switch(args.length()){
+            case 1: @tPlayer = pPlayer; break;
+            case 2: @tPlayer = FindPlayerByName(args[1], pPlayer); break;
+            default: ErrorInfo("give", args.length()); return false;
         }
-        break;
-      case 2:
-        @targetPlayer = FindPlayerByName(args[1], pPlayer);
-        if(targetPlayer.HasNamedPlayerItem(args[0]) is null){
-          targetPlayer.GiveNamedItem(args[0], 0, 0);
-        }else{
-          g_EntityFuncs.Create(args[0], targetPlayer.GetOrigin(), Vector(0, 0, 0), false).KeyValue("m_flCustomRespawnTime", "-1");
+        if(@tPlayer !is null){
+            if(tPlayer.HasNamedPlayerItem(args[0]) !is null){
+                if(!EccoConfig::pConfig.BuyMenu.AllowBuyOwned){
+                    Logger::Chat(pPlayer,EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.LocaleAlreadyHave, @pPlayer));
+                    return false;
+                }
+                else{
+                    if(EccoConfig::pConfig.BuyMenu.GenerateOwnedReplica)
+                        g_EntityFuncs.Create(args[0], tPlayer.GetOrigin(), g_vecZero, false).KeyValue("m_flCustomRespawnTime", "-1");
+                    else
+                        tPlayer.GiveNamedItem(args[0], 0, 0);
+                }
+            }
+            else
+                tPlayer.GiveNamedItem(args[0], 0, 0);
         }
-        break;
-      default:
-        ErrorInfo("give", args.length());
-        return false;
+        return true;
     }
-    return true;
-  }
 
   bool Macro_log(CBasePlayer@ pPlayer, array<string>@ args){
     string Content = "";
