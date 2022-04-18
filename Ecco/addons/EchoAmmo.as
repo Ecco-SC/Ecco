@@ -1,5 +1,5 @@
 ﻿/*
-    Echo scripts 
+    Quick buy ammo item
 
     Commands:
     buy_ammo_item
@@ -8,6 +8,8 @@
 namespace EccoAddon{
 namespace EchoAmmo{
     //Set Weapon-EccoScripts pair
+    //DO NOT SET SCRIPTS WHICH CONTAIN buy_ammo_item COMMAND!
+    //You'll be stuck in a DEAD circle
     const dictionary dicWeaponAmmoMap = {
         {"weapon_mp5", "itemexample"},
         {"weapon_pistol", "randomexample"}
