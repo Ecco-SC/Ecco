@@ -1,6 +1,6 @@
 enum MenuItemFlag{
     FLAG_NONE = 0,
-    FLAG_HIDECOST = 1
+    FLAG_HIDECOST = 1 << 0
 }
 class CBaseMenuItem{
     string Name;
