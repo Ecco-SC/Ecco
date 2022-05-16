@@ -28,6 +28,7 @@ namespace EccoConfig{
         string SaveInKeyvalueKey="ecco_value";
         int MoneyChangedChannel=3;
         int MoneyHUDChannel=4;
+        bool IgnoreHUDZeroChange=true;
     }
     class CBuyMenu{
         string RootNodeName="root";
@@ -87,6 +88,7 @@ namespace EccoConfig{
         pConfig.BaseConfig.SaveInKeyvalueKey = pINI["Ecco.BaseConfig", "SaveInKeyvalueKey"].getString();
         pConfig.BaseConfig.MoneyChangedChannel = pINI["Ecco.BaseConfig", "MoneyChangedChannel"].getInt();
         pConfig.BaseConfig.MoneyHUDChannel = pINI["Ecco.BaseConfig", "MoneyHUDChannel"].getInt();
+        pConfig.BaseConfig.IgnoreHUDZeroChange = pINI["Ecco.BaseConfig", "IgnoreHUDZeroChange"].getBool();
 
         pConfig.BuyMenu.RootNodeName = pINI["Ecco.BuyMenu", "RootNodeName"].getString();
         pConfig.BuyMenu.OpenShopTrigger = pINI["Ecco.BuyMenu", "OpenShopTrigger"].getString();

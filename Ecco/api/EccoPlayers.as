@@ -108,7 +108,7 @@ class EccoPlayerInventory{
                         iBalance >= 0 ? EccoConfig::pConfig.BaseConfig.MoneyIconPositiveColor : 
                                         EccoConfig::pConfig.BaseConfig.MoneyIconNegativeColor;
                     params.value = iBalance;
-                    params.channel = EccoConfig::pConfig.BaseConfig.MoneyChangedChannel;
+                    params.channel = EccoConfig::pConfig.BaseConfig.MoneyHUDChannel;
                     params.flags = HUD_ELEM_SCR_CENTER_X | HUD_ELEM_DEFAULT_ALPHA | HUD_NUM_NEGATIVE_NUMBERS ;
                     params.x = EccoConfig::pConfig.BaseConfig.HUDMainPostion.x;
                     params.y = EccoConfig::pConfig.BaseConfig.HUDMainPostion.y;
@@ -165,12 +165,14 @@ class EccoPlayerInventory{
     }
 
     void ShowHUD(CBasePlayer@ pPlayer, int amount){
+        if(EccoConfig::pConfig.BaseConfig.IgnoreHUDZeroChange && amount == 0)
+            return;
         if(pPlayer !is null){
             switch(EccoConfig::pConfig.BaseConfig.ShowMoneyHUD){
                 case 1:
                 case 3:{
                     HUDNumDisplayParams params;
-                    params.channel = EccoConfig::pConfig.BaseConfig.MoneyHUDChannel;;
+                    params.channel = EccoConfig::pConfig.BaseConfig.MoneyChangedChannel;;
                     params.flags = HUD_ELEM_SCR_CENTER_X | HUD_ELEM_DEFAULT_ALPHA | HUD_NUM_PLUS_SIGN | HUD_NUM_NEGATIVE_NUMBERS;
                     params.value = amount;
                     params.fadeinTime = 0.15;
