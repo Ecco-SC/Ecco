@@ -6,6 +6,8 @@ A complete economy & buy menu plugin for Sven Co-op 5.x
 - [Config](#config)
 - [Write Echo script](#write-echo-script)
   - [Basic](#basic)
+    - [Property](#property)
+    - [Marco](#marco)
     - [Flags](#flags)
   - [Advance](#advance)
     - [Random excute block](#random-excute-block)
@@ -158,6 +160,7 @@ Here is an example script:
 ```
 name: Heavy.Big Fucking gun 9000
 cost: 114514
+flags: 1
 give weapon_bfg900
 broadcast OMG,%PLAYER% bought a BFG and was ready to kill!!!
 ```
@@ -168,9 +171,43 @@ the `Example.echo` added an weapon which shown as `Big Fucking gun 9000` under `
 
 `[Ecco]: OMG,Goofy bought a BFG and was ready to kill!!!`
 
-As you can see from the example, `name` and `cost` is necessary for an echo script.
+plugin will be parse sentence by sentence from beginning to end.
 
-then plugin will be parse sentence by sentence from beginning to end.
+### Property
+
+```
+name: Heavy.Big Fucking gun 9000
+cost: 114514
+flags: 1
+```
+
+Attributes that end with `: ` are called "Property" and they define some values of the script, and Ecco stores them as a string whether or not the property is used.
+
+here is the default used properties
+
+|Property|Default Value|
+|---|---|
+|name|""|
+|cost|0|
+|flags|0|
+
+As you can see from the example, `name` and `cost` is necessary properties for an echo script.
+
+Ps : `flags` is a bit value, here are the currently available values represented by each bit
+
+0 - None
+
+1 - Hide Cost
+
+
+### Marco
+
+```
+give weapon_bfg900
+broadcast OMG,%PLAYER% bought a BFG and was ready to kill!!!
+```
+
+The part like Half-Life console commands are called "Marco", they are the specific commands that are executed when the script is executed, and the characters after each marco are treated as arguments, usually separated by spaces
 
 here is the default marcos:
 
