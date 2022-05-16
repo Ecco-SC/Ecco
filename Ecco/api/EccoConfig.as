@@ -26,6 +26,8 @@ namespace EccoConfig{
         uint SteamIDFormmat=0;
         bool SaveInKeyvalue=false;
         string SaveInKeyvalueKey="ecco_value";
+        int MoneyChangedChannel=3;
+        int MoneyHUDChannel=4;
     }
     class CBuyMenu{
         string RootNodeName="root";
@@ -83,6 +85,8 @@ namespace EccoConfig{
         pConfig.BaseConfig.SteamIDFormmat = pINI["Ecco.BaseConfig", "SteamIDFormmat"].getInt();
         pConfig.BaseConfig.SaveInKeyvalue = pINI["Ecco.BaseConfig", "SaveInKeyvalue"].getBool();
         pConfig.BaseConfig.SaveInKeyvalueKey = pINI["Ecco.BaseConfig", "SaveInKeyvalueKey"].getString();
+        pConfig.BaseConfig.MoneyChangedChannel = pINI["Ecco.BaseConfig", "MoneyChangedChannel"].getInt();
+        pConfig.BaseConfig.MoneyHUDChannel = pINI["Ecco.BaseConfig", "MoneyHUDChannel"].getInt();
 
         pConfig.BuyMenu.RootNodeName = pINI["Ecco.BuyMenu", "RootNodeName"].getString();
         pConfig.BuyMenu.OpenShopTrigger = pINI["Ecco.BuyMenu", "OpenShopTrigger"].getString();
