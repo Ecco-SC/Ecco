@@ -46,7 +46,7 @@ namespace EccoBuyMenu{
             
             if(!pScriptInfo.exists("blacklist") || MapBlackList.find(g_Engine.mapname) < 0){
                 if(pScriptInfo.exists("name") && pScriptInfo.exists("cost"))
-                    pRoot.AddChild((pScriptInfo.exists("category") ? pScriptInfo["category"] + "." : "") + pScriptInfo["name"], pScriptInfo["cost"], pScriptInfo.Name);
+                    pRoot.AddChild((pScriptInfo.exists("category") ? pScriptInfo["category"] + "." : "") + pScriptInfo["name"], @pScriptInfo);
             }
         }
         pRoot.TextMenuRegister();

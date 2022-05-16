@@ -1,3 +1,7 @@
+enum MenuItemFlag{
+    FLAG_NONE = 0,
+    FLAG_HIDECOST = 1
+}
 class CBaseMenuItem{
     string Name;
     private CTextMenu@ pTextMenu;
@@ -8,6 +12,7 @@ class CBaseMenuItem{
     uint Page;
     uint Index;
     int Id;
+    int Flags = FLAG_NONE;
 
     bool IsTerminal = false;
 
@@ -79,7 +84,10 @@ class CBaseMenuItem{
         }
     }
 
-    void AddChild(string szName, string _Cost, string _ScriptName){
+    void AddChild(string szName, CEccoScriptItem@ pScriptInfo){
+        string _Cost = pScriptInfo["cost"];
+        string _ScriptName = pScriptInfo.Name;
+        string _Flags = pScriptInfo["flags"];
         bool bTerminal = szName.FindFirstOf(".") == String::INVALID_INDEX;
         if(bTerminal){
             CBaseMenuItem pItem;
@@ -87,6 +95,7 @@ class CBaseMenuItem{
             pItem.Name = szName;
             pItem.Cost = atoi(_Cost);
             pItem.ScriptName = _ScriptName;
+            pItem.Flags = atoi(_Flags);
             @pItem.pParent = @this;
             aryChildren.insertLast(pItem);
             pItem.DisplayName = EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ItemDisplayFormat, @pItem);
@@ -120,7 +129,7 @@ class CBaseMenuItem{
                 @pItem.pParent = @this;
                 aryChildren.insertLast(pItem);
             }
-            pItem.AddChild(_Next, _Cost, _ScriptName);
+            pItem.AddChild(_Next, pScriptInfo);
         }
     }
 
