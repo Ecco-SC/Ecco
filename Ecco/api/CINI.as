@@ -9,6 +9,8 @@ Regex::Regex@ vRegex = Regex::Regex("^[+-]?\\d+(\\.\\d+)? [+-]?\\d+(\\.\\d+)? [+
 Regex::Regex@ v2Regex = Regex::Regex("^[+-]?\\d+(\\.\\d+)? [+-]?\\d+(\\.\\d+)?$");
 //颜色
 Regex::Regex@ cRegex = Regex::Regex("^[+-]?\\d+(\\.\\d+)? [+-]?\\d+(\\.\\d+)? [+-]?\\d+(\\.\\d+)? [+-]?\\d+(\\.\\d+)?$");
+//数组
+Regex::Regex@ aryRegex = Regex::Regex("^\\{(.*;).*\\}$");
 
 
 enum INI_VALUE_TYPE
@@ -19,7 +21,8 @@ enum INI_VALUE_TYPE
     INI_STRING,
     INI_VECTOR,
     INI_VECTOR2D,
-    INI_RGBA
+    INI_RGBA,
+    INI_ARRAY
 }
 
 int getStringType(string sz)
@@ -43,6 +46,9 @@ int getStringType(string sz)
     //颜色型
     else if(Regex::Match(temp, @cRegex))
         return INI_RGBA;
+    //数组型
+    else if(Regex::Match(temp, @aryRegex))
+        return INI_ARRAY;
     else
         return INI_STRING;
 }
@@ -92,6 +98,14 @@ class CINI{
                         case INI_RGBA: {
                             aryTemp = szVal.Split(" ");
                             SetKeyValue(szNowSection, szKey, CINIItem(szKey, aryTemp[0], aryTemp[1], aryTemp[2], aryTemp[3]));
+                            break;
+                        }
+                        case INI_ARRAY: {
+                            szVal.Trim("{");
+                            szVal.Trim("}");
+                            szVal.Trim(";");
+                            aryTemp = szVal.Split(";");
+                            SetKeyValue(szNowSection, szKey, CINIItem(szKey, aryTemp));
                             break;
                         }
                         case INI_STRING:
@@ -220,7 +234,9 @@ class CINIItem{
     CINIItem(string _Key, Vector2D _Type){
         set(_Key, _Type);
     }
-    
+    CINIItem(string _Key, array<string> _Type){
+        set(_Key, _Type);
+    }
     void set(string _Key, int _Type){
         szKey = _Key;
         pStored.store(_Type);
@@ -246,6 +262,10 @@ class CINIItem{
         pStored.store(_Type);
     }
     void set(string _Key, RGBA _Type){
+        szKey = _Key;
+        pStored.store(_Type);
+    }
+    void set(string _Key, array<string> _Type){
         szKey = _Key;
         pStored.store(_Type);
     }
@@ -282,6 +302,11 @@ class CINIItem{
     }
     RGBA getRGBA(){
         RGBA a;
+        pStored.retrieve(a);
+        return a;
+    }
+    array<string> getArray(){
+        array<string> a;
         pStored.retrieve(a);
         return a;
     }
