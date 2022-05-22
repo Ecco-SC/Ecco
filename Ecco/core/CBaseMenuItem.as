@@ -16,6 +16,9 @@ class CBaseMenuItem{
 
     bool IsTerminal = false;
 
+    //For other use
+    CEccoScriptItem@ pInfo;
+
     CBaseMenuItem@ pParent;
     private array<CBaseMenuItem@> aryChildren = {};
 
@@ -88,6 +91,7 @@ class CBaseMenuItem{
         string _Cost = pScriptInfo["cost"];
         string _ScriptName = pScriptInfo.Name;
         string _Flags = pScriptInfo["flags"];
+        string _DisplayName = pScriptInfo["displayname"];
         bool bTerminal = szName.FindFirstOf(".") == String::INVALID_INDEX;
         if(bTerminal){
             CBaseMenuItem pItem;
@@ -97,8 +101,11 @@ class CBaseMenuItem{
             pItem.ScriptName = _ScriptName;
             pItem.Flags = atoi(_Flags);
             @pItem.pParent = @this;
+            @pItem.pInfo = @pScriptInfo;
             aryChildren.insertLast(pItem);
-            pItem.DisplayName = EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ItemDisplayFormat, @pItem);
+            pItem.DisplayName = _DisplayName == "" ? 
+                            EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ItemDisplayFormat, @pItem) : 
+                            _DisplayName;
         }
         else{
             uint index = szName.FindFirstOf(".");
