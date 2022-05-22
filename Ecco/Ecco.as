@@ -137,21 +137,12 @@ void MapStart(){
         return;
     EccoInclude::MapStart();
 }
-
-bool CanOpenShop(string arg){
-    if(EccoConfig::pConfig.BuyMenu.OpenShopTrigger.find(arg) > -1)
-        return true;
-    else if((arg.StartsWith("!") || arg.StartsWith("/") || arg.StartsWith("\\") || arg.StartsWith("$")) && 
-        EccoConfig::pConfig.BuyMenu.OpenShopTrigger.find(arg.SubString(1)) > -1)
-        return true;
-    return false;
-}
 HookReturnCode onChat(SayParameters@ pParams){
     CBasePlayer@ pPlayer = pParams.GetPlayer();
     const CCommand@ pCommand = pParams.GetArguments();
     string arg = pCommand[0].ToLowercase();
     arg.Trim();
-    if(pPlayer !is null && CanOpenShop(arg)){
+    if(pPlayer !is null && EccoUtility::CanOpenShop(arg)){
         pParams.ShouldHide = true;
         if(!IsMapAllowed){
             Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + " " + 

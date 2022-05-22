@@ -25,4 +25,12 @@ namespace EccoUtility{
         }
         return float(length)/float( str2.Length() > str1.Length() ? str2.Length() : str1.Length() );
     }
+    bool CanOpenShop(string arg){
+        if(EccoConfig::pConfig.BuyMenu.AllowIgnoreBuyPrefix && EccoConfig::pConfig.BuyMenu.OpenShopTrigger.find(arg) > -1)
+            return true;
+        else if((arg.StartsWith("!") || arg.StartsWith("/") || arg.StartsWith("\\") || arg.StartsWith("$")) && 
+            EccoConfig::pConfig.BuyMenu.OpenShopTrigger.find(arg.SubString(1)) > -1)
+            return true;
+        return false;
+    }
 }
