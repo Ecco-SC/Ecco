@@ -104,6 +104,7 @@ class CINI{
                             szVal.Trim("{");
                             szVal.Trim("}");
                             szVal.Trim(";");
+                            szVal.Replace("\"", "");
                             aryTemp = szVal.Split(";");
                             SetKeyValue(szNowSection, szKey, CINIItem(szKey, aryTemp));
                             break;

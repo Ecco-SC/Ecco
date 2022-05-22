@@ -32,7 +32,7 @@ namespace EccoConfig{
     }
     class CBuyMenu{
         string RootNodeName="root";
-        string OpenShopTrigger="buy";
+        array<string> OpenShopTrigger={"buy"};
         bool UseBlurMatchForArgs=true;
         bool AllowDeathPlayerBuy=true;
         bool ReOpenMenuAfterParamBuy=false;
@@ -91,7 +91,7 @@ namespace EccoConfig{
         pConfig.BaseConfig.IgnoreHUDZeroChange = pINI["Ecco.BaseConfig", "IgnoreHUDZeroChange"].getBool();
 
         pConfig.BuyMenu.RootNodeName = pINI["Ecco.BuyMenu", "RootNodeName"].getString();
-        pConfig.BuyMenu.OpenShopTrigger = pINI["Ecco.BuyMenu", "OpenShopTrigger"].getString();
+        pConfig.BuyMenu.OpenShopTrigger = pINI["Ecco.BuyMenu", "OpenShopTrigger"].getArray();
         pConfig.BuyMenu.UseBlurMatchForArgs = pINI["Ecco.BuyMenu", "UseBlurMatchForArgs"].getBool();
         pConfig.BuyMenu.AllowDeathPlayerBuy = pINI["Ecco.BuyMenu", "AllowDeathPlayerBuy"].getBool();
         pConfig.BuyMenu.ReOpenMenuAfterParamBuy = pINI["Ecco.BuyMenu", "ReOpenMenuAfterParamBuy"].getBool();

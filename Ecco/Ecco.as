@@ -139,17 +139,18 @@ void MapStart(){
 }
 
 bool CanOpenShop(string arg){
-    if(arg.ToLowercase() == EccoConfig::pConfig.BuyMenu.OpenShopTrigger)
+    if(EccoConfig::pConfig.BuyMenu.OpenShopTrigger.find(arg) > -1)
         return true;
-    if((arg.StartsWith("!") || arg.StartsWith("/") || arg.StartsWith("\\") || arg.StartsWith("$")) && 
-        arg.SubString(1).ToLowercase() == EccoConfig::pConfig.BuyMenu.OpenShopTrigger)
+    else if((arg.StartsWith("!") || arg.StartsWith("/") || arg.StartsWith("\\") || arg.StartsWith("$")) && 
+        EccoConfig::pConfig.BuyMenu.OpenShopTrigger.find(arg.SubString(1)) > -1)
         return true;
     return false;
 }
 HookReturnCode onChat(SayParameters@ pParams){
     CBasePlayer@ pPlayer = pParams.GetPlayer();
     const CCommand@ pCommand = pParams.GetArguments();
-    string arg = pCommand[0];
+    string arg = pCommand[0].ToLowercase();
+    arg.Trim();
     if(pPlayer !is null && CanOpenShop(arg)){
         pParams.ShouldHide = true;
         if(!IsMapAllowed){
