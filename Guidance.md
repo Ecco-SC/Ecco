@@ -185,11 +185,12 @@ Attributes that end with `: ` are called "Property" and they define some values 
 
 here is the default used properties
 
-|Property|Default Value|
-|---|---|
-|name|""|
-|cost|0|
-|flags|0|
+|Property|Default Value|Explain|
+|---|---|---|
+|name|""|Used for script identity, it is the display name when "displayname" empty|
+|cost|0|Cost|
+|flags|0|Flag for special behavior|
+|displayname|""|Showed name|
 
 As you can see from the example, `name` and `cost` is necessary properties for an echo script.
 
