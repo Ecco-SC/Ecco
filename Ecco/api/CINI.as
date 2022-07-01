@@ -103,9 +103,9 @@ class CINI{
                         case INI_ARRAY: {
                             szVal.Trim("{");
                             szVal.Trim("}");
-                            szVal.Trim(";");
+                            szVal.Trim(",");
                             szVal.Replace("\"", "");
-                            aryTemp = szVal.Split(";");
+                            aryTemp = szVal.Split(",");
                             SetKeyValue(szNowSection, szKey, CINIItem(szKey, aryTemp));
                             break;
                         }
