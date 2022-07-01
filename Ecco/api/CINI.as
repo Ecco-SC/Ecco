@@ -10,7 +10,7 @@ Regex::Regex@ v2Regex = Regex::Regex("^[+-]?\\d+(\\.\\d+)? [+-]?\\d+(\\.\\d+)?$"
 //颜色
 Regex::Regex@ cRegex = Regex::Regex("^[+-]?\\d+(\\.\\d+)? [+-]?\\d+(\\.\\d+)? [+-]?\\d+(\\.\\d+)? [+-]?\\d+(\\.\\d+)?$");
 //数组
-Regex::Regex@ aryRegex = Regex::Regex("^\\{(.*;).*\\}$");
+Regex::Regex@ aryRegex = Regex::Regex("^\\{(.*,).*\\}$");
 
 
 enum INI_VALUE_TYPE
