@@ -58,7 +58,7 @@ namespace EccoConfig{
         string ExcutedLogCommand= "玩家: %PLAYER% 执行指令: %COMMAND%";
         string ExcutedCommand = "已执行: [%COMMAND%]";
         string CanNotExcutedCommand = "无法执行命令: [%COMMAND%]";
-        string HelpCommand = "无法执行命令: %HELPINFO%";
+        string HelpCommand = "帮助: %HELPINFO%";
         string RefuseCommand = "你不能用这个哦";
     }
     class CEcco{

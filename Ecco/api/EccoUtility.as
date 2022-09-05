@@ -33,4 +33,20 @@ namespace EccoUtility{
             return true;
         return false;
     }
+    string PadSpace(uint uiLength, string&in inStr, string ptrChar = " "){
+        string szTemp = inStr;
+        for(uint i = inStr.Length(); i < uiLength; i++){
+            szTemp += ptrChar;
+        }
+        return szTemp;
+    }
+    string GetAdminLevelString(ConCommandFlags_t flag){
+        switch(int(flag)){
+            case 0: return "None";
+            case 1: return "Admin";
+            case 2: return "Cheat/Server";
+            default: return "Forbidden";
+        }
+        return "Forbidden";
+    }
 }

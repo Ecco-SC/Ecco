@@ -1,7 +1,7 @@
 #include "CClientCmd"
 namespace Command{
     array<CClinetCmd@> aryCmdList = {};
-    funcdef bool CmdCallback( CBasePlayer@, const CCommand@, const CClinetCmd@ , const bool = false);
+    funcdef bool CmdCallback( CBasePlayer@, const CCommand@, const CClinetCmd@ , const bool);
     void Register( string _szName, string _szHelpInfo, string szDescribeInfo ,string szReturnInfo, CmdCallback@ pCallback, ConCommandFlags_t iAdminLevel = ConCommandFlag::None ){
         string szName = EccoConfig::pConfig.Command.CommandPrefix + _szName;
         string szHelpInfo = szName + " " + _szHelpInfo;
@@ -31,19 +31,19 @@ namespace Command{
         if(pCmd is null)
             return;
         if(g_PlayerFuncs.AdminLevel(pPlayer) < int(pCmd.AdminLevel)){
-            Logger::Console(EccoConfig::GetLocateMessage("RefuseCommand", pPlayer));
+            Logger::Console(EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.RefuseCommand, pPlayer));
             return;
         }
         
-        Logger::Log(EccoConfig::GetLocateMessage("ExcutedLogCommand", pPlayer).Replace("%COMMAND%", Argments.GetCommandString()));
+        Logger::Log(EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ExcutedLogCommand, pPlayer).Replace("%COMMAND%", Argments.GetCommandString()));
         if(pCmd.ClientCallback(pPlayer, Argments, pCmd, false)){
-            Logger::Console(pPlayer, EccoConfig::GetLocateMessage("ExcutedCommand", pPlayer).Replace("%COMMAND%", pCmd.Name));
+            Logger::Console(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ExcutedCommand, pPlayer).Replace("%COMMAND%", pCmd.Name));
             if(pCmd.ReturnInfo != "")
                 Logger::Console(pPlayer, pCmd.ReturnInfo);
         }
         else{
-            Logger::Console(pPlayer, EccoConfig::GetLocateMessage("CanNotExcutedCommand", pPlayer).Replace("%COMMAND%", pCmd.Name));
-            Logger::Console(pPlayer, EccoConfig::GetLocateMessage("HelpCommand", pPlayer).Replace("%HELPINFO%", pCmd.HelpInfo));
+            Logger::Console(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.CanNotExcutedCommand, pPlayer).Replace("%COMMAND%", pCmd.Name));
+            Logger::Console(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.HelpCommand, pPlayer).Replace("%HELPINFO%", pCmd.HelpInfo));
         }
     }
 }

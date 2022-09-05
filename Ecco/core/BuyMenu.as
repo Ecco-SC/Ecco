@@ -73,4 +73,11 @@ namespace EccoBuyMenu{
             cast<CEccoRootBuyMenu@>(dicRoots[aryKeys[i]]).ReadScriptList();
         }
     }
+    bool SetLanguage(CBasePlayer@ pPlayer, string szLang){
+        if(!dicRoots.exists(szLang))
+            return false;
+        string id = e_PlayerInventory.GetUniquePlayerId(@pPlayer);
+        dicPlayerLocale[id] = szLang;
+        return true;
+    }
 }

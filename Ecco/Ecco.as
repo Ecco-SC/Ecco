@@ -44,6 +44,34 @@ void PluginInit(){
     EccoProcessVar::Register("%PLAYERAP%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, pPlayer.pev.armorvalue);});
     EccoProcessVar::Register("%PLAYERTEAM%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, pPlayer.pev.team);});
 
+    Command::Register("help", "", "获取帮助信息", "", function(CBasePlayer@ pPlayer, const CCommand@ pArgs, const CClinetCmd@ pCmd, const bool bChat){
+        for(uint i = 0; i < Command::aryCmdList.length(); i++)
+        {
+            if(!Command::aryCmdList[i].IsEmpty())
+            {
+                CClinetCmd@ eCme = cast<CClinetCmd@>(Command::aryCmdList[i]);
+                if(g_PlayerFuncs.AdminLevel(pPlayer) < int(eCme.AdminLevel))
+                    continue;
+                Logger::Console(pPlayer, "| " + EccoUtility::PadSpace(24, eCme.Name) + " | " + 
+                        eCme.HelpInfo + " | " + eCme.DescribeInfo + " | " + 
+                        EccoUtility::GetAdminLevelString(eCme.AdminLevel));
+            }
+        }
+        return true;
+    });
+    Command::Register("lang", "[Language]", "设置语言/Set Display Language", "", function(CBasePlayer@ pPlayer, const CCommand@ pArgs, const CClinetCmd@ pCmd, const bool bChat){
+        if(!EccoBuyMenu::SetLanguage(@pPlayer, pArgs.Arg(1))){
+            array<string>@ aryKeys = EccoBuyMenu::dicRoots.getKeys();
+            string szTemp = "";
+            for(uint i = 0; i <  aryKeys.length();i++){
+                szTemp += EccoUtility::PadSpace(6, aryKeys[i]) + "|";
+            }
+            Logger::Console(pPlayer, szTemp);
+            return false;
+        }
+        return true;
+    });
+
     e_ScriptParser.BuildItemList();
 
     g_Hooks.RegisterHook(Hooks::Player::ClientSay, @onChat);
@@ -74,7 +102,6 @@ void PluginInit(){
     Logger::WriteLine("    Time: " + szTime);
     Logger::Say(EccoConfig::pConfig.LocaleSetting.PluginReloaded);
 }
-
 void MapInit(){
     if(bAborted)
         return;
@@ -126,13 +153,11 @@ void MapInit(){
         
     EccoInclude::MapInit();
 }
-
 void MapActivate(){
     if(bAborted)
         return;
     EccoInclude::MapActivate();
 }
-
 void MapStart(){
     if(bAborted)
         return;
@@ -193,7 +218,6 @@ HookReturnCode onChat(SayParameters@ pParams){
     }
     return HOOK_CONTINUE;
 }
-
 HookReturnCode onJoin(CBasePlayer@ pPlayer){
     if(IsMapAllowed){
         switch(EccoConfig::pConfig.BaseConfig.StorePlayerScore){
