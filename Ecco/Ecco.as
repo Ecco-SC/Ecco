@@ -1,9 +1,7 @@
 #include "Include"
 
 #include "core/EccoPlayerStorage"
-#include "core/LoadInventory"
 #include "core/BuyMenu"
-#include "core/SmartPrecache"
 #include "core/CBaseMenuItem"
 #include "core/EccoHook"
 #include "core/Command"
@@ -107,7 +105,6 @@ void MapInit(){
         return;
     g_Game.PrecacheModel("sprites/" + EccoConfig::pConfig.BaseConfig.MoneyIconPath);
     g_Game.PrecacheGeneric("sprites/" + EccoConfig::pConfig.BaseConfig.MoneyIconPath);
-    SmartPrecache::PrecacheByList();
 
     IsMapAllowed = true;
     array<string>@ aryMaps = IO::FileLineReader(szRootPath + EccoConfig::pConfig.BaseConfig.BanMapPath, function(string szLine){ if(szLine != g_Engine.mapname){return "\n";}return g_Engine.mapname;});
@@ -238,7 +235,6 @@ HookReturnCode onJoin(CBasePlayer@ pPlayer){
             default: e_PlayerInventory.SetBalance(@pPlayer, EccoConfig::pConfig.BaseConfig.PlayerStartScore);break;
         }
         EccoPlayerStorage::ResetPlayerBuffer(@pPlayer);
-        EccoInventoryLoader::LoadPlayerInventory(@pPlayer);
         e_PlayerInventory.RefreshHUD(@pPlayer);
     }
     return HOOK_HANDLED;
