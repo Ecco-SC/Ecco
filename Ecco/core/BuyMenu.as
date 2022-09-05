@@ -45,8 +45,9 @@ final class CEccoRootBuyMenu{
                 MapBlackList = MapBlackListStr.Split(" ");
             }
             if(!pScriptInfo.exists("blacklist") || MapBlackList.find(g_Engine.mapname) < 0){
-                if(pScriptInfo.exists(ParserName) && pScriptInfo.exists("cost")){
-                    string szName = (pScriptInfo.exists("category") ? pScriptInfo["category"] + "." : "") + pScriptInfo[ParserName];
+                if((pScriptInfo.exists(ParserName) || pScriptInfo.exists("name")) && pScriptInfo.exists("cost")){
+                    string szKeyName = pScriptInfo.exists(ParserName) ? pScriptInfo[ParserName] : pScriptInfo["name"]
+                    string szName = (pScriptInfo.exists("category") ? pScriptInfo["category"] + "." : "") + szKeyName;
                     pRoot.AddChild(szName, @pScriptInfo, this);
                 }
             }
