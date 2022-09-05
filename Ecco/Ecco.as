@@ -6,6 +6,7 @@
 #include "core/SmartPrecache"
 #include "core/CBaseMenuItem"
 #include "core/EccoHook"
+#include "core/Command"
 //如果你的Config文件不在默认位置，这行必须被修改
 //You have to edit this line if your config file is not in default position
 const string szConfigPath = "scripts/plugins/Ecco/config/";
@@ -87,7 +88,7 @@ void MapInit(){
         IsMapAllowed = false;
 
     if(IsMapAllowed)
-        EccoBuyMenu::ReadScriptList();
+        EccoBuyMenu::BuildMenu();
     
     switch(EccoConfig::pConfig.BaseConfig.SereisMapCheckMethod){
         //经典模式
@@ -149,7 +150,9 @@ HookReturnCode onChat(SayParameters@ pParams){
             EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.LocaleNotAllowed, @pPlayer));
             return HOOK_CONTINUE;
         }
-        if(EccoBuyMenu::IsEmpty()){
+
+        CEccoRootBuyMenu@ pRootItem = EccoBuyMenu::GetRootForPlayer(pPlayer);
+        if(pRootItem.IsEmpty()){
             Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + " " + 
             EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.EmptyBuyList, @pPlayer));
             return HOOK_CONTINUE;
@@ -160,9 +163,9 @@ HookReturnCode onChat(SayParameters@ pParams){
             return HOOK_CONTINUE;
         }
         if(pCommand.ArgC() <= 1)
-            EccoBuyMenu::OpenBuyMenu(pPlayer);
+            pRootItem.OpenBuyMenu(pPlayer);
         else{
-            CBaseMenuItem@ pItem = EccoBuyMenu::pRoot;
+            CBaseMenuItem@ pItem = pRootItem.GetRoot();
             string szPointer = "";
             if(atoi(pCommand[1]) > 0){
                 for(int i = 1; i < pCommand.ArgC();i++){

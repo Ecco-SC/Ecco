@@ -5,6 +5,7 @@ enum MenuItemFlag{
 class CBaseMenuItem{
     string Name;
     private CTextMenu@ pTextMenu;
+    private CEccoRootBuyMenu@ pRootNode;
 
     int Cost;
     string ScriptName;
@@ -22,21 +23,10 @@ class CBaseMenuItem{
     CBaseMenuItem@ pParent;
     private array<CBaseMenuItem@> aryChildren = {};
 
-    CBaseMenuItem(){
-        ObtainId();
-    }
-
+    CBaseMenuItem(){}
     CBaseMenuItem(string szTitle, TextMenuPlayerSlotCallback@ pCallback){
-        ObtainId();
-
         @pTextMenu = CTextMenu(@pCallback);
         pTextMenu.SetTitle(szTitle);
-    }
-
-    void ObtainId(){
-        this.Id = EccoBuyMenu::iGloabaBaseMenuItemlIdIterator;
-        EccoBuyMenu::iGloabaBaseMenuItemlIdIterator++;
-        EccoBuyMenu::aryMenuItemList.insertLast(this);
     }
 
     CBaseMenuItem@ opIndex(uint i){
@@ -52,7 +42,7 @@ class CBaseMenuItem{
     }
 
     CBaseMenuItem@ opPostInc(){
-        return uint(this.Id+1) >= EccoBuyMenu::aryMenuItemList.length() ? null : EccoBuyMenu::aryMenuItemList[uint(this.Id)+1];
+        return uint(this.Id+1) >= pRootNode.aryMenuItemList.length() ? null : pRootNode.aryMenuItemList[uint(this.Id)+1];
     }
 
     uint length(){
@@ -87,7 +77,7 @@ class CBaseMenuItem{
         }
     }
 
-    void AddChild(string szName, CEccoScriptItem@ pScriptInfo){
+    void AddChild(string szName, CEccoScriptItem@ pScriptInfo, CEccoRootBuyMenu@ pRoot){
         string _Cost = pScriptInfo["cost"];
         string _ScriptName = pScriptInfo.Name;
         string _Flags = pScriptInfo["flags"];
@@ -123,10 +113,11 @@ class CBaseMenuItem{
                 pItem.DisplayName = pItem.Name = _Name;
                 @pItem.pTextMenu = CTextMenu(function(CTextMenu@ mMenu, CBasePlayer@ pPlayer, int iPage, const CTextMenuItem@ mItem){
                     if(mItem !is null && pPlayer !is null){
+                        CEccoRootBuyMenu@ pRoot = EccoBuyMenu::GetRootForPlayer(@pPlayer);
                         if(mItem.m_szName == EccoConfig::pConfig.LocaleSetting.BackPreviousMenu)
-                            EccoBuyMenu::GetBaseMenuItem(@mMenu).pParent.Excute(@pPlayer);
+                            pRoot.GetBaseMenuItem(@mMenu).pParent.Excute(@pPlayer);
                         else{
-                            CBaseMenuItem@ pItem = EccoBuyMenu::GetBaseMenuItem(mMenu, mItem.m_szName);
+                            CBaseMenuItem@ pItem = pRoot.GetBaseMenuItem(mMenu, mItem.m_szName);
                             if(pItem !is null)
                                 pItem.Excute(@pPlayer);
                         }
@@ -136,7 +127,7 @@ class CBaseMenuItem{
                 @pItem.pParent = @this;
                 aryChildren.insertLast(pItem);
             }
-            pItem.AddChild(_Next, pScriptInfo);
+            pItem.AddChild(_Next, pScriptInfo, pRoot);
         }
     }
 

@@ -40,6 +40,9 @@ namespace EccoConfig{
         bool GenerateOwnedReplica=true;
         bool AllowBuyOwned=true;
     }
+    class CCommand{
+        string CommandPrefix = "ecco_";
+    }
     class CLocaleSetting{
         string ItemDisplayFormat="%MENUNAME% - %COST%";
         string LocaleAlreadyHave=" [ - 已持有该物品 - ]";
@@ -51,11 +54,18 @@ namespace EccoConfig{
         string EmptyBuyList=" [ - 购买列表为空 - ]";
         string ChatLogTitle="[Ecco菜单]";
         string RefuseDiedPlyaerBuy=" [ - 你已经是个死人了 - ]";
+
+        string ExcutedLogCommand= "玩家: %PLAYER% 执行指令: %COMMAND%";
+        string ExcutedCommand = "已执行: [%COMMAND%]";
+        string CanNotExcutedCommand = "无法执行命令: [%COMMAND%]";
+        string HelpCommand = "无法执行命令: %HELPINFO%";
+        string RefuseCommand = "你不能用这个哦";
     }
     class CEcco{
         CBaseConfig BaseConfig;
         CBuyMenu BuyMenu;
         CLocaleSetting LocaleSetting;
+        CCommand Command;
     }
      INIPraser::CINI@ pINI = null;
      CEcco pConfig;
@@ -91,6 +101,8 @@ namespace EccoConfig{
         pConfig.BaseConfig.MoneyHUDChannel = pINI["Ecco.BaseConfig", "MoneyHUDChannel"].getInt();
         pConfig.BaseConfig.IgnoreHUDZeroChange = pINI["Ecco.BaseConfig", "IgnoreHUDZeroChange"].getBool();
 
+        pConfig.Command.CommandPrefix = pINI["Ecco.Command", "CommandPrefix"].getString();
+
         pConfig.BuyMenu.RootNodeName = pINI["Ecco.BuyMenu", "RootNodeName"].getString();
         pConfig.BuyMenu.AllowIgnoreBuyPrefix = pINI["Ecco.BuyMenu", "AllowIgnoreBuyPrefix"].getBool();
         pConfig.BuyMenu.OpenShopTrigger = pINI["Ecco.BuyMenu", "OpenShopTrigger"].getArray();
@@ -110,6 +122,11 @@ namespace EccoConfig{
         pConfig.LocaleSetting.EmptyBuyList = pINI["Ecco.LocaleSetting", "EmptyBuyList"].getString();
         pConfig.LocaleSetting.ChatLogTitle = pINI["Ecco.LocaleSetting", "ChatLogTitle"].getString();
         pConfig.LocaleSetting.RefuseDiedPlyaerBuy = pINI["Ecco.LocaleSetting", "RefuseDiedPlyaerBuy"].getString();
+        pConfig.LocaleSetting.ExcutedLogCommand = pINI["Ecco.LocaleSetting", "ExcutedLogCommand"].getString();
+        pConfig.LocaleSetting.ExcutedCommand = pINI["Ecco.LocaleSetting", "ExcutedCommand"].getString();
+        pConfig.LocaleSetting.CanNotExcutedCommand = pINI["Ecco.LocaleSetting", "CanNotExcutedCommand"].getString();
+        pConfig.LocaleSetting.HelpCommand = pINI["Ecco.LocaleSetting", "HelpCommand"].getString();
+        pConfig.LocaleSetting.RefuseCommand = pINI["Ecco.LocaleSetting", "RefuseCommand"].getString();
     }
 
     bool RefreshEccoConfig(){
