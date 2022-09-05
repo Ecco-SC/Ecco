@@ -23,7 +23,7 @@ namespace EchoEntity
         "monster_human_medic_ally",
         "bdsc_npc/rama.mdl",
         "monster_otis"
-    }
+    };
     void PluginInit(){
         e_ScriptParser.Register(CEccoMarco("add_friendly_ent_at_aim", Macro_add_friendly_ent_at_aim));
     }
