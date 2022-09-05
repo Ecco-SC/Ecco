@@ -12,9 +12,30 @@ namespace EchoEntity
 {
     const string szNPCMaxError = "你所请求的NPC队友数量已达上限!";
     const string szNPCNarrowError = "你召唤的位置空间太狭窄！";
-    void PluginInit()
-    {
+    const array<string> aryPrecache = {
+        "monster_alien_slave",
+        "monster_robogrunt",
+        "monster_headcrab",
+        "bdsc_npc/penguin_fighter.mdl",
+        "monster_human_torch_ally",
+        "monster_human_grunt_ally",
+        "monster_human_grunt",
+        "monster_human_medic_ally",
+        "bdsc_npc/rama.mdl",
+        "monster_otis"
+    }
+    void PluginInit(){
         e_ScriptParser.Register(CEccoMarco("add_friendly_ent_at_aim", Macro_add_friendly_ent_at_aim));
+    }
+    void MapInit(){
+        for(uint i = 0; i < aryPrecache.length();i++){
+            if(aryPrecache[i].EndsWith(".mdl"))
+                g_Game.PrecacheModel("models/" + aryPrecache[i]);
+            else if(aryPrecache[i].EndsWith(".spr"))
+                g_Game.PrecacheModel("sprites/" + aryPrecache[i]);
+            else
+                g_Game.PrecacheOther(aryPrecache[i]);
+        }
     }
 
     string GetAuthor(){
