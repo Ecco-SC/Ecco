@@ -158,7 +158,7 @@ Here is an example script:
 `Example.echo`
 
 ```
-name: Heavy.Big Fucking gun 9000
+name: Heavy🈹Big Fucking gun 9000
 cost: 114514
 flags: 1
 give weapon_bfg900
@@ -176,7 +176,7 @@ plugin will be parse sentence by sentence from beginning to end.
 ### Property
 
 ```
-name: Heavy.Big Fucking gun 9000
+name: Heavy🈹Big Fucking gun 9000
 cost: 114514
 flags: 1
 ```
