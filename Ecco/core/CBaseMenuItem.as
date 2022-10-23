@@ -82,7 +82,7 @@ class CBaseMenuItem{
         string _ScriptName = pScriptInfo.Name;
         string _Flags = pScriptInfo["flags"];
         string _DisplayName = pScriptInfo["displayname"];
-        bool bTerminal = szName.FindFirstOf("§") == String::INVALID_INDEX;
+        bool bTerminal = szName.FindFirstOf(";;") == String::INVALID_INDEX;
         if(bTerminal){
             CBaseMenuItem pItem;
             pItem.IsTerminal = bTerminal;
@@ -98,7 +98,7 @@ class CBaseMenuItem{
                             _DisplayName;
         }
         else{
-            uint index = szName.FindFirstOf("§");
+            uint index = szName.FindFirstOf(";;");
             string _Name = szName.SubString(0, index);
             //Yes, add 2 instead of 1, because the string type opIndex() is a piece of shit for multi-byte characters
             string _Next = szName.SubString(index + 2);

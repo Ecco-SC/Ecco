@@ -1,5 +1,5 @@
-name: Weapon§Big Fucking Gun 9000
-name_cn: 武器§大草枪9000
+name: Weapon;;Big Fucking Gun 9000
+name_cn: 武器;;大草枪9000
 cost: 114514
 give weapon_bfg9000
 broadcast OMG %PLAYER% brought a bfg 9000!

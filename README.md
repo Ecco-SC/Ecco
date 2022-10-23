@@ -57,13 +57,13 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
 ## Forked New Features
 
 1. Plugin performance optimization
-   
-2. Can be used `§` as a separator to add multi-level submenu in the echo script `name` keyvalue.
+
+2. Can be used `;;` as a separator to add multi-level submenu in the echo script `name` keyvalue.
    
    Example:
 
         in test.echo, you could write:
-            name: a§b§c§d§e§f§g§h§i§j§k§l§m§n§o§p§q§r§s§t§u§v§w§x§y§z§9mm Ammobox
+            name: a;;b;;c;;d;;e;;f;;g;;h;;i;;j;;k;;l;;m;;n;;o;;p;;q;;r;;s;;t;;u;;v;;w;;x;;y;;z;;9mm Ammobox
             cost: 3
             give ammo_9mmbox
     
@@ -73,15 +73,15 @@ And if you're a plugin developer, you could try to communicate with Ecco's data 
 
     Example:
 
-            name: aaa§bbb§ccc§9mm
+            name: aaa;;bbb;;ccc;;9mm
             category: 1337
             cost: 3
             give ammo_9mmbox
     
-    The plugin will combine two keyvalue to `1337§aaa§bbb§ccc§9mm` for parsing.
+    The plugin will combine two keyvalue to `1337;;aaa;;bbb;;ccc;;9mm` for parsing.
 
-    ### What? §? Why?
-    1. Because `.` is actually a very common character (e.g: 5.56 ammo) and I didn't want to mess with something as ugly as an escape character. Also, if the control characters in the Asiic code are used, it will be very difficult for the user to read or edit them. As for emoji, it is very difficult to manipulate utf8 emoji of variable length because the string type's support for multi-byte characters is a disaster, so changing to extened characters was the most logical option in my opinion.
+    ### What? ;;? Why?
+    1. Because `.` is actually a very common character (e.g: 5.56 ammo) and I didn't want to mess with something as ugly as an escape character. Also, if the control characters in the Asiic code are used, it will be very difficult for the user to read or edit them. As for emoji, it is very difficult to manipulate utf8 emoji of variable length because the string type's support for multi-byte characters is a disaster, so changing to double characters was the most logical option in my opinion.
     2. If you need to upgrade from an old . You can use a tool like `visual studio code` to batch replace.
 
 3. INI file for config
