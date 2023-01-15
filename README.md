@@ -17,7 +17,7 @@
 2. Put Ecco directory into `svencoop_addon/scripts/plugins/`
 3. Create directory `svencoop/scripts/plugins/store/Ecco` and ***ensure*** it has write permission (***Very important!***)
 4. Put `assets/dollar.spr` into `svencoop_addon/sprites/misc/dollar.spr`
-5. Copy the directories inside `starter_pack` into `svencoop_addon/scripts/plugins/Ecco/scripts`
+5. Copy the directories inside `starter_pack` (Ammo/Item/Weapon) into `svencoop_addon/scripts/plugins/Ecco/scripts`
 6. Copy `starter_pack/Scripts.txt` into `svencoop_addon/scripts/plugins/Ecco/config` and override original Scripts.txt.
 7. Open /svencoop/default_plugins.txt with notepad or other software, add
 
