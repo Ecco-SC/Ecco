@@ -1,5 +1,5 @@
 namespace EccoPlayerStorage{
-    class CPlayerStorageData{
+    final class CPlayerStorageData{
         array<CPlayerStorageDataItem@> aryPlayerList = {};
 
         CPlayerStorageDataItem@ Get(string szSteamID){
@@ -44,7 +44,7 @@ namespace EccoPlayerStorage{
             aryPlayerList.insertLast(pItem);
         }
     }
-    class CPlayerStorageDataItem{
+    final class CPlayerStorageDataItem{
         string szSteamID;
         EHandle pPlayer;
         float flScore;

@@ -1,4 +1,4 @@
-class CClinetCmd
+final class CClinetCmd
 {
     private string szName = "";
     private string szHelpInfo = "";

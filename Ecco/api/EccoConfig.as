@@ -1,5 +1,5 @@
 namespace EccoConfig{
-    class CBaseConfig{
+    final class CBaseConfig{
         string BuyMenuName = "[Ecco]";
         string BuyMenuDescription = "[ Ecco - Supply Store ]";
         uint ShowMoneyHUD = 1;
@@ -30,7 +30,7 @@ namespace EccoConfig{
         int MoneyHUDChannel=4;
         bool IgnoreHUDZeroChange=true;
     }
-    class CBuyMenu{
+    final class CBuyMenu{
         string RootNodeName="root";
         bool AllowIgnoreBuyPrefix=false;
         array<string> OpenShopTrigger={"buy"};
@@ -40,10 +40,10 @@ namespace EccoConfig{
         bool GenerateOwnedReplica=true;
         bool AllowBuyOwned=true;
     }
-    class CCommand{
+    final class CCommand{
         string CommandPrefix = "ecco_";
     }
-    class CLocaleSetting{
+    final class CLocaleSetting{
         string ItemDisplayFormat="%MENUNAME% - %COST%";
         string LocaleAlreadyHave=" [ - 已持有该物品 - ]";
         string LocaleNotAllowed=" [ - 此地图已禁用购物功能 - ]";
@@ -61,7 +61,7 @@ namespace EccoConfig{
         string HelpCommand = "帮助: %HELPINFO%";
         string RefuseCommand = "你不能用这个哦";
     }
-    class CEcco{
+    final class CEcco{
         CBaseConfig BaseConfig;
         CBuyMenu BuyMenu;
         CLocaleSetting LocaleSetting;

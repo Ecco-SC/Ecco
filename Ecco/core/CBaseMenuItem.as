@@ -2,7 +2,7 @@ enum MenuItemFlag{
     FLAG_NONE = 0,
     FLAG_HIDECOST = 1 << 0
 }
-class CBaseMenuItem{
+final class CBaseMenuItem{
     string Name;
     private CTextMenu@ pTextMenu;
     private CEccoRootBuyMenu@ pRootNode;

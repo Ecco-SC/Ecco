@@ -1,7 +1,7 @@
 namespace EccoProcessVar{
     funcdef string ProcessVariablePlayerFunc(string, string, CBasePlayer@);
     funcdef string ProcessVariableMenuFunc(string, string, CBaseMenuItem@);
-    class CProcessVariableItem{
+    final class CProcessVariableItem{
         private string szName;
         private ProcessVariablePlayerFunc@ pFunc;
         private ProcessVariableMenuFunc@ pMenuFunc;

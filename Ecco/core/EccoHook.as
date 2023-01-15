@@ -8,7 +8,7 @@ namespace EccoHook{
         }
     }
 
-    class CHookPackage{
+    final class CHookPackage{
         int Code = -1;
         ref@ Hook = null;
 

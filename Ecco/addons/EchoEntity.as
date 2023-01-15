@@ -46,7 +46,7 @@ namespace EchoEntity
         return "https://github.com/Ecco-SC/Ecco";
     }
 
-    class CEchoEntityHandle
+    final class CEchoEntityHandle
     {
         string szName;
         array<EHandle> aryMonsters = {};

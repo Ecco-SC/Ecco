@@ -1,7 +1,7 @@
 
 namespace EccoAddon{
 namespace EccoSQL{
-    class CPlayerData{
+    final class CPlayerData{
         string UID = "0";
         int Ecco = 0;
         string Add = "";

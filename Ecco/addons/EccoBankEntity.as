@@ -16,7 +16,7 @@ namespace EccoBankEntity{
         return "The number you are dialing is empty";
     }
 
-    class CEccoInfoEntity : ScriptBaseEntity{
+    final class CEccoInfoEntity : ScriptBaseEntity{
         void Spawn(){
             //searchmode
             //0 index
