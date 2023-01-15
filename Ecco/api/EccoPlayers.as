@@ -139,19 +139,19 @@ namespace EccoPlayerInventory{
         return szPlayerId == "STEAM_ID_LAN" ? string(pPlayer.vars.netname) : FormmatSteamID(szPlayerId);
     }
 
-    private void WriteInData(CBasePlayer@ pPlayer, int Balance){
+    void WriteInData(CBasePlayer@ pPlayer, int Balance){
         WriteInData(pPlayer, Balance, GetInventory(pPlayer), RetrieveInfo(pPlayer));
     }
 
-    private void WriteInData(CBasePlayer@ pPlayer, array<string>@ Inventory){
+    void WriteInData(CBasePlayer@ pPlayer, array<string>@ Inventory){
         WriteInData(pPlayer, GetBalance(pPlayer), Inventory, RetrieveInfo(pPlayer));
     }
 
-    private void WriteInData(CBasePlayer@ pPlayer, dictionary PlayerInfo){
+    void WriteInData(CBasePlayer@ pPlayer, dictionary PlayerInfo){
         WriteInData(pPlayer, GetBalance(pPlayer), GetInventory(pPlayer), PlayerInfo);
     }
 
-    private void WriteInData(CBasePlayer@ pPlayer, int Balance, array<string>@ Inventory, dictionary PlayerInfo){
+    void WriteInData(CBasePlayer@ pPlayer, int Balance, array<string>@ Inventory, dictionary PlayerInfo){
         string Content = string(Balance);
         for(uint i=0; i < Inventory.length(); i++){
             Content += "\n" + Inventory[i];
