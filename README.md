@@ -4,7 +4,7 @@
 
 ![img](https://github.com/Paranoid-AF/EccoWikiAssets/raw/master/article1.png)
 
-A complete economy & buy menu plugin for Sven Co-op 5.x
+### Ecco is a complete economy & buy menu plugin for Sven Co-op 5.x, It is designed to add many commands via echo files to purchase items from different plugins.
 
 ## [Plugin document](Guidance.md)
 
@@ -13,12 +13,13 @@ A complete economy & buy menu plugin for Sven Co-op 5.x
 ## [For more information on forked new features](#forked-new-features)
 
 ## Quick start
-1. Grab plugin in Ecco directory
-2. Put Ecco directory into svencoop_addon/scripts/plugins/
-3. Create directory svencoop/scripts/plugins/store/Ecco and ensure has write permission (***Very important!***)
-4. Put assets/dollar.spr into svencoop_addon/sprites/misc/dollar.spr
-5. Add these .echo file name into svencoop_addon/scripts/plugins/Ecco/config/Scripts.txt (without .echo extension)
-6. Open /svencoop/default_plugins.txt with notepad or other software, add
+1. Grab plugin
+2. Put Ecco directory into `svencoop_addon/scripts/plugins/`
+3. Create directory `svencoop/scripts/plugins/store/Ecco` and ***ensure*** it has write permission (***Very important!***)
+4. Put `assets/dollar.spr` into `svencoop_addon/sprites/misc/dollar.spr`
+5. Copy `starter_pack` into `svencoop_addon/scripts/plugins/Ecco/scripts`
+6. Copy `starter_pack/Scripts.txt` into `svencoop_addon/scripts/plugins/Ecco/config` and override original Scripts.txt.
+7. Open /svencoop/default_plugins.txt with notepad or other software, add
 
 ```
 "plugin"
