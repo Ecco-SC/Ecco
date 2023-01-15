@@ -5,6 +5,7 @@
 #include "core/BuyMenu"
 #include "core/EccoHook"
 #include "core/Command"
+#include "core/Hook"
 //如果你的Config文件不在默认位置，这行必须被修改
 //You have to edit this line if your config file is not in default position
 const string szConfigPath = "scripts/plugins/Ecco/config/";
@@ -18,7 +19,7 @@ string szLastNextMap = g_Engine.mapname;
 bool bShouldCleanScore = true;
 
 void PluginInit(){
-	g_Module.ScriptInfo.SetAuthor("Paranoid_AF");
+	g_Module.ScriptInfo.SetAuthor("Ecco team");
 
     if(!EccoConfig::RefreshEccoConfig()){
         bAborted = true;
@@ -43,10 +44,8 @@ void PluginInit(){
     EccoProcessVar::Register("%PLAYERTEAM%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, pPlayer.pev.team);});
 
     Command::Register("help", "", "获取帮助信息", "", function(CBasePlayer@ pPlayer, const CCommand@ pArgs, const CClinetCmd@ pCmd, const bool bChat){
-        for(uint i = 0; i < Command::aryCmdList.length(); i++)
-        {
-            if(!Command::aryCmdList[i].IsEmpty())
-            {
+        for(uint i = 0; i < Command::aryCmdList.length(); i++){
+            if(!Command::aryCmdList[i].IsEmpty()){
                 CClinetCmd@ eCme = cast<CClinetCmd@>(Command::aryCmdList[i]);
                 if(g_PlayerFuncs.AdminLevel(pPlayer) < int(eCme.AdminLevel))
                     continue;
@@ -72,8 +71,8 @@ void PluginInit(){
 
     EccoScriptParser::BuildItemList();
 
-    g_Hooks.RegisterHook(Hooks::Player::ClientSay, @onChat);
-    g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @onJoin);
+    g_Hooks.RegisterHook(Hooks::Player::ClientSay, @Hook::ClientSay);
+    g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @Hook::ClientPutInServer);
 
     EccoInclude::AddonListBuilder();
     EccoInclude::PluginInit();
@@ -92,12 +91,15 @@ void PluginInit(){
     | $$$$$$$$|  $$$$$$/|  $$$$$$/|  $$$$$$/
     |________/ \______/  \______/  \______/ 
 
+                            Ver: {Version}
+                            Load Time: {Time}
     """;
     string szTime;
     DateTime().Format(szTime, "%Y-%m-%d %H:%M");
-    Logger::WriteLine(szBanner);
-    Logger::WriteLine("    Ver: " + szVersion);
-    Logger::WriteLine("    Time: " + szTime);
+    array<string> aryBanner = szBanner.Replace("{Version}", szVersion).Replace("{Time}", szTime).Split("\n");
+    for(uint i = 0; i < aryBanner.length(); i++){
+        Logger::WriteLine(aryBanner[i]);
+    }
     Logger::Say(EccoConfig::pConfig.LocaleSetting.PluginReloaded);
 }
 void MapInit(){
@@ -159,83 +161,4 @@ void MapStart(){
     if(bAborted)
         return;
     EccoInclude::MapStart();
-}
-HookReturnCode onChat(SayParameters@ pParams){
-    CBasePlayer@ pPlayer = pParams.GetPlayer();
-    const CCommand@ pCommand = pParams.GetArguments();
-    string arg = pCommand[0].ToLowercase();
-    arg.Trim();
-    if(pPlayer !is null && EccoUtility::CanOpenShop(arg)){
-        pParams.ShouldHide = true;
-        if(!IsMapAllowed){
-            Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + " " + 
-            EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.LocaleNotAllowed, @pPlayer));
-            return HOOK_CONTINUE;
-        }
-
-        CEccoRootBuyMenu@ pRootItem = EccoBuyMenu::GetRootForPlayer(pPlayer);
-        if(pRootItem.IsEmpty()){
-            Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + " " + 
-            EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.EmptyBuyList, @pPlayer));
-            return HOOK_CONTINUE;
-        }
-        if(!EccoConfig::pConfig.BuyMenu.AllowDeathPlayerBuy && !pPlayer.IsAlive()){
-            Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + " " + 
-            EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.RefuseDiedPlyaerBuy, @pPlayer));
-            return HOOK_CONTINUE;
-        }
-        if(pCommand.ArgC() <= 1)
-            pRootItem.OpenBuyMenu(pPlayer);
-        else{
-            CBaseMenuItem@ pItem = pRootItem.GetRoot();
-            string szPointer = "";
-            if(atoi(pCommand[1]) > 0){
-                for(int i = 1; i < pCommand.ArgC();i++){
-                @pItem = pItem[Math.clamp(0, pItem.length() - 1 ,atoi(pCommand[i]) - 1)];
-                    szPointer = pCommand[i];
-                    if(pItem.IsTerminal)
-                        break;
-                }
-            }
-            else{
-                for(int i = 1; i < pCommand.ArgC();i++){
-                    @pItem = pItem[pCommand[i]];
-                    szPointer = pCommand[i];
-                    if(@pItem is null|| pItem.IsTerminal)
-                        break;
-                }
-            }
-            if(@pItem !is null)
-                pItem.Excute(@pPlayer, 0, EccoConfig::pConfig.BuyMenu.ReOpenMenuAfterParamBuy);
-            else
-                Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + 
-                    " " + EccoConfig::pConfig.LocaleSetting.NullPointerMenu + szPointer);
-        }
-        return HOOK_HANDLED;
-    }
-    return HOOK_CONTINUE;
-}
-HookReturnCode onJoin(CBasePlayer@ pPlayer){
-    if(IsMapAllowed){
-        switch(EccoConfig::pConfig.BaseConfig.StorePlayerScore){
-            case 2: break;
-            case 1: if(bShouldCleanScore == false){break;}
-            case 0: {
-                if(EccoPlayerStorage::Exists(@pPlayer)){
-                    EccoPlayerStorage::CPlayerStorageDataItem@ pItem = EccoPlayerStorage::pData.Get(@pPlayer);
-                    DateTime pNow;
-                    if(pItem.szLastPlayMap == g_Engine.mapname && (pNow - pItem.pLastUpdateTime).GetSeconds() < EccoConfig::pConfig.BaseConfig.ClearMaintenanceTimeMax)
-                        break;
-                    else{
-                        pItem.szLastPlayMap = g_Engine.mapname;
-                        pItem.pLastUpdateTime = pNow;
-                    }
-                }
-            }
-            default: EccoPlayerInventory::SetBalance(@pPlayer, EccoConfig::pConfig.BaseConfig.PlayerStartScore);break;
-        }
-        EccoPlayerStorage::ResetPlayerBuffer(@pPlayer);
-        EccoPlayerInventory::RefreshHUD(@pPlayer);
-    }
-    return HOOK_HANDLED;
 }
