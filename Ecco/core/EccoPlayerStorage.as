@@ -11,7 +11,7 @@ namespace EccoPlayerStorage{
         }
 
         CPlayerStorageDataItem@ Get(CBasePlayer@ pPlayer){
-            return Get(e_PlayerInventory.GetUniquePlayerId(@pPlayer));
+            return Get(EccoPlayerInventory::GetUniquePlayerId(@pPlayer));
         }
 
         CPlayerStorageDataItem@ opIndex(string szSteamID){
@@ -36,7 +36,7 @@ namespace EccoPlayerStorage{
 
         void Add(CBasePlayer@ pPlayer){
             CPlayerStorageDataItem pItem;
-                pItem.szSteamID = e_PlayerInventory.GetUniquePlayerId(@pPlayer);
+                pItem.szSteamID = EccoPlayerInventory::GetUniquePlayerId(@pPlayer);
                 pItem.flScore = 0;
                 pItem.flObtained = 0;
                 pItem.szLastPlayMap = g_Engine.mapname;
@@ -85,7 +85,7 @@ namespace EccoPlayerStorage{
         for(int i = 0; i <= g_Engine.maxClients; i++){
             CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex(i);
             if(pPlayer !is null){
-                string szPlayerUniqueId = e_PlayerInventory.GetUniquePlayerId(@pPlayer);
+                string szPlayerUniqueId = EccoPlayerInventory::GetUniquePlayerId(@pPlayer);
                 if(!Exists(@pPlayer))
                     pData.Add(@pPlayer);
                 
@@ -94,16 +94,16 @@ namespace EccoPlayerStorage{
                 if(iScoreChanged != 0 ){
                     if(iMaxLimitation > 0){
                         if(pPlayerData.flObtained + iScoreChanged < iMaxLimitation){
-                            e_PlayerInventory.ChangeBalance(pPlayer, iScoreChanged);
+                            EccoPlayerInventory::ChangeBalance(pPlayer, iScoreChanged);
                             pPlayerData.flObtained += iScoreChanged;
                         }
                         else if(pPlayerData.flObtained < iMaxLimitation){
-                            e_PlayerInventory.ChangeBalance(pPlayer, int(iMaxLimitation - pPlayerData.flObtained));
+                            EccoPlayerInventory::ChangeBalance(pPlayer, int(iMaxLimitation - pPlayerData.flObtained));
                             pPlayerData.flObtained = iMaxLimitation;
                         }
                     }
                     else{
-                        e_PlayerInventory.ChangeBalance(pPlayer, iScoreChanged);
+                        EccoPlayerInventory::ChangeBalance(pPlayer, iScoreChanged);
                         pPlayerData.flObtained += iScoreChanged;
                     }
                 }

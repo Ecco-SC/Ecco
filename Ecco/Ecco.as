@@ -29,8 +29,8 @@ void PluginInit(){
     szStorePath = EccoConfig::pConfig.BaseConfig.PluginsStorePath;
 
     EccoProcessVar::Register("%PLAYER%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, pPlayer.pev.netname);});
-    EccoProcessVar::Register("%RANDOMPLAYER%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, e_PlayerInventory.GetRandomPlayerName());});
-    EccoProcessVar::Register("%BALANCE%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, string(e_PlayerInventory.GetBalance(pPlayer)));});
+    EccoProcessVar::Register("%RANDOMPLAYER%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, EccoPlayerInventory::GetRandomPlayerName());});
+    EccoProcessVar::Register("%BALANCE%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, string(EccoPlayerInventory::GetBalance(pPlayer)));});
     EccoProcessVar::Register("%SPACE%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, " ");});
     EccoProcessVar::Register("%COST%", function(string szInput, string szName, CBaseMenuItem@ pMenuItem){ 
         return szInput.Replace(szName, 
@@ -70,7 +70,7 @@ void PluginInit(){
         return true;
     });
 
-    e_ScriptParser.BuildItemList();
+    EccoScriptParser::BuildItemList();
 
     g_Hooks.RegisterHook(Hooks::Player::ClientSay, @onChat);
     g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @onJoin);
@@ -232,10 +232,10 @@ HookReturnCode onJoin(CBasePlayer@ pPlayer){
                     }
                 }
             }
-            default: e_PlayerInventory.SetBalance(@pPlayer, EccoConfig::pConfig.BaseConfig.PlayerStartScore);break;
+            default: EccoPlayerInventory::SetBalance(@pPlayer, EccoConfig::pConfig.BaseConfig.PlayerStartScore);break;
         }
         EccoPlayerStorage::ResetPlayerBuffer(@pPlayer);
-        e_PlayerInventory.RefreshHUD(@pPlayer);
+        EccoPlayerInventory::RefreshHUD(@pPlayer);
     }
     return HOOK_HANDLED;
 }

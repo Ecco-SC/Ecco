@@ -25,7 +25,7 @@ namespace EchoEntity
         "monster_otis"
     };
     void PluginInit(){
-        e_ScriptParser.Register(CEccoMarco("add_friendly_ent_at_aim", Macro_add_friendly_ent_at_aim));
+        EccoScriptParser::Register(CEccoMarco("add_friendly_ent_at_aim", Macro_add_friendly_ent_at_aim));
     }
     void MapInit(){
         for(uint i = 0; i < aryPrecache.length();i++){
@@ -52,7 +52,7 @@ namespace EchoEntity
         array<EHandle> aryMonsters = {};
         CEchoEntityHandle(CBasePlayer@ pPlayer)
         {
-            this.szName = e_PlayerInventory.GetUniquePlayerId(pPlayer);
+            this.szName = EccoPlayerInventory::GetUniquePlayerId(pPlayer);
         }
 
         CEchoEntityHandle@ Init()

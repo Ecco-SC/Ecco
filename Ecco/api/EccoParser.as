@@ -83,15 +83,15 @@ class CEccoScriptItem{
     	bool bFlag = true;
         for(uint i = 0; i < aryExcuteBlock.length(); i++){
             if(aryExcuteBlock[i].length() > 1)
-                e_ScriptParser.RandomExecute(aryExcuteBlock[i], @pPlayer);
+                EccoScriptParser::RandomExecute(aryExcuteBlock[i], @pPlayer);
             else if(aryExcuteBlock[i].length() == 1)
-                bFlag = bFlag && e_ScriptParser.ExecuteCommand(aryExcuteBlock[i][0], @pPlayer);
+                bFlag = bFlag && EccoScriptParser::ExecuteCommand(aryExcuteBlock[i][0], @pPlayer);
         }
         return bFlag;
     }
 }
 
-class CEccoScriptParser{
+namespace EccoScriptParser{
     array<IEccoMarco@> aryMarco = {};
     void Register(IEccoMarco@ Marco){
         aryMarco.insertLast(@Marco);
@@ -179,4 +179,3 @@ class CEccoScriptParser{
             return false;
     }
 }
-CEccoScriptParser e_ScriptParser;

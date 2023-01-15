@@ -24,21 +24,21 @@
 namespace EccoAddon{
 namespace EccoBase{
   void PluginInit(){
-    e_ScriptParser.Register(CEccoMarco("include", Macro_include));
-    e_ScriptParser.Register(CEccoMarco("money", Macro_money));
-    e_ScriptParser.Register(CEccoMarco("addinv", Macro_addinv));
-    e_ScriptParser.Register(CEccoMarco("delinv", Macro_delinv));
-    e_ScriptParser.Register(CEccoMarco("maxhealth", Macro_maxhealth));
-    e_ScriptParser.Register(CEccoMarco("maxarmor", Macro_maxarmor));
-    e_ScriptParser.Register(CEccoMarco("say", Macro_say));
-    e_ScriptParser.Register(CEccoMarco("broadcast", Macro_broadcast));
-    e_ScriptParser.Register(CEccoMarco("give", Macro_give));
-    e_ScriptParser.Register(CEccoMarco("log", Macro_log));
-    e_ScriptParser.Register(CEccoMarco("hurt", Macro_hurt));
-    e_ScriptParser.Register(CEccoMarco("heal", Macro_heal));
-    e_ScriptParser.Register(CEccoMarco("armor", Macro_armor));
-    e_ScriptParser.Register(CEccoMarco("maxspeed", Macro_maxspeed));
-    e_ScriptParser.Register(CEccoMarco("gravity", Macro_gravity));
+    EccoScriptParser::Register(CEccoMarco("include", Macro_include));
+    EccoScriptParser::Register(CEccoMarco("money", Macro_money));
+    EccoScriptParser::Register(CEccoMarco("addinv", Macro_addinv));
+    EccoScriptParser::Register(CEccoMarco("delinv", Macro_delinv));
+    EccoScriptParser::Register(CEccoMarco("maxhealth", Macro_maxhealth));
+    EccoScriptParser::Register(CEccoMarco("maxarmor", Macro_maxarmor));
+    EccoScriptParser::Register(CEccoMarco("say", Macro_say));
+    EccoScriptParser::Register(CEccoMarco("broadcast", Macro_broadcast));
+    EccoScriptParser::Register(CEccoMarco("give", Macro_give));
+    EccoScriptParser::Register(CEccoMarco("log", Macro_log));
+    EccoScriptParser::Register(CEccoMarco("hurt", Macro_hurt));
+    EccoScriptParser::Register(CEccoMarco("heal", Macro_heal));
+    EccoScriptParser::Register(CEccoMarco("armor", Macro_armor));
+    EccoScriptParser::Register(CEccoMarco("maxspeed", Macro_maxspeed));
+    EccoScriptParser::Register(CEccoMarco("gravity", Macro_gravity));
   }
 
   string GetAuthor(){
@@ -74,10 +74,10 @@ namespace EccoBase{
     bool Success = true;
     switch(args.length()){
       case 1:
-        Success = e_ScriptParser.ExecuteFile("scripts/plugins/Ecco/scripts/" + args[0] + ".echo", pPlayer);
+        Success = EccoScriptParser::ExecuteFile("scripts/plugins/Ecco/scripts/" + args[0] + ".echo", pPlayer);
         break;
       case 2:
-        Success = e_ScriptParser.ExecuteFile("scripts/plugins/Ecco/scripts/" + args[0] + ".echo", FindPlayerByName(args[1], pPlayer));
+        Success = EccoScriptParser::ExecuteFile("scripts/plugins/Ecco/scripts/" + args[0] + ".echo", FindPlayerByName(args[1], pPlayer));
         break;
       default:
         ErrorInfo("include", args.length());
@@ -90,10 +90,10 @@ namespace EccoBase{
     bool Success = true;
     switch(args.length()){
       case 1:
-        e_PlayerInventory.ChangeBalance(pPlayer, atoi(args[0]));
+        EccoPlayerInventory::ChangeBalance(pPlayer, atoi(args[0]));
         break;
       case 2:
-        e_PlayerInventory.ChangeBalance(FindPlayerByName(args[1], pPlayer), atoi(args[0]));
+        EccoPlayerInventory::ChangeBalance(FindPlayerByName(args[1], pPlayer), atoi(args[0]));
         break;
       default:
         ErrorInfo("money", args.length());
@@ -106,10 +106,10 @@ namespace EccoBase{
     bool Success = true;
     switch(args.length()){
       case 1:
-        Success = e_PlayerInventory.AddInventory(pPlayer, args[0]);
+        Success = EccoPlayerInventory::AddInventory(pPlayer, args[0]);
         break;
       case 2:
-        Success = e_PlayerInventory.AddInventory(FindPlayerByName(args[1], pPlayer), args[0]);
+        Success = EccoPlayerInventory::AddInventory(FindPlayerByName(args[1], pPlayer), args[0]);
         break;
       default:
         ErrorInfo("addinv", args.length());
@@ -124,10 +124,10 @@ namespace EccoBase{
     bool Success = true;
     switch(args.length()){
       case 1:
-        Success = e_PlayerInventory.RemoveInventory(pPlayer, args[0]);
+        Success = EccoPlayerInventory::RemoveInventory(pPlayer, args[0]);
         break;
       case 2:
-        Success = e_PlayerInventory.RemoveInventory(FindPlayerByName(args[1], pPlayer), args[0]);
+        Success = EccoPlayerInventory::RemoveInventory(FindPlayerByName(args[1], pPlayer), args[0]);
         break;
       default:
         ErrorInfo("delinv", args.length());

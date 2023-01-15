@@ -59,10 +59,10 @@ class CBaseMenuItem{
         if(IsTerminal){
             if(bReopen)
                 pParent.Excute(@pPlayer, Page);
-            int PlayerBalance = e_PlayerInventory.GetBalance(pPlayer);
+            int PlayerBalance = EccoPlayerInventory::GetBalance(pPlayer);
             if(PlayerBalance >= Cost){
-                if(e_ScriptParser.ExecuteFile(szRootPath + "scripts/" + ScriptName + ".echo", pPlayer)){
-                    e_PlayerInventory.ChangeBalance(pPlayer, -Cost);
+                if(EccoScriptParser::ExecuteFile(szRootPath + "scripts/" + ScriptName + ".echo", pPlayer)){
+                    EccoPlayerInventory::ChangeBalance(pPlayer, -Cost);
                     return true;
                 }
             }else

@@ -89,7 +89,7 @@ namespace EccoSQL{
 
             CPlayerData@ data = GetPlayerData(@pPlayer);
             if(data !is null && data.UID != "0"){
-                e_PlayerInventory.SetBalance(@pPlayer, data.Ecco);
+                EccoPlayerInventory::SetBalance(@pPlayer, data.Ecco);
                 Logger::Chat(@pPlayer, "[ECCO SQL]已同步SQL消息！");
             }
             else if(time >= iMaxTry)
@@ -123,10 +123,10 @@ namespace EccoSQL{
                 g_Scheduler.SetTimeout("BewareNotSync", 1, EHandle(pPlayer), 0);
         }
         if(data !is null){
-            e_PlayerInventory.SetBalance(@pPlayer, data.Ecco);
+            EccoPlayerInventory::SetBalance(@pPlayer, data.Ecco);
             EccoPlayerStorage::ResetPlayerBuffer(@pPlayer);
             EccoInventoryLoader::LoadPlayerInventory(@pPlayer);
-            e_PlayerInventory.RefreshHUD(@pPlayer);
+            EccoPlayerInventory::RefreshHUD(@pPlayer);
         }
         return HOOK_CONTINUE;
     }

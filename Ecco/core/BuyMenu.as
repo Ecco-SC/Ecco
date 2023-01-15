@@ -37,8 +37,8 @@ final class CEccoRootBuyMenu{
                 }
             });
         pRoot.Name = EccoConfig::pConfig.BuyMenu.RootNodeName;
-        for(uint i = 0; i < e_ScriptParser.aryItem.length(); i++){
-            CEccoScriptItem@ pScriptInfo = e_ScriptParser.aryItem[i];
+        for(uint i = 0; i < EccoScriptParser::aryItem.length(); i++){
+            CEccoScriptItem@ pScriptInfo = EccoScriptParser::aryItem[i];
             array<string> MapBlackList;
             if(pScriptInfo.exists("blacklist")){
                 string MapBlackListStr = pScriptInfo["blacklist"];
@@ -62,7 +62,7 @@ namespace EccoBuyMenu{
         {"cn", CEccoRootBuyMenu("name_cn")}
     };
     CEccoRootBuyMenu@ GetRootForPlayer(CBasePlayer@ pPlayer){
-        string id = e_PlayerInventory.GetUniquePlayerId(@pPlayer);
+        string id = EccoPlayerInventory::GetUniquePlayerId(@pPlayer);
         if(!dicPlayerLocale.exists(id))
             return cast<CEccoRootBuyMenu@>(dicRoots["en"]);
         else
@@ -77,7 +77,7 @@ namespace EccoBuyMenu{
     bool SetLanguage(CBasePlayer@ pPlayer, string szLang){
         if(!dicRoots.exists(szLang))
             return false;
-        string id = e_PlayerInventory.GetUniquePlayerId(@pPlayer);
+        string id = EccoPlayerInventory::GetUniquePlayerId(@pPlayer);
         dicPlayerLocale[id] = szLang;
         return true;
     }

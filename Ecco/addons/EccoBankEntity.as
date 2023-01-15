@@ -54,20 +54,20 @@ namespace EccoBankEntity{
                 //input
                 case USE_SET: {
                     if(@pPlayer !is null)
-                        e_PlayerInventory.ChangeBalance(@pPlayer, int(flValue) - e_PlayerInventory.GetBalance(@pPlayer));
+                        EccoPlayerInventory::ChangeBalance(@pPlayer, int(flValue) - EccoPlayerInventory::GetBalance(@pPlayer));
                     break;
                 }
                 //add
                 case USE_TOGGLE:{
                     if(@pPlayer !is null)
-                        e_PlayerInventory.ChangeBalance(@pPlayer, int(flValue));
+                        EccoPlayerInventory::ChangeBalance(@pPlayer, int(flValue));
                     break;
                 }
                 //output
                 case USE_ON:
                 default: {
                     if(@pPlayer !is null)
-                        self.pev.frags = e_PlayerInventory.GetBalance(@pPlayer);
+                        self.pev.frags = EccoPlayerInventory::GetBalance(@pPlayer);
                     break;
                 }
             }

@@ -30,7 +30,7 @@ void Timer_RefreshInv(){
     CBasePlayer@ pPlayer =  g_PlayerFuncs.FindPlayerByIndex(i+1);
     if(pPlayer !is null){
       array<string> LastList = cast<array<string>>(PlayerInv[GetUniquePlayerId(pPlayer)]);
-      array<string> InvList = e_PlayerInventory.GetInventory(pPlayer);
+      array<string> InvList = EccoPlayerInventory::GetInventory(pPlayer);
       
       // Check Add
       for(uint j=0; j<InvList.length(); j++){
@@ -65,7 +65,7 @@ void Timer_RefreshInv(){
 
 HookReturnCode onJoin(CBasePlayer@ pPlayer){
   if(pPlayer !is null){
-    array<string> InvList = e_PlayerInventory.GetInventory(pPlayer);
+    array<string> InvList = EccoPlayerInventory::GetInventory(pPlayer);
     for(uint i=0; i<InvList.length(); i++){
       CItemInventory@ pItem = CreateInvEntity(InvList[i]);
       pItem.pev.origin = pPlayer.pev.origin;
@@ -88,7 +88,7 @@ CItemInventory@ CreateInvEntity(string InvName){
   }
   if(pTarget is null){
     string InvDescription = InvDefaultDescription + "\n" + InvDescriptionSuffix;
-    dictionary ScriptInfo = e_ScriptParser.RetrieveInfo("scripts/plugins/Ecco/scripts/" + InvName + ".echo");
+    dictionary ScriptInfo = EccoScriptParser::RetrieveInfo("scripts/plugins/Ecco/scripts/" + InvName + ".echo");
     if(ScriptInfo.exists("description")){
       InvDescription = string(ScriptInfo["description"]) + "\n" + InvDescriptionSuffix;
     }

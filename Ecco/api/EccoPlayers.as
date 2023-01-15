@@ -1,4 +1,4 @@
-class EccoPlayerInventory{
+namespace EccoPlayerInventory{
     CBasePlayer@ GetRandomPlayer(){
         if(g_PlayerFuncs.GetNumPlayers() > 0){
             CBasePlayer@ pPlayer = null;
@@ -123,7 +123,7 @@ class EccoPlayerInventory{
     
     string FormmatSteamID(string szID){
         switch(EccoConfig::pConfig.BaseConfig.SteamIDFormmat){
-            case 1: return szID;
+            case 1: return szID.Replace(":", "-");
             case 2: return g_SteamIDHelper.toCommunity(szID);
             case 3: return szID.SubString(6).Replace(":", "");
         }
@@ -205,4 +205,3 @@ class EccoPlayerInventory{
         return pPlayer;
     }
 }
-EccoPlayerInventory e_PlayerInventory;

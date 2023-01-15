@@ -195,7 +195,7 @@ namespace EccoAddon{
         //In fact, You can implement none of these functions, 
         //but that means your extension will not work anymore;
         void PluginInit(){
-            e_ScriptParser.Register(CEccoMarco("examplemarco", marco_example));
+            EccoScriptParser::Register(CEccoMarco("examplemarco", marco_example));
             EccoHook::RegisterHook(EccoHook::Economy::PreChangeBalance, @PreChangeBalance)
         }
 
@@ -226,7 +226,7 @@ namespace EccoAddon{
 
 You must create a new namespace `EccoExample` as the domain of your addon under `EccoAddon`, plugin will search all namespaces under `EccoAddon` and excute `GetAuthor` `GetContactInfo` `PluginInit` `MapInit` `MapActived` `MapStart` methods one by one
 
-As you can see from exaple, add and new marco just simply call `e_ScriptParser.Register` method in `PluginInit`
+As you can see from exaple, add and new marco just simply call `EccoScriptParser::Register` method in `PluginInit`
 
 When the return value of marco is `true`, money will be deducted, otherwise the purchase will be considered as failed and keep money.
 
