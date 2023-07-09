@@ -69,7 +69,7 @@ void PluginInit(){
         return true;
     });
     Command::Register("buy", "", "打开购买菜单/Open Buy Menu", "", function(CBasePlayer@ pPlayer, const CCommand@ pArgs, const CClinetCmd@ pCmd, const bool bChat){
-        pRootItem.OpenBuyMenu(@pPlayer);
+        EccoBuyMenu::GetRootForPlayer(pPlayer).OpenBuyMenu(@pPlayer);
         return true;
     });
 
