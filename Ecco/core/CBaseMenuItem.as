@@ -113,14 +113,17 @@ final class CBaseMenuItem{
                 @pItem = CBaseMenuItem();
                 pItem.DisplayName = pItem.Name = _Name;
                 @pItem.pTextMenu = CTextMenu(function(CTextMenu@ mMenu, CBasePlayer@ pPlayer, int iPage, const CTextMenuItem@ mItem){
-                    if(mItem !is null && pPlayer !is null){
-                        CEccoRootBuyMenu@ pRoot = EccoBuyMenu::GetRootForPlayer(@pPlayer);
-                        if(mItem.m_szName == EccoConfig::pConfig.LocaleSetting.BackPreviousMenu)
-                            pRoot.GetBaseMenuItem(@mMenu).pParent.Excute(@pPlayer);
-                        else{
-                            CBaseMenuItem@ pItem = pRoot.GetBaseMenuItem(mMenu, mItem.m_szName);
-                            if(pItem !is null)
-                                pItem.Excute(@pPlayer);
+                    if(pPlayer !is null){
+                        if(@mItem !is null){
+                            CEccoRootBuyMenu@ pRoot = EccoBuyMenu::GetRootForPlayer(@pPlayer);
+                            CBaseMenuItem@ pItem;
+                            mItem.m_pUserData.retrieve(@pItem);
+                            if(@pItem !is null){
+                                if(mItem.m_szName == EccoConfig::pConfig.LocaleSetting.BackPreviousMenu)
+                                    pItem.pParent.Excute(@pPlayer);
+                                else
+                                    pItem.Excute(@pPlayer);
+                            }
                         }
                     }
                 });
@@ -181,17 +184,17 @@ final class CBaseMenuItem{
             uint iIndex = 0;
             for(uint i = 0; i < aryChildren.length();i++){
                 if(aryChildren.length() > 9 && i % 6 == 0 && i != 0 && this.Name != EccoConfig::pConfig.BuyMenu.RootNodeName){
-                    this.pTextMenu.AddItem(EccoConfig::pConfig.LocaleSetting.BackPreviousMenu, null);
+                    this.pTextMenu.AddItem(EccoConfig::pConfig.LocaleSetting.BackPreviousMenu, any(@this));
                     iPage++;
                     iIndex = 0;
                 }
-                this.pTextMenu.AddItem(aryChildren[i].DisplayName, null);
+                this.pTextMenu.AddItem(aryChildren[i].DisplayName, any(@aryChildren[i]));
                 aryChildren[i].Page = iPage;
                 aryChildren[i].Index = iIndex;
                 iIndex++;
             }
             if(this.Name != EccoConfig::pConfig.BuyMenu.RootNodeName)
-                this.pTextMenu.AddItem(EccoConfig::pConfig.LocaleSetting.BackPreviousMenu, null);
+                this.pTextMenu.AddItem(EccoConfig::pConfig.LocaleSetting.BackPreviousMenu, any(@this));
             this.pTextMenu.Register();
             for(uint i = 0; i < aryChildren.length();i++){
                 aryChildren[i].TextMenuRegister();
