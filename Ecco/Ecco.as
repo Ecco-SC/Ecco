@@ -69,7 +69,12 @@ void PluginInit(){
         return true;
     });
     Command::Register("buy", "", "打开购买菜单/Open Buy Menu", "", function(CBasePlayer@ pPlayer, const CCommand@ pArgs, const CClinetCmd@ pCmd, const bool bChat){
-        EccoBuyMenu::GetRootForPlayer(pPlayer).OpenBuyMenu(@pPlayer);
+        if(!IsMapAllowed){
+            Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + " " + 
+            EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.LocaleNotAllowed, @pPlayer));
+            return false;
+        }
+            EccoBuyMenu::GetRootForPlayer(pPlayer).OpenBuyMenu(@pPlayer);
         return true;
     });
 
