@@ -74,7 +74,7 @@ void PluginInit(){
             EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.LocaleNotAllowed, @pPlayer));
             return false;
         }
-            EccoBuyMenu::GetRootForPlayer(pPlayer).OpenBuyMenu(@pPlayer);
+        EccoBuyMenu::GetRootForPlayer(pPlayer).OpenBuyMenu(@pPlayer);
         return true;
     });
 
