@@ -311,10 +311,12 @@ namespace EccoBase{
     switch(args.length()){
       case 1:
         pPlayer.SetMaxSpeedOverride(int(atof(args[0])));
+        pPlayer.m_flEffectSpeed = atof(args[0]);
         break;
       case 2:
         @targetPlayer = FindPlayerByName(args[1], pPlayer);
         targetPlayer.SetMaxSpeedOverride(int(atof(args[0])));
+        targetPlayer.m_flEffectSpeed = atof(args[0]);
         break;
       default:
         ErrorInfo("maxspeed", args.length());
@@ -327,11 +329,11 @@ namespace EccoBase{
     CBasePlayer@ targetPlayer = null;
     switch(args.length()){
       case 1:
-        pPlayer.m_flEffectGravity = atof(args[0]);
+        pPlayer.pev.gravity = atof(args[0]) / 100.0f;
         break;
       case 2:
         @targetPlayer = FindPlayerByName(args[1], pPlayer);
-        targetPlayer.m_flEffectGravity = atof(args[0]);
+        targetPlayer.pev.gravity = atof(args[0]) / 100.0f;
         break;
       default:
         ErrorInfo("gravity", args.length());
