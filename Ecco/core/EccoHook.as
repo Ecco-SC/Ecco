@@ -27,7 +27,6 @@ namespace EccoHook{
             case Economy::ExcuteBuyMenu: return cast<FuncExcuteBuyMenuHook@>(pFunc) !is null;
             default: return false;
         }
-        return false;
     }
 
     void RegisterHook(int HookCode, ref@ pFunc){

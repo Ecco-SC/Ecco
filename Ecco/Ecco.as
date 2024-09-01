@@ -43,7 +43,7 @@ void PluginInit(){
     EccoProcessVar::Register("%PLAYERAP%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, pPlayer.pev.armorvalue);});
     EccoProcessVar::Register("%PLAYERTEAM%", function(string szInput, string szName, CBasePlayer@ pPlayer){ return szInput.Replace(szName, pPlayer.pev.team);});
 
-    Command::Register("help", "", "获取帮助信息/Get Help Info", "", function(CBasePlayer@ pPlayer, const CCommand@ pArgs, const CClinetCmd@ pCmd, const bool bChat){
+    Command::Register("help", "", "获取帮助信息/Get Help Info", "", function(CBasePlayer@ pPlayer, const CCommand@ pArgs, const CClinetCmd@ pCmd, bool bChat){
         for(uint i = 0; i < Command::aryCmdList.length(); i++){
             if(!Command::aryCmdList[i].IsEmpty()){
                 CClinetCmd@ eCme = cast<CClinetCmd@>(Command::aryCmdList[i]);
@@ -56,7 +56,7 @@ void PluginInit(){
         }
         return true;
     });
-    Command::Register("lang", "[Language]", "设置语言/Set Display Language", "", function(CBasePlayer@ pPlayer, const CCommand@ pArgs, const CClinetCmd@ pCmd, const bool bChat){
+    Command::Register("lang", "[Language]", "设置语言/Set Display Language", "", function(CBasePlayer@ pPlayer, const CCommand@ pArgs, const CClinetCmd@ pCmd, bool bChat){
         if(!EccoBuyMenu::SetLanguage(@pPlayer, pArgs.Arg(1))){
             array<string>@ aryKeys = EccoBuyMenu::dicRoots.getKeys();
             string szTemp = "";
@@ -68,7 +68,7 @@ void PluginInit(){
         }
         return true;
     });
-    Command::Register("buy", "", "打开购买菜单/Open Buy Menu", "", function(CBasePlayer@ pPlayer, const CCommand@ pArgs, const CClinetCmd@ pCmd, const bool bChat){
+    Command::Register("buy", "", "打开购买菜单/Open Buy Menu", "", function(CBasePlayer@ pPlayer, const CCommand@ pArgs, const CClinetCmd@ pCmd, bool bChat){
         if(!IsMapAllowed){
             Logger::Chat(pPlayer, EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.ChatLogTitle, @pPlayer) + " " + 
             EccoConfig::GetLocateMessage(EccoConfig::pConfig.LocaleSetting.LocaleNotAllowed, @pPlayer));

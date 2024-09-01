@@ -1,7 +1,7 @@
 #include "CClientCmd"
 namespace Command{
     array<CClinetCmd@> aryCmdList = {};
-    funcdef bool CmdCallback( CBasePlayer@, const CCommand@, const CClinetCmd@ , const bool);
+    funcdef bool CmdCallback( CBasePlayer@, const CCommand@, const CClinetCmd@ , bool);
     void Register( string _szName, string _szHelpInfo, string szDescribeInfo ,string szReturnInfo, CmdCallback@ pCallback, ConCommandFlags_t iAdminLevel = ConCommandFlag::None ){
         string szName = EccoConfig::pConfig.Command.CommandPrefix + _szName;
         string szHelpInfo = szName + " " + _szHelpInfo;

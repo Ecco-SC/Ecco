@@ -47,6 +47,5 @@ namespace EccoUtility{
             case 2: return "Cheat/Server";
             default: return "Forbidden";
         }
-        return "Forbidden";
     }
 }
